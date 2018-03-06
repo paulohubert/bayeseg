@@ -1,0 +1,4 @@
+(0.00%) File 2015.01.30_02.02.56.wav processed: 3 segments in this file, 3 total segments, 0.16500377655029297 seconds.
+(33.33%) File 2015.02.02_07.50.49.wav processed: 7 segments in this file, 10 total segments, 0.2625086307525635 seconds.
+(66.67%) File 2015.02.08_11.26.39.wav processed: 28 segments in this file, 38 total segments, 0.8278687000274658 seconds.
+Execution finished in 0.12089014450709025 minutes. Total of 38 segments found.
