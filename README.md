@@ -1,4 +1,4 @@
-### Sequential Segmentation Algorithm
+# Sequential Segmentation Algorithm
 
 This is the Python + Cython implementation of the Bayesian Sequential Segmentation Algorithm.
 If you use this algorithm, please cite:
