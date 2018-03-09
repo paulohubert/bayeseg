@@ -4,7 +4,8 @@ This is the Python + Cython implementation of the Bayesian Sequential Segmentati
 If you use this algorithm, please cite:
 
 Hubert, P., Padovese, L., Stern, J.M. A Sequential Algorithm for Signal Segmentation, Entropy 20 (55)  (2018) https://doi.org/10.20944/preprints201712.0001.v1
-Hubert, P., Padovese, L., Stern, J.M. Fast Implementation of a Bayesian unsupervised segmentation algorithm 
+
+Hubert, P., Padovese, L., Stern, J.M. Fast Implementation of a Bayesian unsupervised segmentation algorithm, arXiv:1803.01801
 
 The module is composed of two classes: 
 
