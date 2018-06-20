@@ -17,7 +17,46 @@ In this repository we also included 3 signal files for testing, in the folder Da
 
 There are also two jupyter notebooks on /notebooks with the code used to generate tests of the Fast Implementation paper.
 
-To compile:
+
+
+
+## System requirements:
+
+GNU Scientific Library (GSL) >2.4
+python >3.5.2
+cython >0.27.3
+cythonGSL >0.2.1
+numpy >1.14.0
+
+
+## To configure the cython + GSL environment:
+
+1. Clone the repository
+
+git clone http://github.com/paulohubert/bayeseg
+
+2. Install cython
+
+sudo apt-get install cython
+
+3. Install GSL:
+
+wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz
+mv gsl-latest.tar.gz ~/
+cd 
+tar -zxvf gsl-latest.tar.gz
+mkdir (YOUR_PATH)/gsl
+./configure --prefix=(YOUR_PATH)/gsl
+make
+make check
+make install
+
+4. Install CythonGSL
+
+pip install CythonGSL
+
+
+## To compile:
 
 cython SeqSeg.pyx
 

@@ -24,8 +24,10 @@ Copyright Paulo Hubert 2018
 Automatic signal segmentation
 """
 
-import sys
-sys.path.append('./Software/CythonGSL/CythonGSL-0.2.1/cython_gsl')
+import os
+
+#import sys
+#sys.path.append('./Software/CythonGSL/CythonGSL-0.2.1/cython_gsl')
 
 import time
 
@@ -336,14 +338,14 @@ cdef class SeqSeg:
         Please cite these papers if you use the algorithm
     '''
 
-    cdef long N, tstart, tend
+    cdef long N, tstart, tend, seed
     cdef int mciter, mcburn, nchains, minlen, tstep
     cdef double beta, alpha
     cdef np.ndarray wave, sumw2
     cdef bint data_fed, initialized
 
 
-    def __init__(self, np.ndarray wave = None):
+    def __init__(self, np.ndarray wave = None, replicate = False):
 
         self.wave = wave
         if wave is None:
@@ -357,7 +359,14 @@ cdef class SeqSeg:
 
         np.seterr(over = 'ignore', under = 'ignore')
 
+        # To replication purposes
+        if replicate == True:
+            self.seed = 1529365132
+            gsl_rng_set(r, self.seed)
+        else:
+            self.seed = None
 
+        
 
     def initialize(self, double beta = 2.9e-5, double alpha = 0.1, int mciter = 4000, int mcburn = 1000, int nchains = 1):
         ''' Initializes the segmenter
