@@ -364,7 +364,7 @@ cdef class SeqSeg:
             self.seed = 1529365132
             gsl_rng_set(r, self.seed)
         else:
-            self.seed = None
+            self.seed = time.time()*1000
 
         
 
