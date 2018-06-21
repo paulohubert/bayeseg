@@ -24,11 +24,7 @@ Copyright Paulo Hubert 2018
 Automatic signal segmentation
 """
 
-import os
-
-#import sys
-#sys.path.append('./Software/CythonGSL/CythonGSL-0.2.1/cython_gsl')
-
+from os import *
 import time
 
 import numpy as np
