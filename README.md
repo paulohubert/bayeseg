@@ -49,13 +49,13 @@ After that you can import SeqSeg in your python script. Make sure that SeqSeg.so
 1. Clone the repository
 
 ```
-git clone http://github.com/paulohubert/bayeseg
+$git clone http://github.com/paulohubert/bayeseg
 ```
 
 2. Install cython
 
 ```
-sudo apt-get install cython
+$sudo apt-get install cython
 ```
 
 3. Install GSL:
@@ -83,7 +83,7 @@ $make install
 4. Install CythonGSL
 
 ```
-pip install CythonGSL
+$pip install CythonGSL
 ```
 
 
@@ -92,9 +92,9 @@ pip install CythonGSL
 IMPORTANT: the first gcc command has a few -I options. These are supposed to point to the path for included files, from numpy and gsl. If you installed GSL correctly, this should be /usr/local/include.
 
 ```
-cython SeqSeg.pyx
+$cython SeqSeg.pyx
 
-gcc -m64 -pthread -fno-strict-aliasing -fopenmp -Wstrict-prototypes -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/usr/local/include -I/usr/include/python3.5m -c SeqSeg.c -o build/SeqSeg.o
+$gcc -m64 -pthread -fno-strict-aliasing -fopenmp -Wstrict-prototypes -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/usr/local/include -I/usr/include/python3.5m -c SeqSeg.c -o build/SeqSeg.o
 
-gcc -fopenmp -pthread -shared -L/usr/local/lib/ -L/usr/lib/python3.5 -o SeqSeg.so  build/SeqSeg.o -lpython2.7  -lgsl -lgslcblas -lm
+$gcc -fopenmp -pthread -shared -L/usr/local/lib/ -L/usr/lib/python3.5 -o SeqSeg.so  build/SeqSeg.o -lpython2.7  -lgsl -lgslcblas -lm
 ```
