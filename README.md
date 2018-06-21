@@ -36,7 +36,11 @@ libc6 >2.23
 
 ## To use the SeqSeg module
 
-Set your LD_LIBRARY_PATH environment variable to point to GSL libs. For instance:
+```
+python3 setup.py install
+```
+
+It might be necessary to set your LD_LIBRARY_PATH environment variable to point to GSL libs. For instance:
 
 ```
 $LD_LIBRARY_PATH=/home/<username>/gsl-2.5/cblas/.libs:/home/<username>/gsl-2.5/.libs
