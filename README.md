@@ -13,23 +13,23 @@ OceanPod - an interface class to allow easy reading and processing of files from
 
 SeqSeg - the interface for the segmentation algortihm
 
-In this repository we also included 3 signal files for testing, in the folder Data/. Please see main.py for details.
+In this repository we also included 3 signal files for testing, in the folder Data/. Please see main.py and the paper for details.
 
-There are also two jupyter notebooks on /notebooks with the code used to generate tests of the Fast Implementation paper.
+On folder notebooks/ we included one full replication script for the papers' results, and also two auxiliary notebooks that can be used as examples or tutorials.
 
-
+Finally, we included two Matlab scripts, written by ourselves, to recreate the spectrogram plots that appear in the paper. In order to use LB (Light and Bartlein) colormaps on MATLAB you'll need to download https://www.mathworks.com/matlabcentral/fileexchange/17555-light-bartlein-color-maps.
 
 
 ## System requirements:
 
-GNU Scientific Library (GSL) >2.4
+GNU Scientific Library (GSL) >2.4 (to compile SeqSeg.pyx; unnecessary if using precompiled version SeqSeg.so)
 python >3.5.2
 cython >0.27.3
-cythonGSL >0.2.1
+cythonGSL >0.2.1 (to compile)
 numpy >1.14.0
 
 
-## To configure the cython + GSL environment:
+## To compile the .pyx (assuming python and numpy already installed):
 
 1. Clone the repository
 
