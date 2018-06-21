@@ -6,7 +6,7 @@ Files = ['2015.01.30_02.02.56.wav'; '2015.02.02_07.50.49.wav'; '2015.02.08_11.26
 LB=flipud(lbmap(256,'BrownBlue'));
 
 
-%% Figures 7 and 8
+%% Figures 5, 6 and 7
     % Reads file
     arquivo = Files(1,:);
     [wave, fs] = audioread(strcat(FilePath, '/', arquivo));        
