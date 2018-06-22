@@ -24,7 +24,7 @@ Copyright Paulo Hubert 2018
 Automatic signal segmentation
 """
 
-from os import *
+import os 
 import time
 
 import numpy as np
