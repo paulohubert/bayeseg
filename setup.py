@@ -4,9 +4,10 @@ import numpy
 
 extensions = [
     Extension(
-    name="SeqSeg", # name/path of generated .so file
+    name="SeqSeg.SeqSeg", # name/path of generated .so file
     sources=["SeqSeg/SeqSeg.c"], # cython generated c file
-    include_dirs = [numpy.get_include()]), # gives access to numpy funcs inside cython code 
+    include_dirs = [numpy.get_include()], # gives access to numpy funcs inside cython code 
+    extra_compile_args = ['-Wno-deprecated']),
 ]
 
 setup(name='SeqSeg',
@@ -18,5 +19,6 @@ setup(name='SeqSeg',
       packages=['SeqSeg',
                 'OceanPod',
       ],
+      install_requires=['numpy>=1.14.0'],
       ext_modules = extensions,
 )

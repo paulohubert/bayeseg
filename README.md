@@ -22,17 +22,17 @@ Finally, we included two Matlab scripts, written by ourselves, to recreate the s
 
 ## System requirements:
 
-GNU Scientific Library (GSL) >2.4 
+GNU Scientific Library (GSL) >= 2.4 
 
-python >3.5.2
+python >= 3.5.2
 
-cython >0.27.3
+numpy >= 1.14.0
 
-cythonGSL >0.2.1
+To compile the .pyx you'll also need
 
-numpy >1.14.0
+cython >= 0.27.3
 
-libc6 >2.23
+cythonGSL >= 0.2.1
 
 ## To use the SeqSeg module
 
