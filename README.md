@@ -59,9 +59,9 @@ $cd ~/gsl-2.5
 
 $./configure
 
-$sudo make
+$make
 
-$sudo make check
+$make check
 
 $sudo make install
 ```
