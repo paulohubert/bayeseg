@@ -74,6 +74,18 @@ These commands will insert the include files for GSL in folder /usr/local/includ
 python3 setup.py install
 ```
 
+3. Start python and import the package
+
+```
+$python3
+>>> from SeqSeg.SeqSeg import SeqSeg
+```
+
+OBS: if you get an error related to libgsl, just update your LD_LIBRARY_PATH as follows:
+
+```
+$export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+```
 
 ## To compile the .pyx:
 
