@@ -24,7 +24,11 @@ Finally, we included two Matlab scripts, written by ourselves, to recreate the s
 
 GNU Scientific Library (GSL) >= 2.4 
 
+gcc >= 4.8.4
+
 python >= 3.5.2
+
+scipy >= 1.0.0
 
 numpy >= 1.14.0
 
@@ -36,33 +40,7 @@ cythonGSL >= 0.2.1
 
 ## To use the SeqSeg module
 
-```
-python3 setup.py install
-```
-
-It might be necessary to set your LD_LIBRARY_PATH environment variable to point to GSL libs. For instance:
-
-```
-$LD_LIBRARY_PATH=/home/<username>/gsl-2.5/cblas/.libs:/home/<username>/gsl-2.5/.libs
-```
-
-After that you can import SeqSeg in your python script. Make sure that SeqSeg.so is in your python path.
-
-## To compile the .pyx (assuming python and numpy already installed):
-
-1. Clone the repository
-
-```
-$git clone http://github.com/paulohubert/bayeseg
-```
-
-2. Install cython
-
-```
-$sudo apt-get install cython
-```
-
-3. Install GSL:
+1. Install GSL:
 
 ```
 $wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz
@@ -72,28 +50,49 @@ $mv gsl-latest.tar.gz ~/
 $cd 
 
 $tar -zxvf gsl-latest.tar.gz
-
-$mkdir (YOUR_PATH)/gsl
-
-$./configure --prefix=(YOUR_PATH)/gsl
-
-$make
-
-$make check
-
-$make install
 ```
 
-4. Install CythonGSL
+Enter the folder created by the last command (e.g. ~/gsl-2.5):
 
 ```
-$pip install CythonGSL
+$cd ~/gsl-2.5
+
+$./configure
+
+$sudo make
+
+$sudo make check
+
+$sudo make install
+```
+
+These commands will insert the include files for GSL in folder /usr/local/include. If using a different include path, C_INCLUDE_PATH environment variable should be modified accordingly.
+
+2. Run install script
+
+```
+python3 setup.py install
 ```
 
 
-## To compile:
+## To compile the .pyx:
 
-IMPORTANT: the first gcc command has a few -I options. These are supposed to point to the path for included files, from numpy and gsl. If you installed GSL correctly, this should be /usr/local/include.
+
+1. Install cython
+
+```
+$sudo apt-get install cython
+```
+
+2. Install CythonGSL
+
+```
+$pip3 install cythonGSL
+```
+
+3. Compile:
+
+OBS: Adjust the -I flags on gcc where necessary.
 
 ```
 $cython SeqSeg.pyx
