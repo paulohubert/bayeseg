@@ -13,14 +13,53 @@ OceanPod - an interface class to allow easy reading and processing of files from
 
 SeqSeg - the interface for the segmentation algortihm
 
-In this repository we also included 3 signal files for testing, in the folder Data/. Please see main.py and the paper for details.
+The repository content is the following:
 
-On folder notebooks/ we included one full replication script for the papers' results, and also two auxiliary notebooks that can be used as examples or tutorials.
+### Root folder
 
-Finally, we included two Matlab scripts, written by ourselves, to recreate the spectrogram plots that appear in the paper. In order to use LB (Light and Bartlein) colormaps on MATLAB you'll need to download https://www.mathworks.com/matlabcentral/fileexchange/17555-light-bartlein-color-maps.
+**setup.py**: the install script
+
+### SeqSeg folder
+
+**SeqSeg.pyx**: python code for the SeqSeg (segmentation) module
+
+**SeqSeg.c**: the output of running cython on *SeqSeg.pyx*; this is the file that will be compiled by the setup script.
+
+### OceanPod folder
+
+**OceanPod.py**: python code for the OceanPod (interface with audio files) module
+
+
+### Root (bayeseg) folder
+
+**spectrograms.m**: MATLAB script to plot spectrograms
+
+**spgram.m**: MATLAB function to calculate the spectrogram
+
+Note: in order to use LB (Light and Bartlein) colormaps on MATLAB you'll need to download https://www.mathworks.com/matlabcentral/fileexchange/17555-light-bartlein-color-maps.
+
+### notebooks Folder
+
+**Calibration_real_samples.ipynb**: IPython notebook with an example of calibrating the SeqSeg algorithm on the real OceanPod samples. Illustrates both the usage of OceanPod and SeqSeg modules.
+
+**FastImpl_calibration.ipynb**: IPython notebook illustrating the usage of the SeqSeg module with simulated data.
+
+**MCMC_convergence.ipynb**: IPython notebook that reproduces the MCMC part of the SeqSeg module. To test the chain's convergence.
+
+**Replication script.ipynb**: IPython notebook that allows exact replication of all the paper's results.
+
+
+### Data folder
+
+The .wav files obtained from the OceanPod (a hydrophone built at University of São Paulo - Brasil) with recordings from a depth of 20m. Each file corresponds to 15 minutes of audio, sampled at 11,025 Hz.
+
+The .csv files obtained as the result of our segmentation algorithm for two of the samples. These files are input to the MATLAB script *spectrograms.m*. See paper for details.
+
 
 
 ## System requirements:
+
+The SeqSeg.c file shipped with the package was created by cython, on Python 3.5 running on an Ubuntu 16.04 LTS operational system. The system requirements are as follows:
 
 GNU Scientific Library (GSL) >= 2.4 
 
@@ -38,6 +77,7 @@ cython >= 0.27.3
 
 cythonGSL >= 0.2.1
 
+
 ## To use the SeqSeg module
 
 1. Install GSL:
@@ -52,7 +92,7 @@ $cd
 $tar -zxvf gsl-latest.tar.gz
 ```
 
-Enter the folder created by the last command (e.g. ~/gsl-2.5):
+Access the folder created by the last command (e.g. ~/gsl-2.5):
 
 ```
 $cd ~/gsl-2.5
@@ -66,7 +106,7 @@ $make check
 $sudo make install
 ```
 
-These commands will insert the include files for GSL in folder /usr/local/include. If using a different include path, C_INCLUDE_PATH environment variable should be modified accordingly.
+These commands will copy the GSL .h files to folder /usr/local/include, which is the standard include path. If using a different path, C_INCLUDE_PATH environment variable should be modified accordingly.
 
 2. Run install script
 
@@ -79,12 +119,6 @@ python3 setup.py install
 ```
 $python3
 >>> from SeqSeg.SeqSeg import SeqSeg
-```
-
-OBS: if you get an error related to libgsl, just update your LD_LIBRARY_PATH as follows:
-
-```
-$export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 ```
 
 ## To compile the .pyx:
@@ -104,7 +138,7 @@ $pip3 install cythonGSL
 
 3. Compile:
 
-OBS: Adjust the -I flags on gcc where necessary.
+Note: Adjust the -I flags on gcc if necessary.
 
 ```
 $cython SeqSeg.pyx
@@ -113,3 +147,15 @@ $gcc -m64 -pthread -fno-strict-aliasing -fopenmp -Wstrict-prototypes -DNDEBUG -g
 
 $gcc -fopenmp -pthread -shared -L/usr/local/lib/ -L/usr/lib/python3.5 -o SeqSeg.so  build/SeqSeg.o -lpython2.7  -lgsl -lgslcblas -lm
 ```
+
+## Troubleshooting
+
+When importing SeqSeg module, if you get an error related to libgsl not being found, try updating your LD_LIBRARY_PATH as follows:
+
+```
+$export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+```
+
+When compiling the .pyx, errors about usage of python objects inside nogil sections, if being raised by calls to gsl functions, indicate that cython cannot find the GSL include files. Check the path and adjust gcc -I accordingly.
+
+

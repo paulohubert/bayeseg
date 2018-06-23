@@ -225,11 +225,13 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
 
     if svar < 0:
         with gil:
+            # This shouldn't happen, but if it does we reset the variance to a valid value
             print("Posterior variance of signal power with negative value!")
         svar = svarmin
         
     if dvar < 0:
         with gil:
+            # This shouldn't happen, but if it does we reset the variance to a valid value
             print("Posterior variance of delta with negative value!")
         dvar = dvarmin
         
@@ -247,6 +249,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
         u2 = gsl_ran_ugaussian(r)
         if Abs(rho) > 1:
             with gil:
+                # This also shouldn't happen. If it does, we set the correlation to 0
                 print("Adaptive covariance defective!")
             rho = 0
         u2 = rho*u1 + (1-rho)*u2
@@ -361,6 +364,7 @@ cdef class SeqSeg:
             gsl_rng_set(r, self.seed)
         else:
             self.seed = time.time()*1000
+            gsl_rng_set(r, self.seed)
 
         
 
@@ -372,6 +376,7 @@ cdef class SeqSeg:
 
         if self.wave is not None:
             
+            # Stores the cumulative sum to speed up calculations
             self.sumw2 = np.cumsum(self.wave**2)
             self.sumw2 = np.insert(self.sumw2, 0, 0)
             self.N = len(self.wave)
@@ -402,6 +407,7 @@ cdef class SeqSeg:
         ''' Stores the signal and updates internal variables
         '''
         
+        # Store the wave and precalculates the cumulative sums
         self.wave = wave
         self.N = len(wave)
         self.sumw2 = np.cumsum(self.wave**2)
@@ -467,12 +473,10 @@ cdef class SeqSeg:
         self.N = len(self.wave)
 
         if end > self.N:
-            print("Invalid value for tend.")
-            return([], -1)
-				
+            raise ValueError("Invalid value for tend.")
+
         if start < 0:
-            print("Invalid value for start.")
-            return([], -1)
+            raise ValueError("Invalid value for start.")
 
         tstep = res
         
