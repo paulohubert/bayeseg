@@ -13,9 +13,16 @@ extensions = [
 
 setup(name='SeqSeg',
       version='1.0',
-      description='...',
+      description='Package for binary / sequential signal segmentation using Bayesian methods',
       author='Paulo Hubert',
       author_email='paulo.hubert@gmail.com',
+      url='http?//github.com/paulohubert/bayeseg/', 
+      keywords = 'changepoint signal segmentation bayesian',
+      classifiers = [
+          'Development Status :: 4 - Beta',
+          'License :: GNU',
+          'Programming Language :: Python :: 3.5'
+      ],
       include_package_data=True,
       packages=['SeqSeg',
                 'OceanPod',

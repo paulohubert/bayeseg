@@ -1,0 +1,5 @@
+*.ipynb-checkpoint
+dist/
+__pycache__
+build/
+*.pyc

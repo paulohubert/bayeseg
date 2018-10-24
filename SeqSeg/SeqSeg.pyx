@@ -24,7 +24,7 @@ Copyright Paulo Hubert 2018
 Automatic signal segmentation
 """
 
-import os 
+import os
 import time
 
 import numpy as np
@@ -112,7 +112,7 @@ cdef double cposterior_full(double d, double s, long Nw, long N2, double beta, d
         sum1 - sum of amplitudes squared for first segment
         sum2 - sum of amplitudes squared for second segment
     '''
-    
+
     if d <= 0 or s <= 0:
         return -1e+308
     # Jeffreys' prior for sigma
@@ -154,24 +154,24 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
     dvar = (dcur / 3) ** 2
     svar = (scur / 3) ** 2
     cov = 0.0
-    
-    # To safeguard variances    
+
+    # To safeguard variances
     dvarmin = dvar
-    svarmin = svar    
-    
-    
+    svarmin = svar
+
+
     # Generating starting values for the chain
     dcur = Abs(dcur + gsl_ran_gaussian(r, Sqrt(dvar)))
     scur = Abs(scur + gsl_ran_gaussian(r, Sqrt(svar)))
     pcur = cposterior_full(dcur, scur, N, N2, beta, sum1, sum2)
-    
+
     # Parameters for adaptive MH
     sd = (2.4*2.4)/2.0
     eps = 1e-30
 
     # Starting point for adaptive MH
     t0 = 1000
-    
+
     dmean = 0.0
     smean = 0.0
     sumdsq = 0.0
@@ -179,11 +179,11 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
     cov0 = 0.0
     accept = 0
     for i in range(t0):
-        
+
         # Generate candidates
         u1 = gsl_ran_ugaussian(r)
         dcand = dcur + u1*Sqrt(dvar)
-        
+
         # Calculates full posterior
         pcand = cposterior_full(dcand, scur, N, N2, beta, sum1, sum2)
 
@@ -195,7 +195,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
             pcur = pcand
             accept = accept + 1
         #endif
-        
+
         u2 = gsl_ran_ugaussian(r)
         scand = scur + Sqrt(svar)*u2
 
@@ -210,15 +210,15 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
             pcur = pcand
             accept = accept + 1
         #endif
-            
+
         dmean = dmean + dcur
         smean = smean + scur
         cov0 = cov0 + dcur*scur
         sumdsq = sumdsq + dcur*dcur
         sumssq = sumssq + scur*scur
-        
+
     #endfor
-       
+
     dvar = (sumdsq - (dmean*dmean)/t0)/(t0-1)
     svar = (sumssq - (smean*smean)/t0)/(t0-1)
 
@@ -228,19 +228,19 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
             # This shouldn't happen, but if it does we reset the variance to a valid value
             print("Posterior variance of signal power with negative value!")
         svar = svarmin
-        
+
     if dvar < 0:
         with gil:
             # This shouldn't happen, but if it does we reset the variance to a valid value
             print("Posterior variance of delta with negative value!")
         dvar = dvarmin
-        
+
     cov = (1/(t0-1))*(cov0 - dmean*smean/t0)
     rho = cov/Sqrt(dvar*svar)
     dmean = dmean / t0
-    smean = smean / t0    
+    smean = smean / t0
     t = t0
-    
+
     accept = 0
     for i in range(mcburn):
 
@@ -253,26 +253,26 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
                 print("Adaptive covariance defective!")
             rho = 0
         u2 = rho*u1 + (1-rho)*u2
-        
-        
+
+
         dcand = dcur + u1*Sqrt(dvar)
         scand = scur + u2*Sqrt(svar)
 
-        if dcand > 0 and scand > 0:        
+        if dcand > 0 and scand > 0:
             # Calculates full posterior
             pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2)
-    
+
             # Acceptance ratio
             a = pcand - pcur
-    
+
             if Ln(gsl_rng_uniform(r)) < a:
                 scur = scand
                 dcur = dcand
                 pcur = pcand
                 accept = accept + 1
             #endif
-        #endif     
-                
+        #endif
+
         # Updating covariance matrix
         dmeanant = dmean
         smeanant = smean
@@ -283,7 +283,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
         svar =  (((t-1)*svar)/t) + (sd/t)*(t*smeanant*smeanant - (t+1)*smean*smean + scur*scur + eps)
         cov = (((t-1)*cov)/t) + (sd/t)*(t*dmeanant*smeanant - (t+1)*dmean*smean + dcur*scur)
         rho = cov/Sqrt(dvar*svar)
-        t = t + 1            
+        t = t + 1
     #endfor
 
     ev = 0.0
@@ -295,17 +295,17 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
         u1 = gsl_ran_ugaussian(r)
         u2 = gsl_ran_ugaussian(r)
         u2 = rho*u1 + (1-rho)*u2
-        
+
         dcand = dcur + u1*Sqrt(dvar)
         scand = scur + u2*Sqrt(svar)
 
         if dcand > 0 and scand > 0:
             # Calculates full posterior
             pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2)
-            
+
             # Acceptance ratio
             a = pcand - pcur
-    
+
             if Ln(gsl_rng_uniform(r)) < a:
                 dcur = dcand
                 scur = scand
@@ -316,10 +316,10 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
 
         if pcur > p0:
             ev = ev + 1.0
-        #endif            
+        #endif
     #endfor
 
-    
+
     ev = ev / mciter
 
     return ev
@@ -330,11 +330,13 @@ cdef class SeqSeg:
     ''' class SeqSeg: implements the python interface for the sequential segmentation algorithm
 
         Hubert, P., Padovese, L., Stern, J. A sequential algorithm for signal segmentation, Entropy 20 (1) 55 (2018)
-        
-        Hubert, P., Padovese, L., Stern, J. Fast parallel implementation and calibration method for
-                an unsupervised Bayesian segmentation algorithm, submitted for publication
-        
-        Please cite these papers if you use the algorithm
+
+        Hubert, P., Padovese, L., Stern, J. Fast implementation of a Bayesian unsupervised segmentation algorithm, arXiv:1803.01801
+
+        Please cite these papers if you use the algorithm.
+
+	If you have any trouble or doubts using this code, or just want to discuss, feel free to send an e-mail to
+	paulo.hubert@gmail.com
     '''
 
     cdef long N, tstart, tend, seed
@@ -351,7 +353,7 @@ cdef class SeqSeg:
             self.data_fed = False
         else:
             self.data_fed = True
-        
+
         self.initialized = False
 
         self.initialize()
@@ -366,7 +368,7 @@ cdef class SeqSeg:
             self.seed = time.time()*1000
             gsl_rng_set(r, self.seed)
 
-        
+
 
     def initialize(self, double beta = 2.9e-5, double alpha = 0.1, int mciter = 4000, int mcburn = 1000, int nchains = 1):
         ''' Initializes the segmenter
@@ -375,18 +377,18 @@ cdef class SeqSeg:
         '''
 
         if self.wave is not None:
-            
+
             # Stores the cumulative sum to speed up calculations
             self.sumw2 = np.cumsum(self.wave**2)
             self.sumw2 = np.insert(self.sumw2, 0, 0)
             self.N = len(self.wave)
-            
+
             # Current segment start and end
             self.tstart = 0
             self.tend = self.N-1
-            
+
         else:
-            
+
             self.tstart = 0
             self.tend = 0
             self.sumw2 = None
@@ -406,13 +408,13 @@ cdef class SeqSeg:
     def feed_data(self, wave):
         ''' Stores the signal and updates internal variables
         '''
-        
+
         # Store the wave and precalculates the cumulative sums
         self.wave = wave
         self.N = len(wave)
         self.sumw2 = np.cumsum(self.wave**2)
         self.sumw2 = np.insert(self.sumw2, 0, 0)
-        
+
         # Current segment start and end
         self.tstart = 0
         self.tend = self.N-1
@@ -432,7 +434,7 @@ cdef class SeqSeg:
         # Calculating sum of squares of amplitudes for both segments
         sum1 = self.sumw2[tcut] - self.sumw2[self.tstart]
         sum2 = self.sumw2[self.tend] - self.sumw2[tcut]
-        
+
         if normalize:
             sum2 = sum2 / sum1
             sum1 = 1.0
@@ -452,16 +454,16 @@ cdef class SeqSeg:
             for i in prange(self.nchains, schedule = 'static'):
                 vev[i] = cmcmc(nburn, npoints, p0, beta, N, N2, sum1, sum2)
 
-        # Evidence IN FAVOR OF null hypothesis (delta = 1)        
+        # Evidence IN FAVOR OF null hypothesis (delta = 1)
         ev = 1 - sum(vev) / self.nchains
 
         return ev
 
     def get_posterior(self, start, end, res = 1):
         ''' Returns the posterior values for the changepoint.
-        
+
             @args:
-            
+
                 start: first point to calculate the posterior
                 end: last point to calculate the posterior
         '''
@@ -470,7 +472,7 @@ cdef class SeqSeg:
         if not self.data_fed:
 
             print("Data not initialized! Call feed_data.")
-            return(-1)   
+            return(-1)
 
         cdef long t, n, istart, iend, tstep, tstart, tend
         cdef double sstart, send, st, st1
@@ -486,7 +488,7 @@ cdef class SeqSeg:
             raise ValueError("Invalid value for start.")
 
         tstep = res
-        
+
         # Sets start and end
         tstart = start
         tend = end
@@ -503,9 +505,9 @@ cdef class SeqSeg:
         send = self.sumw2[self.tend]
 
         tvec = np.repeat(-np.inf, n + 1)
-        
-        
-        begin = time.time()        
+
+
+        begin = time.time()
         with nogil, parallel():
             for t in prange(n + 1, schedule = 'static'):
                 st = esumw2[istart + t*tstep]
@@ -515,7 +517,7 @@ cdef class SeqSeg:
 
         end = time.time()
         elapsed = end - begin
-        
+
         return tvec, elapsed
 
 
@@ -530,13 +532,13 @@ cdef class SeqSeg:
         if not self.data_fed:
 
             print("Data not initialized! Call feed_data.")
-            return(-1)        
-        
+            return(-1)
+
         begin = time.time()
 
         # Cannot have a minimum segment of less than 5 points for the algorithm to make sense
         minlen = max(5, minlen)
-        
+
         cdef long t, tmax, tstart, tend, n, istart, iend, tstep
         cdef double maxp, posterior, sstart, send, st, st1
         cdef np.ndarray[DTYPE_t, ndim = 1] tvec = np.repeat(-np.inf, self.N)
@@ -553,7 +555,7 @@ cdef class SeqSeg:
         tseg = []
         # Creates index to keep track of tested segments
         # True, if the segment must be tested, False otherwise
-        iseg = {str(self.tstart) + "-" + str(self.tend) : True}
+        iseg = {(self.tstart, self.tend) : True}
 
         # Main loop: while there are untested segments
         while sum(iseg.values()) > 0:
@@ -561,9 +563,8 @@ cdef class SeqSeg:
             isegold = [i for i in iseg if iseg[i] == True]
             for seg in isegold:
                 # Sets start and end
-                times = re.match('(\d+)-(\d+)', seg)
-                self.tstart = int(times.group(1))
-                self.tend = int(times.group(2))
+                self.tstart = seg[0]
+                self.tend = seg[1]
                 self.N = self.tend - self.tstart + 1
 
                 # Obtains MAP estimate of the cut point
@@ -600,18 +601,18 @@ cdef class SeqSeg:
                         if verbose:
                             print("Tcut = " + str(tmax) + ", start = " + str(self.tstart) + ", tend = " + str(self.tend) + ", N = " + str(self.N) + ", accepted: evidence = " + str(evidence))
                         #endif
-                            
+
                         # Different variances
                         # Update list of segments
                         tseg.append(tmax)
 
                         # Update dict
-                        iseg[str(tstart) + "-" + str(tmax)] = True
-                        iseg[str(tmax + 1) + "-" + str(self.tend)] = True
+                        iseg[(tstart, tmax)] = True
+                        iseg[(tmax + 1, self.tend)] = True
                         del iseg[seg]
 
                     else:
-                        
+
                         iseg[seg] = False
                         if verbose:
                             print("Tcut = " + str(tmax) + ", start = " + str(self.tstart) + ", tend = " + str(self.tend) + ", N = " + str(self.N) + ", rejected: evidence = " + str(evidence))
@@ -629,5 +630,5 @@ cdef class SeqSeg:
         if verbose:
             print("End of execution: " + str(len(tseg) + 1) + " segments found in " + str(elapsed) + " seconds.")
         #endif
-            
+
         return tseg, elapsed

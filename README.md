@@ -7,7 +7,7 @@ Hubert, P., Padovese, L., Stern, J.M. A Sequential Algorithm for Signal Segmenta
 
 Hubert, P., Padovese, L., Stern, J.M. Fast Implementation of a Bayesian unsupervised segmentation algorithm, arXiv:1803.01801
 
-The module is composed of two classes: 
+The module is composed of two classes:
 
 OceanPod - an interface class to allow easy reading and processing of files from the OceanPod hydrophone
 
@@ -61,7 +61,7 @@ The .csv files obtained as the result of our segmentation algorithm for two of t
 
 The SeqSeg.c file shipped with the package was created by cython, on Python 3.5 running on an Ubuntu 16.04 LTS operational system. The system requirements are as follows:
 
-GNU Scientific Library (GSL) >= 2.4 
+GNU Scientific Library (GSL) >= 2.4
 
 gcc >= 4.8.4
 
@@ -87,7 +87,7 @@ $wget ftp://ftp.gnu.org/gnu/gsl/gsl-latest.tar.gz
 
 $mv gsl-latest.tar.gz ~/
 
-$cd 
+$cd
 
 $tar -zxvf gsl-latest.tar.gz
 ```
@@ -130,10 +130,16 @@ $python3
 $sudo apt-get install cython
 ```
 
+or
+
+```
+$pip install Cython
+```
+
 2. Install CythonGSL
 
 ```
-$pip3 install cythonGSL
+$pip install cythonGSL
 ```
 
 3. Compile:
@@ -141,11 +147,11 @@ $pip3 install cythonGSL
 Note: Adjust the -I flags on gcc if necessary.
 
 ```
-$cython SeqSeg.pyx
+$cython Seqseg/SeqSeg.pyx
 
-$gcc -m64 -pthread -fno-strict-aliasing -fopenmp -Wstrict-prototypes -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/usr/local/include -I/usr/include/python3.5m -c SeqSeg.c -o build/SeqSeg.o
+$gcc -m64 -pthread -fno-strict-aliasing -fopenmp -Wstrict-prototypes -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/usr/local/include -I/usr/include/python3.5m -c SeqSeg.c -o SeqSeg.o
 
-$gcc -fopenmp -pthread -shared -L/usr/local/lib/ -L/usr/lib/python3.5 -o SeqSeg.so  build/SeqSeg.o -lpython2.7  -lgsl -lgslcblas -lm
+$gcc -fopenmp -pthread -shared -L/usr/local/lib/ -L/usr/lib/python3.5 -o SeqSeg.so    SeqSeg.o -lpython2.7  -lgsl -lgslcblas -lm
 ```
 
 ## Troubleshooting
@@ -158,4 +164,4 @@ $export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 When compiling the .pyx, errors about usage of python objects inside nogil sections, if being raised by calls to gsl functions, indicate that cython cannot find the GSL include files. Check the path and adjust gcc -I accordingly.
 
-
+If you get an error relating to Pyhton.h not being found, install python3-dev (for ubuntu and debian) or python34-devel (for CentOS, RHEL) or python3-devel (for Fedora). If you still have issues with Python.h, please check [this link][https://stackoverflow.com/questions/21530577/fatal-error-python-h-no-such-file-or-directory]
