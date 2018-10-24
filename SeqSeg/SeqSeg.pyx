@@ -458,6 +458,13 @@ cdef class SeqSeg:
         return ev
 
     def get_posterior(self, start, end, res = 1):
+        ''' Returns the posterior values for the changepoint.
+        
+            @args:
+            
+                start: first point to calculate the posterior
+                end: last point to calculate the posterior
+        '''
 
 
         if not self.data_fed:
@@ -496,6 +503,16 @@ cdef class SeqSeg:
         send = self.sumw2[self.tend]
 
         tvec = np.repeat(-np.inf, n + 1)
+        
+                tvec = np.repeat(-np.inf, n + 1)
+                with nogil, parallel():
+                    for t in prange(n + 1, schedule = 'static'):
+                        st = esumw2[istart + t*tstep]
+                        st1 = esumw2[istart + t*tstep + 1]
+                        tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, 0, send, sstart, st, st1)        
+        
+        
+        begin = time.time()        
         with nogil, parallel():
             for t in prange(n + 1, schedule = 'static'):
                 st = esumw2[istart + t*tstep]
