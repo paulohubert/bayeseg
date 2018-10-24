@@ -504,13 +504,6 @@ cdef class SeqSeg:
 
         tvec = np.repeat(-np.inf, n + 1)
         
-                tvec = np.repeat(-np.inf, n + 1)
-                with nogil, parallel():
-                    for t in prange(n + 1, schedule = 'static'):
-                        st = esumw2[istart + t*tstep]
-                        st1 = esumw2[istart + t*tstep + 1]
-                        tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, 0, send, sstart, st, st1)        
-        
         
         begin = time.time()        
         with nogil, parallel():
