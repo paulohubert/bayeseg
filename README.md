@@ -164,4 +164,4 @@ $export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 When compiling the .pyx, errors about usage of python objects inside nogil sections, if being raised by calls to gsl functions, indicate that cython cannot find the GSL include files. Check the path and adjust gcc -I accordingly.
 
-If you get an error relating to Pyhton.h not being found, install python3-dev (for ubuntu and debian) or python34-devel (for CentOS, RHEL) or python3-devel (for Fedora). If you still have issues with Python.h, please check [this link][https://stackoverflow.com/questions/21530577/fatal-error-python-h-no-such-file-or-directory]
+If you get an error relating to Pyhton.h not being found, install python3-dev (for ubuntu and debian) or python34-devel (for CentOS, RHEL) or python3-devel (for Fedora). If you still have issues with Python.h, please check [this link](https://stackoverflow.com/questions/21530577/fatal-error-python-h-no-such-file-or-directory)
