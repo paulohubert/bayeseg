@@ -1,4 +1,4 @@
-*.ipynb-checkpoint
+*checkpoint.ipynb
 dist/
 __pycache__
 build/
