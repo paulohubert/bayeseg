@@ -466,6 +466,11 @@ cdef class SeqSeg:
 
                 start: first point to calculate the posterior
                 end: last point to calculate the posterior
+
+				@returns:
+
+					tvec - vector with posterior density values
+					elapsed - time elapsed
         '''
 
 
