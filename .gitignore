@@ -3,3 +3,6 @@ dist/
 __pycache__
 build/
 *.pyc
+*SeqSeg.egg-info/PKG-INFO*
+*egg*
+wheelhouse/*
