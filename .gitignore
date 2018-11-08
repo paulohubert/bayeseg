@@ -7,3 +7,6 @@ build/
 *.o
 *.c
 Experiments.ipynb
+*SeqSeg.egg-info/PKG-INFO*
+*egg*
+wheelhouse/*

@@ -16,11 +16,11 @@ setup(name='SeqSeg',
       description='Package for binary / sequential signal segmentation using Bayesian methods',
       author='Paulo Hubert',
       author_email='paulo.hubert@gmail.com',
-      url='http?//github.com/paulohubert/bayeseg/', 
+      url='http://github.com/paulohubert/bayeseg/', 
       keywords = 'changepoint signal segmentation bayesian',
       classifiers = [
           'Development Status :: 4 - Beta',
-          'License :: GNU',
+          'License :: OSI Approved :: GNU General Public License (GPL)',
           'Programming Language :: Python :: 3.5'
       ],
       include_package_data=True,
