@@ -3,3 +3,6 @@ dist/
 __pycache__
 build/
 *.pyc
+*.so
+*.o
+*.c
