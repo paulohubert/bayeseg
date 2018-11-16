@@ -98,8 +98,7 @@ cdef double cposterior_t(long t, long tstart, long tend, double prior_v, double 
 
     return post
 
-
-cdef double cposterior_full(double d, double s, long Nw, long N2, double beta, double sum1, double sum2) nogil:
+cdef double cposterior_full(double d, double s, long Nw, long N2, double beta, double sum1, double sum2, long iprior) nogil:
     ''' Full log-posterior kernel for MCMC sampling
 
         Arguments:
@@ -111,15 +110,26 @@ cdef double cposterior_full(double d, double s, long Nw, long N2, double beta, d
         beta - parameter for laplace prior
         sum1 - sum of amplitudes squared for first segment
         sum2 - sum of amplitudes squared for second segment
+        iprior - prior to use; 0 = laplace, 1 = gaussian, 2 = uniform
     '''
 
     if d <= 0 or s <= 0:
         return -1e+308
+    
     # Jeffreys' prior for sigma
     cdef double dpriors = -Ln(s)
 
-    # Laplace prior for delta
-    cdef double dpriord = -Ln(beta) - Abs(d-1)/beta
+    cdef double dpriord
+    
+    if iprior == 0:
+        # Laplace prior for delta        
+        dpriord = -Ln(beta) - Abs(d-1)/beta
+    elif iprior == 1:
+        # Gaussian prior for delta
+        dpriord = -0.5*Ln(beta)-(d-1.)*(d-1.)/(2.*beta)
+    else:
+        # Uniform prior
+        dpriord = 0.
 
     cdef double post = dpriord +  dpriors - Nw*Ln(s)-0.5*N2*Ln(d)
     post = post - sum1/(2*(s**2)) - sum2/(2*d*(s**2))
@@ -127,7 +137,7 @@ cdef double cposterior_full(double d, double s, long Nw, long N2, double beta, d
     return post
 
 
-cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N2, double sum1, double sum2) nogil:
+cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N2, double sum1, double sum2, long iprior) nogil:
     ''' Run MCMC
 
         Arguments:
@@ -146,7 +156,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
     cdef int i, t0, t
     cdef double dvar, svar, cov, sd, eps, u1, u2, dmean, dmeanant, smean, smeanant, cov0, sumdsq, sumssq
     cdef double accept, dvarmin, svarmin
-
+    
     dcur = (sum2 / (N2-1))/(sum1 / (N-N2-1))
     scur = Sqrt(sum1 / (N-N2-1))
 
@@ -163,7 +173,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
     # Generating starting values for the chain
     dcur = Abs(dcur + gsl_ran_gaussian(r, Sqrt(dvar)))
     scur = Abs(scur + gsl_ran_gaussian(r, Sqrt(svar)))
-    pcur = cposterior_full(dcur, scur, N, N2, beta, sum1, sum2)
+    pcur = cposterior_full(dcur, scur, N, N2, beta, sum1, sum2, iprior)
 
     # Parameters for adaptive MH
     sd = (2.4*2.4)/2.0
@@ -185,7 +195,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
         dcand = dcur + u1*Sqrt(dvar)
 
         # Calculates full posterior
-        pcand = cposterior_full(dcand, scur, N, N2, beta, sum1, sum2)
+        pcand = cposterior_full(dcand, scur, N, N2, beta, sum1, sum2, iprior)
 
         # Acceptance ratio
         a = pcand - pcur
@@ -200,7 +210,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
         scand = scur + Sqrt(svar)*u2
 
         # Calculates full posterior
-        pcand = cposterior_full(dcur, scand, N, N2, beta, sum1, sum2)
+        pcand = cposterior_full(dcur, scand, N, N2, beta, sum1, sum2, iprior)
 
         # Acceptance ratio
         a = pcand - pcur
@@ -260,7 +270,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
 
         if dcand > 0 and scand > 0:
             # Calculates full posterior
-            pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2)
+            pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2, iprior)
 
             # Acceptance ratio
             a = pcand - pcur
@@ -301,7 +311,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
 
         if dcand > 0 and scand > 0:
             # Calculates full posterior
-            pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2)
+            pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2, iprior)
 
             # Acceptance ratio
             a = pcand - pcur
@@ -422,7 +432,7 @@ cdef class SeqSeg:
         self.data_fed = True
 
 
-    cpdef double tester(self, long tcut, bint normalize = False):
+    cpdef double tester(self, long tcut, long iprior, bint normalize = False):
         ''' Tests if tcut is a significant cutpoint
             Can be called separately to test the current segment.
         '''
@@ -447,12 +457,12 @@ cdef class SeqSeg:
 
         # Calculates maximum posterior under H0
         s0 = Sqrt((sum1 + sum2)/(N + 1.))
-        p0 = cposterior_full(1.0, s0, N, N2, beta, sum1, sum2)
+        p0 = cposterior_full(1.0, s0, N, N2, beta, sum1, sum2, iprior)
 
         # Run chains
         with nogil, parallel():
             for i in prange(self.nchains, schedule = 'static'):
-                vev[i] = cmcmc(nburn, npoints, p0, beta, N, N2, sum1, sum2)
+                vev[i] = cmcmc(nburn, npoints, p0, beta, N, N2, sum1, sum2, iprior)
 
         # Evidence IN FAVOR OF null hypothesis (delta = 1)
         ev = 1 - sum(vev) / self.nchains
@@ -529,7 +539,7 @@ cdef class SeqSeg:
 
 
 
-    def segments(self, minlen = 1, res = 1, normalize = False, verbose = False):
+    def segments(self, minlen, res, iprior, normalize = False, verbose = False):
         ''' Applies the sequential segmentation algorithm to the wave,
             returns the vector with segments' index
         '''
@@ -556,6 +566,14 @@ cdef class SeqSeg:
         self.N = len(self.wave)
 
         tstep = res
+        
+        if verbose:
+            if iprior == 0:
+                print('Using Laplace prior.')
+            elif iprior == 1:
+                print('Using Gaussian prior.')
+            else:
+                print('Using uniform prior.')
 
         tseg = []
         # Creates index to keep track of tested segments
@@ -599,8 +617,9 @@ cdef class SeqSeg:
                 tmax = istart + tmax*tstep
 
                 if tmax - tstart > minlen and tend - tmax > minlen:
+                    
                     # Test the segments
-                    evidence = self.tester(tmax, normalize)
+                    evidence = self.tester(tmax, iprior, normalize)
 
                     if evidence < self.alpha:
                         if verbose:
