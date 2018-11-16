@@ -32,6 +32,8 @@ cimport numpy as np
 import operator
 import re
 
+import scipy.stats as stats
+
 cimport cython
 from cython_gsl cimport *
 from cython_gsl import *
@@ -539,7 +541,7 @@ cdef class SeqSeg:
 
 
 
-    def segments(self, minlen, res, iprior, normalize = False, verbose = False):
+    def segments(self, minlen, res, iprior, regularize = False, normalize = False, verbose = False):
         ''' Applies the sequential segmentation algorithm to the wave,
             returns the vector with segments' index
         '''
@@ -620,6 +622,10 @@ cdef class SeqSeg:
                     
                     # Test the segments
                     evidence = self.tester(tmax, iprior, normalize)
+                    
+                    # Regularizing
+                    if regularize == True:
+                        evidence = 1-stats.chi2.cdf(stats.chi2.pdf(1-evidence, df = 2), 1)
 
                     if evidence < self.alpha:
                         if verbose:
