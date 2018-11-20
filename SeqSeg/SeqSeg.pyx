@@ -74,6 +74,16 @@ cdef gsl_rng *r = gsl_rng_alloc(gsl_rng_mt19937)
 
 
 # Cython pure C functions
+cdef double cprior_t(long t, long tstart, long tend, long minlen = 11025) nogil:
+    ''' Prior distribution for the change point.
+    '''
+    
+    # Uniform prior over [tstart + minlen, tend - minlen]
+    if t > tstart + minlen and t < tend - minlen:
+        return 0.
+    else:
+        return -1e-32
+
 cdef double cposterior_t(long t, long tstart, long tend, double prior_v, double send, double sstart, double st, double st1) nogil:
     ''' Calculates the log-posterior distribution for t
 
@@ -529,7 +539,7 @@ cdef class SeqSeg:
             for t in prange(n + 1, schedule = 'static'):
                 st = esumw2[istart + t*tstep]
                 st1 = esumw2[istart + t*tstep + 1]
-                tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, 0, send, sstart, st, st1)
+                tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend), send, sstart, st, st1)
 
 
         end = time.time()
@@ -610,7 +620,7 @@ cdef class SeqSeg:
                     for t in prange(n + 1, schedule = 'static'):
                         st = esumw2[istart + t*tstep]
                         st1 = esumw2[istart + t*tstep + 1]
-                        tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, 0, send, sstart, st, st1)
+                        tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend), send, sstart, st, st1)
 
                 tmax, maxp = max(enumerate(tvec), key=operator.itemgetter(1))
 

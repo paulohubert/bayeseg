@@ -10,3 +10,6 @@ Experiments.ipynb
 *SeqSeg.egg-info/PKG-INFO*
 *egg*
 wheelhouse/*
+SeqSeg/*.o
+SeqSeg/*.c
+SeqSeg/*.so
