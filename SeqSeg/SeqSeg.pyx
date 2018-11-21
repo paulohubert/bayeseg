@@ -87,7 +87,7 @@ cdef double cprior_t(long t, long tstart, long tend, long minlen = 11025) nogil:
 cdef double cposterior_t(long t, long tstart, long tend, double prior_v, double send, double sstart, double st, double st1) nogil:
     ''' Calculates the log-posterior distribution for t
 
-        Args:
+        @args:
 
         t - segmentation point
         tstart - start index of current signal window
@@ -113,7 +113,7 @@ cdef double cposterior_t(long t, long tstart, long tend, double prior_v, double 
 cdef double cposterior_full(double d, double s, long Nw, long N2, double beta, double sum1, double sum2, long iprior) nogil:
     ''' Full log-posterior kernel for MCMC sampling
 
-        Arguments:
+        @args:
 
         d - current value for delta
         s - current value for sigma
@@ -152,7 +152,7 @@ cdef double cposterior_full(double d, double s, long Nw, long N2, double beta, d
 cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N2, double sum1, double sum2, long iprior) nogil:
     ''' Run MCMC
 
-        Arguments:
+        @args:
 
         mcburn - burn-in period for chain
         mciter - number of points to sample
@@ -532,6 +532,7 @@ cdef class SeqSeg:
         send = self.sumw2[self.tend]
 
         tvec = np.repeat(-np.inf, n + 1)
+        beta = self.beta
 
 
         begin = time.time()
@@ -619,6 +620,7 @@ cdef class SeqSeg:
                 with nogil, parallel():
                     for t in prange(n + 1, schedule = 'static'):
                         st = esumw2[istart + t*tstep]
+                        #st1 = esumw2[istart + t*tstep + 1]
                         st1 = esumw2[istart + t*tstep + 1]
                         tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend), send, sstart, st, st1)
 
