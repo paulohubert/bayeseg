@@ -77,12 +77,14 @@ cdef gsl_rng *r = gsl_rng_alloc(gsl_rng_mt19937)
 cdef double cprior_t(long t, long tstart, long tend, long minlen = 0) nogil:
     ''' Prior distribution for the change point.
     '''
-    
+    cdef double d
     # Uniform prior over [tstart + minlen, tend - minlen]
-    if t > tstart + minlen and t < tend - minlen:
-        return 0.
+    if t >= tstart + minlen and t <= tend - minlen:
+        d = 0.
     else:
-        return -1e-32
+        d = -1e+308
+        
+    return d
 
 cdef double cposterior_t(long t, long tstart, long tend, double prior_v, double send, double sstart, double st, double st1) nogil:
     ''' Calculates the log-posterior distribution for t
@@ -501,9 +503,11 @@ cdef class SeqSeg:
             return(-1)
 
         cdef long t, n, istart, iend, tstep, tstart, tend
-        cdef double sstart, send, st, st1
+        cdef double sstart, send, st, st1, dprior
         cdef np.ndarray[DTYPE_t, ndim = 1] tvec = np.repeat(-np.inf, self.N)
         cdef np.ndarray[DTYPE_t, ndim = 1] esumw2 = self.sumw2
+
+        cdef long mlen = minlen
 
         self.N = len(self.wave)
 
@@ -539,7 +543,9 @@ cdef class SeqSeg:
             for t in prange(n + 1, schedule = 'static'):
                 st = esumw2[istart + t*tstep]
                 st1 = esumw2[istart + t*tstep + 1]
-                tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend, minlen), send, sstart, st, st1)
+                dprior = cprior_t(istart + t*tstep, tstart, tend, mlen)
+
+                tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, dprior, send, sstart, st, st1)
 
 
         end = time.time()
@@ -566,7 +572,7 @@ cdef class SeqSeg:
         # Cannot have a minimum segment of less than 5 points for the algorithm to make sense
         minlen = max(5, minlen)
 
-        cdef long t, tmax, tstart, tend, n, istart, iend, tstep
+        cdef long t, tmax, tstart, tend, n, istart, iend, tstep, mlen
         cdef double maxp, posterior, sstart, send, st, st1
         cdef np.ndarray[DTYPE_t, ndim = 1] tvec = np.repeat(-np.inf, self.N)
         cdef np.ndarray[DTYPE_t, ndim = 1] esumw2 = self.sumw2
@@ -591,7 +597,8 @@ cdef class SeqSeg:
         # Creates index to keep track of tested segments
         # True, if the segment must be tested, False otherwise
         iseg = {(self.tstart, self.tend) : True}
-
+        
+        mlen = minlen
         # Main loop: while there are untested segments
         while sum(iseg.values()) > 0:
             # Iterates through segments to be tested
@@ -621,7 +628,7 @@ cdef class SeqSeg:
                         st = esumw2[istart + t*tstep]
                         #st1 = esumw2[istart + t*tstep + 1]
                         st1 = esumw2[istart + t*tstep + 1]
-                        tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend, minlen), send, sstart, st, st1)
+                        tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend, mlen), send, sstart, st, st1)
 
                 tmax, maxp = max(enumerate(tvec), key=operator.itemgetter(1))
 
