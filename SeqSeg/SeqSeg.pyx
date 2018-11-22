@@ -74,7 +74,7 @@ cdef gsl_rng *r = gsl_rng_alloc(gsl_rng_mt19937)
 
 
 # Cython pure C functions
-cdef double cprior_t(long t, long tstart, long tend, long minlen = 11025) nogil:
+cdef double cprior_t(long t, long tstart, long tend, long minlen = 0) nogil:
     ''' Prior distribution for the change point.
     '''
     
@@ -104,9 +104,8 @@ cdef double cposterior_t(long t, long tstart, long tend, double prior_v, double 
     cdef double dif1 = st-sstart
     cdef double dif2 = send - st1
     cdef double arg1 = 0.5*(adjt + 6)
-    cdef double arg2 = 0.5*(Nw - adjt - 6)
-    cdef double arg3 = 0.5*(Nw - adjt - 2)
-    cdef double post = prior_v - arg1*(Ln(dif1)) - arg2*(Ln(dif2)) + gammaln(arg1) + gammaln(arg3)
+    cdef double arg2 = 0.5*(Nw - adjt - 2)
+    cdef double post = prior_v - arg1*(Ln(dif1)) - arg2*(Ln(dif2)) + gammaln(arg1) + gammaln(arg2)
 
     return post
 
@@ -524,8 +523,8 @@ cdef class SeqSeg:
         # Parallelized
 
         # Bounds for start and end
-        istart = tstart + 3
-        iend = tend - 3
+        istart = tstart + 1
+        iend = tend - 1
         n = int((iend-istart)/tstep)
 
         sstart = self.sumw2[self.tstart]
