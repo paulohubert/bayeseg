@@ -480,7 +480,7 @@ cdef class SeqSeg:
 
         return ev
 
-    def get_posterior(self, start, end, res = 1):
+    def get_posterior(self, start, end, minlen = 0, res = 1):
         ''' Returns the posterior values for the changepoint.
 
             @args:
@@ -523,8 +523,8 @@ cdef class SeqSeg:
         # Parallelized
 
         # Bounds for start and end
-        istart = tstart + 1
-        iend = tend - 1
+        istart = tstart + 3
+        iend = tend - 3
         n = int((iend-istart)/tstep)
 
         sstart = self.sumw2[self.tstart]
@@ -539,7 +539,7 @@ cdef class SeqSeg:
             for t in prange(n + 1, schedule = 'static'):
                 st = esumw2[istart + t*tstep]
                 st1 = esumw2[istart + t*tstep + 1]
-                tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend), send, sstart, st, st1)
+                tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend, minlen), send, sstart, st, st1)
 
 
         end = time.time()
@@ -621,7 +621,7 @@ cdef class SeqSeg:
                         st = esumw2[istart + t*tstep]
                         #st1 = esumw2[istart + t*tstep + 1]
                         st1 = esumw2[istart + t*tstep + 1]
-                        tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend), send, sstart, st, st1)
+                        tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend, minlen), send, sstart, st, st1)
 
                 tmax, maxp = max(enumerate(tvec), key=operator.itemgetter(1))
 
