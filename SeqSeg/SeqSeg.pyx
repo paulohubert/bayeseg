@@ -82,7 +82,7 @@ cdef double cprior_t(long t, long tstart, long tend, long minlen = 0) nogil:
     if t >= tstart + minlen and t <= tend - minlen:
         d = 0.
     else:
-        d = -1e+308
+        d = -1e+300
         
     return d
 
@@ -127,7 +127,7 @@ cdef double cposterior_full(double d, double s, long Nw, long N2, double beta, d
     '''
 
     if d <= 0 or s <= 0:
-        return -1e+308
+        return -1e+300
     
     # Jeffreys' prior for sigma
     cdef double dpriors = -Ln(s)
