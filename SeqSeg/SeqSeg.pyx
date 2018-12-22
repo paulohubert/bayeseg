@@ -75,9 +75,21 @@ cdef gsl_rng *r = gsl_rng_alloc(gsl_rng_mt19937)
 
 # Cython pure C functions
 cdef double cprior_t(long t, long tstart, long tend, long minlen = 0) nogil:
-    ''' Prior distribution for the change point.
+    ''' Prior distribution for the change point using SNR parameterization.
+        Uniform prior over [tstart+minlen, tend-minlen].
+    
+        @args:
+            t - point to calculate posterior
+            tstart - start of the current segment
+            tend - end of the current segment
+            minlen - minimum allowed length to a segment
+            
+        @return:
+            log prior density at t
     '''
+    
     cdef double d
+    
     # Uniform prior over [tstart + minlen, tend - minlen]
     if t >= tstart + minlen and t <= tend - minlen:
         d = 0.
@@ -86,8 +98,9 @@ cdef double cprior_t(long t, long tstart, long tend, long minlen = 0) nogil:
         
     return d
 
+
 cdef double cposterior_t(long t, long tstart, long tend, double prior_v, double send, double sstart, double st, double st1) nogil:
-    ''' Calculates the log-posterior distribution for t
+    ''' Calculates the log-posterior distribution for t using SNR-based parameterization
 
         @args:
 
@@ -99,6 +112,10 @@ cdef double cposterior_t(long t, long tstart, long tend, double prior_v, double 
         sstart - sum of amplitude squared from 0 t0 tstart
         st - sum of amplitude squared from 0 to t
         st1 - sum of amplitude squared from t+1 to tend
+        
+        @returns:
+        
+        log unnormalized posterior at t
     '''
 
     cdef long adjt = t - tstart + 1
@@ -111,7 +128,37 @@ cdef double cposterior_t(long t, long tstart, long tend, double prior_v, double 
 
     return post
 
-cdef double cposterior_full(double d, double s, long Nw, long N2, double beta, double sum1, double sum2, long iprior) nogil:
+
+cdef double cposterior_t_var(long t, long tstart, long tend, double prior_v, double send, double sstart, double st, double st1) nogil:
+    ''' Calculates the log-posterior distribution for t using variance based parameterization
+
+        @args:
+
+        t - segmentation point
+        tstart - start index of current signal window
+        tend - end indef of current signal window
+        prior_v - prior value associated to t
+        send - sum of amplitude squared from 0 to tend
+        sstart - sum of amplitude squared from 0 t0 tstart
+        st - sum of amplitude squared from 0 to t
+        st1 - sum of amplitude squared from t+1 to tend
+        
+        @returns:
+        
+        log unnormalized posterior at t
+    '''
+
+    cdef long adjt = t - tstart + 1
+    cdef long Nw = tend - tstart + 1
+    cdef double dif1 = st-sstart
+    cdef double dif2 = send - st1
+    cdef double arg1 = 0.5*adjt
+    cdef double arg2 = 0.5*(Nw - adjt)
+    cdef double post = prior_v - arg1*Ln(dif1) - arg2*Ln(dif2) + gammaln(arg1) + gammaln(arg2)
+
+    return post
+
+cdef double cposterior_full_bkp(double d, double s, long Nw, long N2, double beta, double sum1, double sum2, long iprior) nogil:
     ''' Full log-posterior kernel for MCMC sampling
 
         @args:
@@ -149,8 +196,35 @@ cdef double cposterior_full(double d, double s, long Nw, long N2, double beta, d
 
     return post
 
+cdef double cposterior_full(double s1, double s2, long Nw, long N2, double sum1, double sum2) nogil:
+    ''' Full log-posterior kernel for MCMC sampling
 
-cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N2, double sum1, double sum2, long iprior) nogil:
+        @args:
+
+        s1 - current value for s1
+        s2 - current value for s2
+        Nw - total signal size
+        N2 - size of second segment
+        sum1 - sum of amplitudes squared for first segment
+        sum2 - sum of amplitudes squared for second segment
+        iprior - prior to use; 0 = laplace, 1 = gaussian, 2 = uniform
+    '''
+
+    if s1 <= 0 or s2 <= 0:
+        return -1e+300
+    
+    # Jeffreys' prior for sigma
+    cdef double dpriors1 = -Ln(s1)
+
+    cdef double dpriors2 = -Ln(s2)
+
+    cdef double post = dpriors1 +  dpriors2 - (Nw-N2)*Ln(s1)-N2*Ln(s2)
+    post = post - sum1/(2*(s1**2)) - sum2/(2*(s2**2))
+
+    return post
+
+
+cdef double cmcmc_bkp(int mcburn, int mciter, double p0, double beta, long N, long N2, double sum1, double sum2, long iprior) nogil:
     ''' Run MCMC
 
         @args:
@@ -186,7 +260,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
     # Generating starting values for the chain
     dcur = Abs(dcur + gsl_ran_gaussian(r, Sqrt(dvar)))
     scur = Abs(scur + gsl_ran_gaussian(r, Sqrt(svar)))
-    pcur = cposterior_full(dcur, scur, N, N2, beta, sum1, sum2, iprior)
+    pcur = cposterior_full_bkp(dcur, scur, N, N2, beta, sum1, sum2, iprior)
 
     # Parameters for adaptive MH
     sd = (2.4*2.4)/2.0
@@ -208,7 +282,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
         dcand = dcur + u1*Sqrt(dvar)
 
         # Calculates full posterior
-        pcand = cposterior_full(dcand, scur, N, N2, beta, sum1, sum2, iprior)
+        pcand = cposterior_full_bkp(dcand, scur, N, N2, beta, sum1, sum2, iprior)
 
         # Acceptance ratio
         a = pcand - pcur
@@ -223,7 +297,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
         scand = scur + Sqrt(svar)*u2
 
         # Calculates full posterior
-        pcand = cposterior_full(dcur, scand, N, N2, beta, sum1, sum2, iprior)
+        pcand = cposterior_full_bkp(dcur, scand, N, N2, beta, sum1, sum2, iprior)
 
         # Acceptance ratio
         a = pcand - pcur
@@ -283,7 +357,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
 
         if dcand > 0 and scand > 0:
             # Calculates full posterior
-            pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2, iprior)
+            pcand = cposterior_full_bkp(dcand, scand, N, N2, beta, sum1, sum2, iprior)
 
             # Acceptance ratio
             a = pcand - pcur
@@ -324,7 +398,7 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
 
         if dcand > 0 and scand > 0:
             # Calculates full posterior
-            pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2, iprior)
+            pcand = cposterior_full_bkp(dcand, scand, N, N2, beta, sum1, sum2, iprior)
 
             # Acceptance ratio
             a = pcand - pcur
@@ -346,6 +420,204 @@ cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N
     ev = ev / mciter
 
     return ev
+
+cdef double cmcmc(int mcburn, int mciter, double p0, long N, long N2, double sum1, double sum2) nogil:
+    ''' Run MCMC
+
+        @args:
+
+        mcburn - burn-in period for chain
+        mciter - number of points to sample
+        p0 - posterior under H0
+        beta - parameter for Laplace prior
+        N - total signal size
+        N2 - size of second segment
+        sum1 - sum of amplitude squared for the first segment
+        sum2 - sum of amplitude squared for the second segment
+
+    '''
+    cdef double pcur, pcand, s1cur, s1cand, s2cur, s2cand, a, u, ev
+    cdef int i, t0, t
+    cdef double s2var, s1var, cov, sd, eps, u1, u2, s2mean, s2meanant, s1mean, s1meanant, cov0, sums2sq, sums1sq
+    cdef double accept, s2varmin, s1varmin
+    
+    s2cur = (sum2 / (N2-1))/(sum1 / (N-N2-1))
+    s1cur = Sqrt(sum1 / (N-N2-1))
+
+    # Standard deviations and covariance for random-walk candidates distributions
+    s2var = (s2cur / 3) ** 2
+    s1var = (s1cur / 3) ** 2
+    cov = 0.0
+
+    # To safeguard variances
+    s2varmin = s2var
+    s1varmin = s1var
+
+
+    # Generating starting values for the chain
+    s2cur = Abs(s2cur + gsl_ran_gaussian(r, Sqrt(s2var)))
+    s1cur = Abs(s1cur + gsl_ran_gaussian(r, Sqrt(s1var)))
+    pcur = cposterior_full(s2cur, s1cur, N, N2, sum1, sum2)
+
+    # Parameters for adaptive MH
+    sd = (2.4*2.4)/2.0
+    eps = 1e-30
+
+    # Starting point for adaptive MH
+    t0 = 1000
+
+    s2mean = 0.0
+    s1mean = 0.0
+    sums2sq = 0.0
+    sums1sq = 0.0
+    cov0 = 0.0
+    accept = 0
+    for i in range(t0):
+
+        # Generate candidates
+        u1 = gsl_ran_ugaussian(r)
+        s2cand = s2cur + u1*Sqrt(s2var)
+
+        # Calculates full posterior
+        pcand = cposterior_full(s2cand, s1cur, N, N2, sum1, sum2)
+
+        # Acceptance ratio
+        a = pcand - pcur
+
+        if Ln(gsl_rng_uniform(r)) < a:
+            s2cur = s2cand
+            pcur = pcand
+            accept = accept + 1
+        #endif
+
+        u2 = gsl_ran_ugaussian(r)
+        s1cand = s1cur + Sqrt(s1var)*u2
+
+        # Calculates full posterior
+        pcand = cposterior_full(s2cur, s1cand, N, N2, sum1, sum2)
+
+        # Acceptance ratio
+        a = pcand - pcur
+
+        if Ln(gsl_rng_uniform(r)) < a:
+            s1cur = s1cand
+            pcur = pcand
+            accept = accept + 1
+        #endif
+
+        s2mean = s2mean + s2cur
+        s1mean = s1mean + s1cur
+        cov0 = cov0 + s2cur*s1cur
+        sums2sq = sums2sq + s2cur*s2cur
+        sums1sq = sums1sq + s1cur*s1cur
+
+    #endfor
+
+    s2var = (sums2sq - (s2mean*s2mean)/t0)/(t0-1)
+    s1var = (sums1sq - (s1mean*s1mean)/t0)/(t0-1)
+
+
+    if s1var < 0:
+        with gil:
+            # This shouldn't happen, but if it does we reset the variance to a valid value
+            print("Posterior variance of signal power with negative value!")
+        s1var = s1varmin
+
+    if s2var < 0:
+        with gil:
+            # This shouldn't happen, but if it does we reset the variance to a valid value
+            print("Posterior variance of delta with negative value!")
+        s2var = s2varmin
+
+    cov = (1/(t0-1))*(cov0 - s2mean*s1mean/t0)
+    rho = cov/Sqrt(s2var*s1var)
+    s2mean = s2mean / t0
+    s1mean = s1mean / t0
+    t = t0
+
+    accept = 0
+    for i in range(mcburn):
+
+        # Generate candidates
+        u1 = gsl_ran_ugaussian(r)
+        u2 = gsl_ran_ugaussian(r)
+        if Abs(rho) > 1:
+            with gil:
+                # This also shouldn't happen. If it does, we set the correlation to 0
+                print("Adaptive covariance defective!")
+            rho = 0
+        u2 = rho*u1 + (1-rho)*u2
+
+
+        s2cand = s2cur + u1*Sqrt(s2var)
+        s1cand = s1cur + u2*Sqrt(s1var)
+
+        if s2cand > 0 and s1cand > 0:
+            # Calculates full posterior
+            pcand = cposterior_full(s2cand, s1cand, N, N2, sum1, sum2)
+
+            # Acceptance ratio
+            a = pcand - pcur
+
+            if Ln(gsl_rng_uniform(r)) < a:
+                s1cur = s1cand
+                s2cur = s2cand
+                pcur = pcand
+                accept = accept + 1
+            #endif
+        #endif
+
+        # Updating covariance matrix
+        s2meanant = s2mean
+        s1meanant = s1mean
+        s2mean = (t*s2meanant + s2cur) / (t + 1)
+        s1mean = (t*s1meanant + s1cur) / (t + 1)
+
+        s2var =  (((t-1)*s2var)/t) + (sd/t)*(t*s2meanant*s2meanant - (t+1)*s2mean*s2mean + s2cur*s2cur + eps)
+        s1var =  (((t-1)*s1var)/t) + (sd/t)*(t*s1meanant*s1meanant - (t+1)*s1mean*s1mean + s1cur*s1cur + eps)
+        cov = (((t-1)*cov)/t) + (sd/t)*(t*s2meanant*s1meanant - (t+1)*s2mean*s1mean + s2cur*s1cur)
+        rho = cov/Sqrt(s2var*s1var)
+        t = t + 1
+    #endfor
+
+    ev = 0.0
+    dtmp = 0.0
+    stmp = 0.0
+    accept = 0
+    for i in range(mciter):
+        # Generate candidates
+        u1 = gsl_ran_ugaussian(r)
+        u2 = gsl_ran_ugaussian(r)
+        u2 = rho*u1 + (1-rho)*u2
+
+        s2cand = s2cur + u1*Sqrt(s2var)
+        s1cand = s1cur + u2*Sqrt(s1var)
+
+        if s2cand > 0 and s1cand > 0:
+            # Calculates full posterior
+            pcand = cposterior_full(s2cand, s1cand, N, N2, sum1, sum2)
+
+            # Acceptance ratio
+            a = pcand - pcur
+
+            if Ln(gsl_rng_uniform(r)) < a:
+                s2cur = s2cand
+                s1cur = s1cand
+                pcur = pcand
+                accept = accept + 1
+            #endif
+        #endif
+
+        if pcur > p0:
+            ev = ev + 1.0
+        #endif
+    #endfor
+
+
+    ev = ev / mciter
+
+    return ev
+
 
 
 # Interface
@@ -445,7 +717,7 @@ cdef class SeqSeg:
         self.data_fed = True
 
 
-    cpdef double tester(self, long tcut, long iprior, bint normalize = False):
+    cpdef double tester(self, long tcut, int iprior = 0, bint normalize = False, bint regularize = False):
         ''' Tests if tcut is a significant cutpoint
             Can be called separately to test the current segment.
         '''
@@ -469,31 +741,34 @@ cdef class SeqSeg:
         beta = self.beta
 
         # Calculates maximum posterior under H0
-        s0 = Sqrt((sum1 + sum2)/(N + 1.))
-        p0 = cposterior_full(1.0, s0, N, N2, beta, sum1, sum2, iprior)
+        s0 = Sqrt((sum1 + sum2)/(N + 2.))
+        p0 = cposterior_full(s0, s0, N, N2, sum1, sum2)
 
         # Run chains
         with nogil, parallel():
             for i in prange(self.nchains, schedule = 'static'):
-                vev[i] = cmcmc(nburn, npoints, p0, beta, N, N2, sum1, sum2, iprior)
+                vev[i] = cmcmc(nburn, npoints, p0, N, N2, sum1, sum2)
 
         # Evidence IN FAVOR OF null hypothesis (delta = 1)
         ev = 1 - sum(vev) / self.nchains
+        
+        if regularize == True:
+            ev = 1-stats.chi2.cdf(stats.chi2.ppf(1 - ev, df = 2), 1)        
 
         return ev
 
     def get_posterior(self, start, end, minlen = 0, res = 1):
-        ''' Returns the posterior values for the changepoint.
+        ''' Returns the posterior values for the changepoint using SNR parameterization.
 
             @args:
 
                 start: first point to calculate the posterior
                 end: last point to calculate the posterior
 
-				@returns:
+            @returns:
 
-					tvec - vector with posterior density values
-					elapsed - time elapsed
+                tvec - vector with posterior density values
+                elapsed - time elapsed
         '''
 
 
@@ -553,6 +828,76 @@ cdef class SeqSeg:
 
         return tvec, elapsed
 
+    def get_posterior_var(self, start, end, minlen = 0, res = 1):
+        ''' Returns the posterior values for the changepoint using variance parameterization.
+
+            @args:
+
+                start: first point to calculate the posterior
+                end: last point to calculate the posterior
+
+            @returns:
+
+                tvec - vector with posterior density values
+                elapsed - time elapsed
+        '''
+
+
+        if not self.data_fed:
+
+            print("Data not initialized! Call feed_data.")
+            return(-1)
+
+        cdef long t, n, istart, iend, tstep, tstart, tend
+        cdef double sstart, send, st, st1, dprior
+        cdef np.ndarray[DTYPE_t, ndim = 1] tvec = np.repeat(-np.inf, self.N)
+        cdef np.ndarray[DTYPE_t, ndim = 1] esumw2 = self.sumw2
+
+        cdef long mlen = minlen
+
+        self.N = len(self.wave)
+
+        if end > self.N:
+            raise ValueError("Invalid value for tend.")
+
+        if start < 0:
+            raise ValueError("Invalid value for start.")
+
+        tstep = res
+
+        # Sets start and end
+        tstart = start
+        tend = end
+
+        # Obtains MAP estimate of the cut point
+        # Parallelized
+
+        # Bounds for start and end
+        istart = tstart + 3
+        iend = tend - 3
+        n = int((iend-istart)/tstep)
+
+        sstart = self.sumw2[self.tstart]
+        send = self.sumw2[self.tend]
+
+        tvec = np.repeat(-np.inf, n + 1)
+        beta = self.beta
+
+
+        begin = time.time()
+        with nogil, parallel():
+            for t in prange(n + 1, schedule = 'static'):
+                st = esumw2[istart + t*tstep]
+                st1 = esumw2[istart + t*tstep + 1]
+                dprior = cprior_t(istart + t*tstep, tstart, tend, mlen)
+
+                tvec[t] = cposterior_t_var(istart + t*tstep, tstart, tend, dprior, send, sstart, st, st1)
+
+
+        end = time.time()
+        elapsed = end - begin
+
+        return tvec, elapsed
 
 
 
@@ -643,7 +988,7 @@ cdef class SeqSeg:
                     
                     # Regularizing
                     if regularize == True:
-                        evidence = 1-stats.chi2.cdf(stats.chi2.pdf(1-evidence, df = 2), 1)
+                        evidence = 1-stats.chi2.cdf(stats.chi2.ppf(1-evidence, df = 2), 1)
 
                     if evidence < self.alpha:
                         if verbose:
