@@ -1093,7 +1093,7 @@ typedef size_t __pyx_t_10cython_gsl_14gsl_blas_types_CBLAS_INDEX;
  */
 typedef int __pyx_t_10cython_gsl_size_t;
 
-/* "SeqSeg/SeqSeg.pyx":46
+/* "SeqSeg/SeqSeg.pyx":45
  * # Type for Cython NumPy acceleration
  * DTYPE = np.float64
  * ctypedef np.float64_t DTYPE_t             # <<<<<<<<<<<<<<
@@ -1178,31 +1178,33 @@ enum  {
 struct __pyx_opt_args_6SeqSeg_6SeqSeg_cprior_t;
 struct __pyx_opt_args_6SeqSeg_6SeqSeg_6SeqSeg_tester;
 
-/* "SeqSeg/SeqSeg.pyx":78
+/* "SeqSeg/SeqSeg.pyx":77
  * 
  * # Cython pure C functions
- * cdef double cprior_t(long t, long tstart, long tend, long minlen = 11025) nogil:             # <<<<<<<<<<<<<<
- *     ''' Prior distribution for the change point.
- *     '''
+ * cdef double cprior_t(long t, long tstart, long tend, long minlen = 0) nogil:             # <<<<<<<<<<<<<<
+ *     ''' Prior distribution for the change point using SNR parameterization.
+ *         Uniform prior over [tstart+minlen, tend-minlen].
  */
 struct __pyx_opt_args_6SeqSeg_6SeqSeg_cprior_t {
   int __pyx_n;
   long minlen;
 };
 
-/* "SeqSeg/SeqSeg.pyx":448
+/* "SeqSeg/SeqSeg.pyx":720
  * 
  * 
- *     cpdef double tester(self, long tcut, long iprior, bint normalize = False):             # <<<<<<<<<<<<<<
+ *     cpdef double tester(self, long tcut, int iprior = 0, bint normalize = False, bint regularize = False):             # <<<<<<<<<<<<<<
  *         ''' Tests if tcut is a significant cutpoint
  *             Can be called separately to test the current segment.
  */
 struct __pyx_opt_args_6SeqSeg_6SeqSeg_6SeqSeg_tester {
   int __pyx_n;
+  int iprior;
   int normalize;
+  int regularize;
 };
 
-/* "SeqSeg/SeqSeg.pyx":352
+/* "SeqSeg/SeqSeg.pyx":624
  * 
  * # Interface
  * cdef class SeqSeg:             # <<<<<<<<<<<<<<
@@ -1232,7 +1234,7 @@ struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg {
 
 
 struct __pyx_vtabstruct_6SeqSeg_6SeqSeg_SeqSeg {
-  double (*tester)(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *, long, long, int __pyx_skip_dispatch, struct __pyx_opt_args_6SeqSeg_6SeqSeg_6SeqSeg_tester *__pyx_optional_args);
+  double (*tester)(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *, long, int __pyx_skip_dispatch, struct __pyx_opt_args_6SeqSeg_6SeqSeg_6SeqSeg_tester *__pyx_optional_args);
 };
 static struct __pyx_vtabstruct_6SeqSeg_6SeqSeg_SeqSeg *__pyx_vtabptr_6SeqSeg_6SeqSeg_SeqSeg;
 
@@ -1879,7 +1881,7 @@ static PyTypeObject *__Pyx_ImportType(const char *module_name, const char *class
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
-static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, long __pyx_v_tcut, long __pyx_v_iprior, int __pyx_skip_dispatch, struct __pyx_opt_args_6SeqSeg_6SeqSeg_6SeqSeg_tester *__pyx_optional_args); /* proto*/
+static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, long __pyx_v_tcut, int __pyx_skip_dispatch, struct __pyx_opt_args_6SeqSeg_6SeqSeg_6SeqSeg_tester *__pyx_optional_args); /* proto*/
 
 /* Module declarations from 'cpython.buffer' */
 
@@ -2051,8 +2053,10 @@ static double __pyx_f_6SeqSeg_6SeqSeg_Abs(double); /*proto*/
 static double __pyx_f_6SeqSeg_6SeqSeg_Sqrt(double); /*proto*/
 static double __pyx_f_6SeqSeg_6SeqSeg_cprior_t(long, long, long, struct __pyx_opt_args_6SeqSeg_6SeqSeg_cprior_t *__pyx_optional_args); /*proto*/
 static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_t(long, long, long, double, double, double, double, double); /*proto*/
-static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double, double, long, long, double, double, double, long); /*proto*/
-static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int, int, double, double, long, long, double, double, long); /*proto*/
+static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_t_var(long, long, long, double, double, double, double, double); /*proto*/
+static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full_bkp(double, double, long, long, double, double, double, long); /*proto*/
+static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double, double, long, long, double, double); /*proto*/
+static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int, int, double, long, long, double, double); /*proto*/
 static PyObject *__pyx_f_6SeqSeg_6SeqSeg___pyx_unpickle_SeqSeg__set_state(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *, PyObject *); /*proto*/
 static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_6SeqSeg_6SeqSeg_DTYPE_t = { "DTYPE_t", NULL, sizeof(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t), { 0 }, 0, 'R', 0, 0 };
 #define __Pyx_MODULE_NAME "SeqSeg.SeqSeg"
@@ -2072,14 +2076,14 @@ static const char __pyx_k_df[] = "df";
 static const char __pyx_k_np[] = "np";
 static const char __pyx_k_os[] = "os";
 static const char __pyx_k_re[] = "re";
-static const char __pyx_k__13[] = "*";
+static const char __pyx_k__15[] = "*";
 static const char __pyx_k_cdf[] = "cdf";
 static const char __pyx_k_end[] = "end";
 static const char __pyx_k_inf[] = "inf";
 static const char __pyx_k_key[] = "key";
 static const char __pyx_k_max[] = "max";
 static const char __pyx_k_new[] = "__new__";
-static const char __pyx_k_pdf[] = "pdf";
+static const char __pyx_k_ppf[] = "ppf";
 static const char __pyx_k_res[] = "res";
 static const char __pyx_k_sum[] = "sum";
 static const char __pyx_k_Tcut[] = "Tcut = ";
@@ -2196,7 +2200,7 @@ static PyObject *__pyx_kp_s_Using_Gaussian_prior;
 static PyObject *__pyx_kp_s_Using_Laplace_prior;
 static PyObject *__pyx_kp_s_Using_uniform_prior;
 static PyObject *__pyx_n_s_ValueError;
-static PyObject *__pyx_n_s__13;
+static PyObject *__pyx_n_s__15;
 static PyObject *__pyx_kp_s_accepted_evidence;
 static PyObject *__pyx_n_s_alpha;
 static PyObject *__pyx_n_s_beta;
@@ -2238,8 +2242,8 @@ static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
 static PyObject *__pyx_n_s_operator;
 static PyObject *__pyx_n_s_os;
 static PyObject *__pyx_n_s_over;
-static PyObject *__pyx_n_s_pdf;
 static PyObject *__pyx_n_s_pickle;
+static PyObject *__pyx_n_s_ppf;
 static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_pyx_PickleError;
 static PyObject *__pyx_n_s_pyx_checksum;
@@ -2283,11 +2287,12 @@ static PyObject *__pyx_n_s_wave;
 static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyArrayObject *__pyx_v_wave, PyObject *__pyx_v_replicate); /* proto */
 static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, double __pyx_v_beta, double __pyx_v_alpha, int __pyx_v_mciter, int __pyx_v_mcburn, int __pyx_v_nchains); /* proto */
 static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_4feed_data(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v_wave); /* proto */
-static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_6tester(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, long __pyx_v_tcut, long __pyx_v_iprior, int __pyx_v_normalize); /* proto */
-static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v_start, PyObject *__pyx_v_end, PyObject *__pyx_v_res); /* proto */
-static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v_minlen, PyObject *__pyx_v_res, PyObject *__pyx_v_iprior, PyObject *__pyx_v_regularize, PyObject *__pyx_v_normalize, PyObject *__pyx_v_verbose); /* proto */
-static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_12__reduce_cython__(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_14__setstate_cython__(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_6tester(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, long __pyx_v_tcut, int __pyx_v_iprior, int __pyx_v_normalize, int __pyx_v_regularize); /* proto */
+static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v_start, PyObject *__pyx_v_end, PyObject *__pyx_v_minlen, PyObject *__pyx_v_res); /* proto */
+static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10get_posterior_var(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v_start, PyObject *__pyx_v_end, PyObject *__pyx_v_minlen, PyObject *__pyx_v_res); /* proto */
+static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_12segments(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v_minlen, PyObject *__pyx_v_res, PyObject *__pyx_v_iprior, PyObject *__pyx_v_regularize, PyObject *__pyx_v_normalize, PyObject *__pyx_v_verbose); /* proto */
+static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_14__reduce_cython__(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_16__setstate_cython__(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_6SeqSeg_6SeqSeg___pyx_unpickle_SeqSeg(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
@@ -2312,10 +2317,12 @@ static PyObject *__pyx_tuple__9;
 static PyObject *__pyx_tuple__10;
 static PyObject *__pyx_tuple__11;
 static PyObject *__pyx_tuple__12;
+static PyObject *__pyx_tuple__13;
 static PyObject *__pyx_tuple__14;
-static PyObject *__pyx_codeobj__15;
+static PyObject *__pyx_tuple__16;
+static PyObject *__pyx_codeobj__17;
 
-/* "SeqSeg/SeqSeg.pyx":52
+/* "SeqSeg/SeqSeg.pyx":51
  *     double lgamma(double)
  * 
  * cdef double gammaln(double x) nogil:             # <<<<<<<<<<<<<<
@@ -2326,7 +2333,7 @@ static PyObject *__pyx_codeobj__15;
 static double __pyx_f_6SeqSeg_6SeqSeg_gammaln(double __pyx_v_x) {
   double __pyx_r;
 
-  /* "SeqSeg/SeqSeg.pyx":53
+  /* "SeqSeg/SeqSeg.pyx":52
  * 
  * cdef double gammaln(double x) nogil:
  *     return lgamma(x)             # <<<<<<<<<<<<<<
@@ -2336,7 +2343,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_gammaln(double __pyx_v_x) {
   __pyx_r = lgamma(__pyx_v_x);
   goto __pyx_L0;
 
-  /* "SeqSeg/SeqSeg.pyx":52
+  /* "SeqSeg/SeqSeg.pyx":51
  *     double lgamma(double)
  * 
  * cdef double gammaln(double x) nogil:             # <<<<<<<<<<<<<<
@@ -2349,7 +2356,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_gammaln(double __pyx_v_x) {
   return __pyx_r;
 }
 
-/* "SeqSeg/SeqSeg.pyx":58
+/* "SeqSeg/SeqSeg.pyx":57
  *     double log(double)
  * 
  * cdef double Ln(double x) nogil:             # <<<<<<<<<<<<<<
@@ -2360,7 +2367,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_gammaln(double __pyx_v_x) {
 static double __pyx_f_6SeqSeg_6SeqSeg_Ln(double __pyx_v_x) {
   double __pyx_r;
 
-  /* "SeqSeg/SeqSeg.pyx":59
+  /* "SeqSeg/SeqSeg.pyx":58
  * 
  * cdef double Ln(double x) nogil:
  *     return log(x)             # <<<<<<<<<<<<<<
@@ -2370,7 +2377,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_Ln(double __pyx_v_x) {
   __pyx_r = log(__pyx_v_x);
   goto __pyx_L0;
 
-  /* "SeqSeg/SeqSeg.pyx":58
+  /* "SeqSeg/SeqSeg.pyx":57
  *     double log(double)
  * 
  * cdef double Ln(double x) nogil:             # <<<<<<<<<<<<<<
@@ -2383,7 +2390,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_Ln(double __pyx_v_x) {
   return __pyx_r;
 }
 
-/* "SeqSeg/SeqSeg.pyx":61
+/* "SeqSeg/SeqSeg.pyx":60
  *     return log(x)
  * 
  * cdef double Abs(double x) nogil:             # <<<<<<<<<<<<<<
@@ -2395,7 +2402,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_Abs(double __pyx_v_x) {
   double __pyx_r;
   int __pyx_t_1;
 
-  /* "SeqSeg/SeqSeg.pyx":62
+  /* "SeqSeg/SeqSeg.pyx":61
  * 
  * cdef double Abs(double x) nogil:
  *     if x < 0:             # <<<<<<<<<<<<<<
@@ -2405,7 +2412,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_Abs(double __pyx_v_x) {
   __pyx_t_1 = ((__pyx_v_x < 0.0) != 0);
   if (__pyx_t_1) {
 
-    /* "SeqSeg/SeqSeg.pyx":63
+    /* "SeqSeg/SeqSeg.pyx":62
  * cdef double Abs(double x) nogil:
  *     if x < 0:
  *         return -x             # <<<<<<<<<<<<<<
@@ -2415,7 +2422,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_Abs(double __pyx_v_x) {
     __pyx_r = (-__pyx_v_x);
     goto __pyx_L0;
 
-    /* "SeqSeg/SeqSeg.pyx":62
+    /* "SeqSeg/SeqSeg.pyx":61
  * 
  * cdef double Abs(double x) nogil:
  *     if x < 0:             # <<<<<<<<<<<<<<
@@ -2424,7 +2431,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_Abs(double __pyx_v_x) {
  */
   }
 
-  /* "SeqSeg/SeqSeg.pyx":65
+  /* "SeqSeg/SeqSeg.pyx":64
  *         return -x
  *     else:
  *         return x             # <<<<<<<<<<<<<<
@@ -2436,7 +2443,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_Abs(double __pyx_v_x) {
     goto __pyx_L0;
   }
 
-  /* "SeqSeg/SeqSeg.pyx":61
+  /* "SeqSeg/SeqSeg.pyx":60
  *     return log(x)
  * 
  * cdef double Abs(double x) nogil:             # <<<<<<<<<<<<<<
@@ -2449,7 +2456,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_Abs(double __pyx_v_x) {
   return __pyx_r;
 }
 
-/* "SeqSeg/SeqSeg.pyx":70
+/* "SeqSeg/SeqSeg.pyx":69
  *     double sqrt(double)
  * 
  * cdef double Sqrt(double x) nogil:             # <<<<<<<<<<<<<<
@@ -2460,7 +2467,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_Abs(double __pyx_v_x) {
 static double __pyx_f_6SeqSeg_6SeqSeg_Sqrt(double __pyx_v_x) {
   double __pyx_r;
 
-  /* "SeqSeg/SeqSeg.pyx":71
+  /* "SeqSeg/SeqSeg.pyx":70
  * 
  * cdef double Sqrt(double x) nogil:
  *     return sqrt(x)             # <<<<<<<<<<<<<<
@@ -2470,7 +2477,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_Sqrt(double __pyx_v_x) {
   __pyx_r = sqrt(__pyx_v_x);
   goto __pyx_L0;
 
-  /* "SeqSeg/SeqSeg.pyx":70
+  /* "SeqSeg/SeqSeg.pyx":69
  *     double sqrt(double)
  * 
  * cdef double Sqrt(double x) nogil:             # <<<<<<<<<<<<<<
@@ -2483,16 +2490,17 @@ static double __pyx_f_6SeqSeg_6SeqSeg_Sqrt(double __pyx_v_x) {
   return __pyx_r;
 }
 
-/* "SeqSeg/SeqSeg.pyx":78
+/* "SeqSeg/SeqSeg.pyx":77
  * 
  * # Cython pure C functions
- * cdef double cprior_t(long t, long tstart, long tend, long minlen = 11025) nogil:             # <<<<<<<<<<<<<<
- *     ''' Prior distribution for the change point.
- *     '''
+ * cdef double cprior_t(long t, long tstart, long tend, long minlen = 0) nogil:             # <<<<<<<<<<<<<<
+ *     ''' Prior distribution for the change point using SNR parameterization.
+ *         Uniform prior over [tstart+minlen, tend-minlen].
  */
 
 static double __pyx_f_6SeqSeg_6SeqSeg_cprior_t(long __pyx_v_t, long __pyx_v_tstart, long __pyx_v_tend, struct __pyx_opt_args_6SeqSeg_6SeqSeg_cprior_t *__pyx_optional_args) {
-  long __pyx_v_minlen = ((long)0x2B11);
+  long __pyx_v_minlen = ((long)0);
+  double __pyx_v_d;
   double __pyx_r;
   int __pyx_t_1;
   int __pyx_t_2;
@@ -2502,61 +2510,71 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cprior_t(long __pyx_v_t, long __pyx_v_tsta
     }
   }
 
-  /* "SeqSeg/SeqSeg.pyx":83
+  /* "SeqSeg/SeqSeg.pyx":94
  * 
  *     # Uniform prior over [tstart + minlen, tend - minlen]
- *     if t > tstart + minlen and t < tend - minlen:             # <<<<<<<<<<<<<<
- *         return 0.
+ *     if t >= tstart + minlen and t <= tend - minlen:             # <<<<<<<<<<<<<<
+ *         d = 0.
  *     else:
  */
-  __pyx_t_2 = ((__pyx_v_t > (__pyx_v_tstart + __pyx_v_minlen)) != 0);
+  __pyx_t_2 = ((__pyx_v_t >= (__pyx_v_tstart + __pyx_v_minlen)) != 0);
   if (__pyx_t_2) {
   } else {
     __pyx_t_1 = __pyx_t_2;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_2 = ((__pyx_v_t < (__pyx_v_tend - __pyx_v_minlen)) != 0);
+  __pyx_t_2 = ((__pyx_v_t <= (__pyx_v_tend - __pyx_v_minlen)) != 0);
   __pyx_t_1 = __pyx_t_2;
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "SeqSeg/SeqSeg.pyx":84
+    /* "SeqSeg/SeqSeg.pyx":95
  *     # Uniform prior over [tstart + minlen, tend - minlen]
- *     if t > tstart + minlen and t < tend - minlen:
- *         return 0.             # <<<<<<<<<<<<<<
+ *     if t >= tstart + minlen and t <= tend - minlen:
+ *         d = 0.             # <<<<<<<<<<<<<<
  *     else:
- *         return -1e-32
+ *         d = -1e+300
  */
-    __pyx_r = 0.;
-    goto __pyx_L0;
+    __pyx_v_d = 0.;
 
-    /* "SeqSeg/SeqSeg.pyx":83
+    /* "SeqSeg/SeqSeg.pyx":94
  * 
  *     # Uniform prior over [tstart + minlen, tend - minlen]
- *     if t > tstart + minlen and t < tend - minlen:             # <<<<<<<<<<<<<<
- *         return 0.
+ *     if t >= tstart + minlen and t <= tend - minlen:             # <<<<<<<<<<<<<<
+ *         d = 0.
  *     else:
  */
+    goto __pyx_L3;
   }
 
-  /* "SeqSeg/SeqSeg.pyx":86
- *         return 0.
+  /* "SeqSeg/SeqSeg.pyx":97
+ *         d = 0.
  *     else:
- *         return -1e-32             # <<<<<<<<<<<<<<
+ *         d = -1e+300             # <<<<<<<<<<<<<<
  * 
- * cdef double cposterior_t(long t, long tstart, long tend, double prior_v, double send, double sstart, double st, double st1) nogil:
+ *     return d
  */
   /*else*/ {
-    __pyx_r = -1e-32;
-    goto __pyx_L0;
+    __pyx_v_d = -1e+300;
   }
+  __pyx_L3:;
 
-  /* "SeqSeg/SeqSeg.pyx":78
+  /* "SeqSeg/SeqSeg.pyx":99
+ *         d = -1e+300
+ * 
+ *     return d             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_d;
+  goto __pyx_L0;
+
+  /* "SeqSeg/SeqSeg.pyx":77
  * 
  * # Cython pure C functions
- * cdef double cprior_t(long t, long tstart, long tend, long minlen = 11025) nogil:             # <<<<<<<<<<<<<<
- *     ''' Prior distribution for the change point.
- *     '''
+ * cdef double cprior_t(long t, long tstart, long tend, long minlen = 0) nogil:             # <<<<<<<<<<<<<<
+ *     ''' Prior distribution for the change point using SNR parameterization.
+ *         Uniform prior over [tstart+minlen, tend-minlen].
  */
 
   /* function exit code */
@@ -2564,11 +2582,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cprior_t(long __pyx_v_t, long __pyx_v_tsta
   return __pyx_r;
 }
 
-/* "SeqSeg/SeqSeg.pyx":88
- *         return -1e-32
+/* "SeqSeg/SeqSeg.pyx":102
+ * 
  * 
  * cdef double cposterior_t(long t, long tstart, long tend, double prior_v, double send, double sstart, double st, double st1) nogil:             # <<<<<<<<<<<<<<
- *     ''' Calculates the log-posterior distribution for t
+ *     ''' Calculates the log-posterior distribution for t using SNR-based parameterization
  * 
  */
 
@@ -2579,11 +2597,10 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_t(long __pyx_v_t, long __pyx_v_
   double __pyx_v_dif2;
   double __pyx_v_arg1;
   double __pyx_v_arg2;
-  double __pyx_v_arg3;
   double __pyx_v_post;
   double __pyx_r;
 
-  /* "SeqSeg/SeqSeg.pyx":103
+  /* "SeqSeg/SeqSeg.pyx":121
  *     '''
  * 
  *     cdef long adjt = t - tstart + 1             # <<<<<<<<<<<<<<
@@ -2592,7 +2609,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_t(long __pyx_v_t, long __pyx_v_
  */
   __pyx_v_adjt = ((__pyx_v_t - __pyx_v_tstart) + 1);
 
-  /* "SeqSeg/SeqSeg.pyx":104
+  /* "SeqSeg/SeqSeg.pyx":122
  * 
  *     cdef long adjt = t - tstart + 1
  *     cdef long Nw = tend - tstart + 1             # <<<<<<<<<<<<<<
@@ -2601,7 +2618,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_t(long __pyx_v_t, long __pyx_v_
  */
   __pyx_v_Nw = ((__pyx_v_tend - __pyx_v_tstart) + 1);
 
-  /* "SeqSeg/SeqSeg.pyx":105
+  /* "SeqSeg/SeqSeg.pyx":123
  *     cdef long adjt = t - tstart + 1
  *     cdef long Nw = tend - tstart + 1
  *     cdef double dif1 = st-sstart             # <<<<<<<<<<<<<<
@@ -2610,66 +2627,57 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_t(long __pyx_v_t, long __pyx_v_
  */
   __pyx_v_dif1 = (__pyx_v_st - __pyx_v_sstart);
 
-  /* "SeqSeg/SeqSeg.pyx":106
+  /* "SeqSeg/SeqSeg.pyx":124
  *     cdef long Nw = tend - tstart + 1
  *     cdef double dif1 = st-sstart
  *     cdef double dif2 = send - st1             # <<<<<<<<<<<<<<
  *     cdef double arg1 = 0.5*(adjt + 6)
- *     cdef double arg2 = 0.5*(Nw - adjt - 6)
+ *     cdef double arg2 = 0.5*(Nw - adjt - 2)
  */
   __pyx_v_dif2 = (__pyx_v_send - __pyx_v_st1);
 
-  /* "SeqSeg/SeqSeg.pyx":107
+  /* "SeqSeg/SeqSeg.pyx":125
  *     cdef double dif1 = st-sstart
  *     cdef double dif2 = send - st1
  *     cdef double arg1 = 0.5*(adjt + 6)             # <<<<<<<<<<<<<<
- *     cdef double arg2 = 0.5*(Nw - adjt - 6)
- *     cdef double arg3 = 0.5*(Nw - adjt - 2)
+ *     cdef double arg2 = 0.5*(Nw - adjt - 2)
+ *     cdef double post = prior_v - arg1*(Ln(dif1)) - arg2*(Ln(dif2)) + gammaln(arg1) + gammaln(arg2)
  */
   __pyx_v_arg1 = (0.5 * (__pyx_v_adjt + 6));
 
-  /* "SeqSeg/SeqSeg.pyx":108
+  /* "SeqSeg/SeqSeg.pyx":126
  *     cdef double dif2 = send - st1
  *     cdef double arg1 = 0.5*(adjt + 6)
- *     cdef double arg2 = 0.5*(Nw - adjt - 6)             # <<<<<<<<<<<<<<
- *     cdef double arg3 = 0.5*(Nw - adjt - 2)
- *     cdef double post = prior_v - arg1*(Ln(dif1)) - arg2*(Ln(dif2)) + gammaln(arg1) + gammaln(arg3)
- */
-  __pyx_v_arg2 = (0.5 * ((__pyx_v_Nw - __pyx_v_adjt) - 6));
-
-  /* "SeqSeg/SeqSeg.pyx":109
- *     cdef double arg1 = 0.5*(adjt + 6)
- *     cdef double arg2 = 0.5*(Nw - adjt - 6)
- *     cdef double arg3 = 0.5*(Nw - adjt - 2)             # <<<<<<<<<<<<<<
- *     cdef double post = prior_v - arg1*(Ln(dif1)) - arg2*(Ln(dif2)) + gammaln(arg1) + gammaln(arg3)
+ *     cdef double arg2 = 0.5*(Nw - adjt - 2)             # <<<<<<<<<<<<<<
+ *     cdef double post = prior_v - arg1*(Ln(dif1)) - arg2*(Ln(dif2)) + gammaln(arg1) + gammaln(arg2)
  * 
  */
-  __pyx_v_arg3 = (0.5 * ((__pyx_v_Nw - __pyx_v_adjt) - 2));
+  __pyx_v_arg2 = (0.5 * ((__pyx_v_Nw - __pyx_v_adjt) - 2));
 
-  /* "SeqSeg/SeqSeg.pyx":110
- *     cdef double arg2 = 0.5*(Nw - adjt - 6)
- *     cdef double arg3 = 0.5*(Nw - adjt - 2)
- *     cdef double post = prior_v - arg1*(Ln(dif1)) - arg2*(Ln(dif2)) + gammaln(arg1) + gammaln(arg3)             # <<<<<<<<<<<<<<
+  /* "SeqSeg/SeqSeg.pyx":127
+ *     cdef double arg1 = 0.5*(adjt + 6)
+ *     cdef double arg2 = 0.5*(Nw - adjt - 2)
+ *     cdef double post = prior_v - arg1*(Ln(dif1)) - arg2*(Ln(dif2)) + gammaln(arg1) + gammaln(arg2)             # <<<<<<<<<<<<<<
  * 
  *     return post
  */
-  __pyx_v_post = ((((__pyx_v_prior_v - (__pyx_v_arg1 * __pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_dif1))) - (__pyx_v_arg2 * __pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_dif2))) + __pyx_f_6SeqSeg_6SeqSeg_gammaln(__pyx_v_arg1)) + __pyx_f_6SeqSeg_6SeqSeg_gammaln(__pyx_v_arg3));
+  __pyx_v_post = ((((__pyx_v_prior_v - (__pyx_v_arg1 * __pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_dif1))) - (__pyx_v_arg2 * __pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_dif2))) + __pyx_f_6SeqSeg_6SeqSeg_gammaln(__pyx_v_arg1)) + __pyx_f_6SeqSeg_6SeqSeg_gammaln(__pyx_v_arg2));
 
-  /* "SeqSeg/SeqSeg.pyx":112
- *     cdef double post = prior_v - arg1*(Ln(dif1)) - arg2*(Ln(dif2)) + gammaln(arg1) + gammaln(arg3)
+  /* "SeqSeg/SeqSeg.pyx":129
+ *     cdef double post = prior_v - arg1*(Ln(dif1)) - arg2*(Ln(dif2)) + gammaln(arg1) + gammaln(arg2)
  * 
  *     return post             # <<<<<<<<<<<<<<
  * 
- * cdef double cposterior_full(double d, double s, long Nw, long N2, double beta, double sum1, double sum2, long iprior) nogil:
+ * 
  */
   __pyx_r = __pyx_v_post;
   goto __pyx_L0;
 
-  /* "SeqSeg/SeqSeg.pyx":88
- *         return -1e-32
+  /* "SeqSeg/SeqSeg.pyx":102
+ * 
  * 
  * cdef double cposterior_t(long t, long tstart, long tend, double prior_v, double send, double sstart, double st, double st1) nogil:             # <<<<<<<<<<<<<<
- *     ''' Calculates the log-posterior distribution for t
+ *     ''' Calculates the log-posterior distribution for t using SNR-based parameterization
  * 
  */
 
@@ -2678,15 +2686,119 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_t(long __pyx_v_t, long __pyx_v_
   return __pyx_r;
 }
 
-/* "SeqSeg/SeqSeg.pyx":114
+/* "SeqSeg/SeqSeg.pyx":132
+ * 
+ * 
+ * cdef double cposterior_t_var(long t, long tstart, long tend, double prior_v, double send, double sstart, double st, double st1) nogil:             # <<<<<<<<<<<<<<
+ *     ''' Calculates the log-posterior distribution for t using variance based parameterization
+ * 
+ */
+
+static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_t_var(long __pyx_v_t, long __pyx_v_tstart, long __pyx_v_tend, double __pyx_v_prior_v, double __pyx_v_send, double __pyx_v_sstart, double __pyx_v_st, double __pyx_v_st1) {
+  long __pyx_v_adjt;
+  long __pyx_v_Nw;
+  double __pyx_v_dif1;
+  double __pyx_v_dif2;
+  double __pyx_v_arg1;
+  double __pyx_v_arg2;
+  double __pyx_v_post;
+  double __pyx_r;
+
+  /* "SeqSeg/SeqSeg.pyx":151
+ *     '''
+ * 
+ *     cdef long adjt = t - tstart + 1             # <<<<<<<<<<<<<<
+ *     cdef long Nw = tend - tstart + 1
+ *     cdef double dif1 = st-sstart
+ */
+  __pyx_v_adjt = ((__pyx_v_t - __pyx_v_tstart) + 1);
+
+  /* "SeqSeg/SeqSeg.pyx":152
+ * 
+ *     cdef long adjt = t - tstart + 1
+ *     cdef long Nw = tend - tstart + 1             # <<<<<<<<<<<<<<
+ *     cdef double dif1 = st-sstart
+ *     cdef double dif2 = send - st1
+ */
+  __pyx_v_Nw = ((__pyx_v_tend - __pyx_v_tstart) + 1);
+
+  /* "SeqSeg/SeqSeg.pyx":153
+ *     cdef long adjt = t - tstart + 1
+ *     cdef long Nw = tend - tstart + 1
+ *     cdef double dif1 = st-sstart             # <<<<<<<<<<<<<<
+ *     cdef double dif2 = send - st1
+ *     cdef double arg1 = 0.5*adjt
+ */
+  __pyx_v_dif1 = (__pyx_v_st - __pyx_v_sstart);
+
+  /* "SeqSeg/SeqSeg.pyx":154
+ *     cdef long Nw = tend - tstart + 1
+ *     cdef double dif1 = st-sstart
+ *     cdef double dif2 = send - st1             # <<<<<<<<<<<<<<
+ *     cdef double arg1 = 0.5*adjt
+ *     cdef double arg2 = 0.5*(Nw - adjt)
+ */
+  __pyx_v_dif2 = (__pyx_v_send - __pyx_v_st1);
+
+  /* "SeqSeg/SeqSeg.pyx":155
+ *     cdef double dif1 = st-sstart
+ *     cdef double dif2 = send - st1
+ *     cdef double arg1 = 0.5*adjt             # <<<<<<<<<<<<<<
+ *     cdef double arg2 = 0.5*(Nw - adjt)
+ *     cdef double post = prior_v - arg1*Ln(dif1) - arg2*Ln(dif2) + gammaln(arg1) + gammaln(arg2)
+ */
+  __pyx_v_arg1 = (0.5 * __pyx_v_adjt);
+
+  /* "SeqSeg/SeqSeg.pyx":156
+ *     cdef double dif2 = send - st1
+ *     cdef double arg1 = 0.5*adjt
+ *     cdef double arg2 = 0.5*(Nw - adjt)             # <<<<<<<<<<<<<<
+ *     cdef double post = prior_v - arg1*Ln(dif1) - arg2*Ln(dif2) + gammaln(arg1) + gammaln(arg2)
+ * 
+ */
+  __pyx_v_arg2 = (0.5 * (__pyx_v_Nw - __pyx_v_adjt));
+
+  /* "SeqSeg/SeqSeg.pyx":157
+ *     cdef double arg1 = 0.5*adjt
+ *     cdef double arg2 = 0.5*(Nw - adjt)
+ *     cdef double post = prior_v - arg1*Ln(dif1) - arg2*Ln(dif2) + gammaln(arg1) + gammaln(arg2)             # <<<<<<<<<<<<<<
+ * 
+ *     return post
+ */
+  __pyx_v_post = ((((__pyx_v_prior_v - (__pyx_v_arg1 * __pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_dif1))) - (__pyx_v_arg2 * __pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_dif2))) + __pyx_f_6SeqSeg_6SeqSeg_gammaln(__pyx_v_arg1)) + __pyx_f_6SeqSeg_6SeqSeg_gammaln(__pyx_v_arg2));
+
+  /* "SeqSeg/SeqSeg.pyx":159
+ *     cdef double post = prior_v - arg1*Ln(dif1) - arg2*Ln(dif2) + gammaln(arg1) + gammaln(arg2)
+ * 
+ *     return post             # <<<<<<<<<<<<<<
+ * 
+ * cdef double cposterior_full_bkp(double d, double s, long Nw, long N2, double beta, double sum1, double sum2, long iprior) nogil:
+ */
+  __pyx_r = __pyx_v_post;
+  goto __pyx_L0;
+
+  /* "SeqSeg/SeqSeg.pyx":132
+ * 
+ * 
+ * cdef double cposterior_t_var(long t, long tstart, long tend, double prior_v, double send, double sstart, double st, double st1) nogil:             # <<<<<<<<<<<<<<
+ *     ''' Calculates the log-posterior distribution for t using variance based parameterization
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "SeqSeg/SeqSeg.pyx":161
  *     return post
  * 
- * cdef double cposterior_full(double d, double s, long Nw, long N2, double beta, double sum1, double sum2, long iprior) nogil:             # <<<<<<<<<<<<<<
+ * cdef double cposterior_full_bkp(double d, double s, long Nw, long N2, double beta, double sum1, double sum2, long iprior) nogil:             # <<<<<<<<<<<<<<
  *     ''' Full log-posterior kernel for MCMC sampling
  * 
  */
 
-static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double __pyx_v_s, long __pyx_v_Nw, long __pyx_v_N2, double __pyx_v_beta, double __pyx_v_sum1, double __pyx_v_sum2, long __pyx_v_iprior) {
+static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full_bkp(double __pyx_v_d, double __pyx_v_s, long __pyx_v_Nw, long __pyx_v_N2, double __pyx_v_beta, double __pyx_v_sum1, double __pyx_v_sum2, long __pyx_v_iprior) {
   double __pyx_v_dpriors;
   double __pyx_v_dpriord;
   double __pyx_v_post;
@@ -2696,11 +2808,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
   double __pyx_t_3;
   double __pyx_t_4;
 
-  /* "SeqSeg/SeqSeg.pyx":129
+  /* "SeqSeg/SeqSeg.pyx":176
  *     '''
  * 
  *     if d <= 0 or s <= 0:             # <<<<<<<<<<<<<<
- *         return -1e+308
+ *         return -1e+300
  * 
  */
   __pyx_t_2 = ((__pyx_v_d <= 0.0) != 0);
@@ -2714,26 +2826,26 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "SeqSeg/SeqSeg.pyx":130
+    /* "SeqSeg/SeqSeg.pyx":177
  * 
  *     if d <= 0 or s <= 0:
- *         return -1e+308             # <<<<<<<<<<<<<<
+ *         return -1e+300             # <<<<<<<<<<<<<<
  * 
  *     # Jeffreys' prior for sigma
  */
-    __pyx_r = -1e+308;
+    __pyx_r = -1e+300;
     goto __pyx_L0;
 
-    /* "SeqSeg/SeqSeg.pyx":129
+    /* "SeqSeg/SeqSeg.pyx":176
  *     '''
  * 
  *     if d <= 0 or s <= 0:             # <<<<<<<<<<<<<<
- *         return -1e+308
+ *         return -1e+300
  * 
  */
   }
 
-  /* "SeqSeg/SeqSeg.pyx":133
+  /* "SeqSeg/SeqSeg.pyx":180
  * 
  *     # Jeffreys' prior for sigma
  *     cdef double dpriors = -Ln(s)             # <<<<<<<<<<<<<<
@@ -2742,7 +2854,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
  */
   __pyx_v_dpriors = (-__pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_s));
 
-  /* "SeqSeg/SeqSeg.pyx":137
+  /* "SeqSeg/SeqSeg.pyx":184
  *     cdef double dpriord
  * 
  *     if iprior == 0:             # <<<<<<<<<<<<<<
@@ -2752,7 +2864,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
   switch (__pyx_v_iprior) {
     case 0:
 
-    /* "SeqSeg/SeqSeg.pyx":139
+    /* "SeqSeg/SeqSeg.pyx":186
  *     if iprior == 0:
  *         # Laplace prior for delta
  *         dpriord = -Ln(beta) - Abs(d-1)/beta             # <<<<<<<<<<<<<<
@@ -2768,11 +2880,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 139, __pyx_L1_error)
+      __PYX_ERR(0, 186, __pyx_L1_error)
     }
     __pyx_v_dpriord = ((-__pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_beta)) - (__pyx_t_3 / __pyx_v_beta));
 
-    /* "SeqSeg/SeqSeg.pyx":137
+    /* "SeqSeg/SeqSeg.pyx":184
  *     cdef double dpriord
  * 
  *     if iprior == 0:             # <<<<<<<<<<<<<<
@@ -2781,7 +2893,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
  */
     break;
 
-    /* "SeqSeg/SeqSeg.pyx":140
+    /* "SeqSeg/SeqSeg.pyx":187
  *         # Laplace prior for delta
  *         dpriord = -Ln(beta) - Abs(d-1)/beta
  *     elif iprior == 1:             # <<<<<<<<<<<<<<
@@ -2790,7 +2902,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
  */
     case 1:
 
-    /* "SeqSeg/SeqSeg.pyx":142
+    /* "SeqSeg/SeqSeg.pyx":189
  *     elif iprior == 1:
  *         # Gaussian prior for delta
  *         dpriord = -0.5*Ln(beta)-(d-1.)*(d-1.)/(2.*beta)             # <<<<<<<<<<<<<<
@@ -2807,11 +2919,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 142, __pyx_L1_error)
+      __PYX_ERR(0, 189, __pyx_L1_error)
     }
     __pyx_v_dpriord = ((-0.5 * __pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_beta)) - (__pyx_t_3 / __pyx_t_4));
 
-    /* "SeqSeg/SeqSeg.pyx":140
+    /* "SeqSeg/SeqSeg.pyx":187
  *         # Laplace prior for delta
  *         dpriord = -Ln(beta) - Abs(d-1)/beta
  *     elif iprior == 1:             # <<<<<<<<<<<<<<
@@ -2821,7 +2933,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
     break;
     default:
 
-    /* "SeqSeg/SeqSeg.pyx":145
+    /* "SeqSeg/SeqSeg.pyx":192
  *     else:
  *         # Uniform prior
  *         dpriord = 0.             # <<<<<<<<<<<<<<
@@ -2832,7 +2944,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
     break;
   }
 
-  /* "SeqSeg/SeqSeg.pyx":147
+  /* "SeqSeg/SeqSeg.pyx":194
  *         dpriord = 0.
  * 
  *     cdef double post = dpriord +  dpriors - Nw*Ln(s)-0.5*N2*Ln(d)             # <<<<<<<<<<<<<<
@@ -2841,7 +2953,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
  */
   __pyx_v_post = (((__pyx_v_dpriord + __pyx_v_dpriors) - (__pyx_v_Nw * __pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_s))) - ((0.5 * __pyx_v_N2) * __pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_d)));
 
-  /* "SeqSeg/SeqSeg.pyx":148
+  /* "SeqSeg/SeqSeg.pyx":195
  * 
  *     cdef double post = dpriord +  dpriors - Nw*Ln(s)-0.5*N2*Ln(d)
  *     post = post - sum1/(2*(s**2)) - sum2/(2*d*(s**2))             # <<<<<<<<<<<<<<
@@ -2857,7 +2969,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
     #ifdef WITH_THREAD
     __Pyx_PyGILState_Release(__pyx_gilstate_save);
     #endif
-    __PYX_ERR(0, 148, __pyx_L1_error)
+    __PYX_ERR(0, 195, __pyx_L1_error)
   }
   __pyx_t_3 = ((2.0 * __pyx_v_d) * pow(__pyx_v_s, 2.0));
   if (unlikely(__pyx_t_3 == 0)) {
@@ -2868,12 +2980,151 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
     #ifdef WITH_THREAD
     __Pyx_PyGILState_Release(__pyx_gilstate_save);
     #endif
-    __PYX_ERR(0, 148, __pyx_L1_error)
+    __PYX_ERR(0, 195, __pyx_L1_error)
   }
   __pyx_v_post = ((__pyx_v_post - (__pyx_v_sum1 / __pyx_t_4)) - (__pyx_v_sum2 / __pyx_t_3));
 
-  /* "SeqSeg/SeqSeg.pyx":150
+  /* "SeqSeg/SeqSeg.pyx":197
  *     post = post - sum1/(2*(s**2)) - sum2/(2*d*(s**2))
+ * 
+ *     return post             # <<<<<<<<<<<<<<
+ * 
+ * cdef double cposterior_full(double s1, double s2, long Nw, long N2, double sum1, double sum2) nogil:
+ */
+  __pyx_r = __pyx_v_post;
+  goto __pyx_L0;
+
+  /* "SeqSeg/SeqSeg.pyx":161
+ *     return post
+ * 
+ * cdef double cposterior_full_bkp(double d, double s, long Nw, long N2, double beta, double sum1, double sum2, long iprior) nogil:             # <<<<<<<<<<<<<<
+ *     ''' Full log-posterior kernel for MCMC sampling
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_WriteUnraisable("SeqSeg.SeqSeg.cposterior_full_bkp", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __pyx_r = 0;
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "SeqSeg/SeqSeg.pyx":199
+ *     return post
+ * 
+ * cdef double cposterior_full(double s1, double s2, long Nw, long N2, double sum1, double sum2) nogil:             # <<<<<<<<<<<<<<
+ *     ''' Full log-posterior kernel for MCMC sampling
+ * 
+ */
+
+static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_s1, double __pyx_v_s2, long __pyx_v_Nw, long __pyx_v_N2, double __pyx_v_sum1, double __pyx_v_sum2) {
+  double __pyx_v_dpriors1;
+  double __pyx_v_dpriors2;
+  double __pyx_v_post;
+  double __pyx_r;
+  int __pyx_t_1;
+  int __pyx_t_2;
+  double __pyx_t_3;
+  double __pyx_t_4;
+
+  /* "SeqSeg/SeqSeg.pyx":213
+ *     '''
+ * 
+ *     if s1 <= 0 or s2 <= 0:             # <<<<<<<<<<<<<<
+ *         return -1e+300
+ * 
+ */
+  __pyx_t_2 = ((__pyx_v_s1 <= 0.0) != 0);
+  if (!__pyx_t_2) {
+  } else {
+    __pyx_t_1 = __pyx_t_2;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_2 = ((__pyx_v_s2 <= 0.0) != 0);
+  __pyx_t_1 = __pyx_t_2;
+  __pyx_L4_bool_binop_done:;
+  if (__pyx_t_1) {
+
+    /* "SeqSeg/SeqSeg.pyx":214
+ * 
+ *     if s1 <= 0 or s2 <= 0:
+ *         return -1e+300             # <<<<<<<<<<<<<<
+ * 
+ *     # Jeffreys' prior for sigma
+ */
+    __pyx_r = -1e+300;
+    goto __pyx_L0;
+
+    /* "SeqSeg/SeqSeg.pyx":213
+ *     '''
+ * 
+ *     if s1 <= 0 or s2 <= 0:             # <<<<<<<<<<<<<<
+ *         return -1e+300
+ * 
+ */
+  }
+
+  /* "SeqSeg/SeqSeg.pyx":217
+ * 
+ *     # Jeffreys' prior for sigma
+ *     cdef double dpriors1 = -Ln(s1)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double dpriors2 = -Ln(s2)
+ */
+  __pyx_v_dpriors1 = (-__pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_s1));
+
+  /* "SeqSeg/SeqSeg.pyx":219
+ *     cdef double dpriors1 = -Ln(s1)
+ * 
+ *     cdef double dpriors2 = -Ln(s2)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double post = dpriors1 +  dpriors2 - (Nw-N2)*Ln(s1)-N2*Ln(s2)
+ */
+  __pyx_v_dpriors2 = (-__pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_s2));
+
+  /* "SeqSeg/SeqSeg.pyx":221
+ *     cdef double dpriors2 = -Ln(s2)
+ * 
+ *     cdef double post = dpriors1 +  dpriors2 - (Nw-N2)*Ln(s1)-N2*Ln(s2)             # <<<<<<<<<<<<<<
+ *     post = post - sum1/(2*(s1**2)) - sum2/(2*(s2**2))
+ * 
+ */
+  __pyx_v_post = (((__pyx_v_dpriors1 + __pyx_v_dpriors2) - ((__pyx_v_Nw - __pyx_v_N2) * __pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_s1))) - (__pyx_v_N2 * __pyx_f_6SeqSeg_6SeqSeg_Ln(__pyx_v_s2)));
+
+  /* "SeqSeg/SeqSeg.pyx":222
+ * 
+ *     cdef double post = dpriors1 +  dpriors2 - (Nw-N2)*Ln(s1)-N2*Ln(s2)
+ *     post = post - sum1/(2*(s1**2)) - sum2/(2*(s2**2))             # <<<<<<<<<<<<<<
+ * 
+ *     return post
+ */
+  __pyx_t_3 = (2.0 * pow(__pyx_v_s1, 2.0));
+  if (unlikely(__pyx_t_3 == 0)) {
+    #ifdef WITH_THREAD
+    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+    #endif
+    PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+    #ifdef WITH_THREAD
+    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+    #endif
+    __PYX_ERR(0, 222, __pyx_L1_error)
+  }
+  __pyx_t_4 = (2.0 * pow(__pyx_v_s2, 2.0));
+  if (unlikely(__pyx_t_4 == 0)) {
+    #ifdef WITH_THREAD
+    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+    #endif
+    PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+    #ifdef WITH_THREAD
+    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+    #endif
+    __PYX_ERR(0, 222, __pyx_L1_error)
+  }
+  __pyx_v_post = ((__pyx_v_post - (__pyx_v_sum1 / __pyx_t_3)) - (__pyx_v_sum2 / __pyx_t_4));
+
+  /* "SeqSeg/SeqSeg.pyx":224
+ *     post = post - sum1/(2*(s1**2)) - sum2/(2*(s2**2))
  * 
  *     return post             # <<<<<<<<<<<<<<
  * 
@@ -2882,10 +3133,10 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
   __pyx_r = __pyx_v_post;
   goto __pyx_L0;
 
-  /* "SeqSeg/SeqSeg.pyx":114
+  /* "SeqSeg/SeqSeg.pyx":199
  *     return post
  * 
- * cdef double cposterior_full(double d, double s, long Nw, long N2, double beta, double sum1, double sum2, long iprior) nogil:             # <<<<<<<<<<<<<<
+ * cdef double cposterior_full(double s1, double s2, long Nw, long N2, double sum1, double sum2) nogil:             # <<<<<<<<<<<<<<
  *     ''' Full log-posterior kernel for MCMC sampling
  * 
  */
@@ -2898,15 +3149,15 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(double __pyx_v_d, double _
   return __pyx_r;
 }
 
-/* "SeqSeg/SeqSeg.pyx":153
+/* "SeqSeg/SeqSeg.pyx":227
  * 
  * 
- * cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N2, double sum1, double sum2, long iprior) nogil:             # <<<<<<<<<<<<<<
+ * cdef double cmcmc_bkp(int mcburn, int mciter, double p0, double beta, long N, long N2, double sum1, double sum2, long iprior) nogil:             # <<<<<<<<<<<<<<
  *     ''' Run MCMC
  * 
  */
 
-static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mciter, double __pyx_v_p0, double __pyx_v_beta, long __pyx_v_N, long __pyx_v_N2, double __pyx_v_sum1, double __pyx_v_sum2, long __pyx_v_iprior) {
+static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc_bkp(int __pyx_v_mcburn, int __pyx_v_mciter, double __pyx_v_p0, double __pyx_v_beta, long __pyx_v_N, long __pyx_v_N2, double __pyx_v_sum1, double __pyx_v_sum2, long __pyx_v_iprior) {
   double __pyx_v_pcur;
   double __pyx_v_pcand;
   double __pyx_v_scur;
@@ -2950,18 +3201,18 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
   #ifdef WITH_THREAD
   PyGILState_STATE __pyx_gilstate_save;
   #endif
-  __Pyx_RefNannySetupContext("cmcmc", 1);
+  __Pyx_RefNannySetupContext("cmcmc_bkp", 1);
 
-  /* "SeqSeg/SeqSeg.pyx":154
+  /* "SeqSeg/SeqSeg.pyx":228
  * 
- * cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N2, double sum1, double sum2, long iprior) nogil:
+ * cdef double cmcmc_bkp(int mcburn, int mciter, double p0, double beta, long N, long N2, double sum1, double sum2, long iprior) nogil:
  *     ''' Run MCMC             # <<<<<<<<<<<<<<
  * 
- *         Arguments:
+ *         @args:
  */
   /*try:*/ {
 
-    /* "SeqSeg/SeqSeg.pyx":173
+    /* "SeqSeg/SeqSeg.pyx":247
  *     cdef double accept, dvarmin, svarmin
  * 
  *     dcur = (sum2 / (N2-1))/(sum1 / (N-N2-1))             # <<<<<<<<<<<<<<
@@ -2977,7 +3228,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 173, __pyx_L4_error)
+      __PYX_ERR(0, 247, __pyx_L4_error)
     }
     __pyx_t_2 = (__pyx_v_sum2 / __pyx_t_1);
     __pyx_t_1 = ((__pyx_v_N - __pyx_v_N2) - 1);
@@ -2989,7 +3240,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 173, __pyx_L4_error)
+      __PYX_ERR(0, 247, __pyx_L4_error)
     }
     __pyx_t_3 = (__pyx_v_sum1 / __pyx_t_1);
     if (unlikely(__pyx_t_3 == 0)) {
@@ -3000,11 +3251,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 173, __pyx_L4_error)
+      __PYX_ERR(0, 247, __pyx_L4_error)
     }
     __pyx_v_dcur = (__pyx_t_2 / __pyx_t_3);
 
-    /* "SeqSeg/SeqSeg.pyx":174
+    /* "SeqSeg/SeqSeg.pyx":248
  * 
  *     dcur = (sum2 / (N2-1))/(sum1 / (N-N2-1))
  *     scur = Sqrt(sum1 / (N-N2-1))             # <<<<<<<<<<<<<<
@@ -3020,11 +3271,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 174, __pyx_L4_error)
+      __PYX_ERR(0, 248, __pyx_L4_error)
     }
     __pyx_v_scur = __pyx_f_6SeqSeg_6SeqSeg_Sqrt((__pyx_v_sum1 / __pyx_t_1));
 
-    /* "SeqSeg/SeqSeg.pyx":177
+    /* "SeqSeg/SeqSeg.pyx":251
  * 
  *     # Standard deviations and covariance for random-walk candidates distributions
  *     dvar = (dcur / 3) ** 2             # <<<<<<<<<<<<<<
@@ -3033,7 +3284,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_dvar = pow((__pyx_v_dcur / 3.0), 2.0);
 
-    /* "SeqSeg/SeqSeg.pyx":178
+    /* "SeqSeg/SeqSeg.pyx":252
  *     # Standard deviations and covariance for random-walk candidates distributions
  *     dvar = (dcur / 3) ** 2
  *     svar = (scur / 3) ** 2             # <<<<<<<<<<<<<<
@@ -3042,7 +3293,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_svar = pow((__pyx_v_scur / 3.0), 2.0);
 
-    /* "SeqSeg/SeqSeg.pyx":179
+    /* "SeqSeg/SeqSeg.pyx":253
  *     dvar = (dcur / 3) ** 2
  *     svar = (scur / 3) ** 2
  *     cov = 0.0             # <<<<<<<<<<<<<<
@@ -3051,7 +3302,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_cov = 0.0;
 
-    /* "SeqSeg/SeqSeg.pyx":182
+    /* "SeqSeg/SeqSeg.pyx":256
  * 
  *     # To safeguard variances
  *     dvarmin = dvar             # <<<<<<<<<<<<<<
@@ -3060,7 +3311,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_dvarmin = __pyx_v_dvar;
 
-    /* "SeqSeg/SeqSeg.pyx":183
+    /* "SeqSeg/SeqSeg.pyx":257
  *     # To safeguard variances
  *     dvarmin = dvar
  *     svarmin = svar             # <<<<<<<<<<<<<<
@@ -3069,34 +3320,34 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_svarmin = __pyx_v_svar;
 
-    /* "SeqSeg/SeqSeg.pyx":187
+    /* "SeqSeg/SeqSeg.pyx":261
  * 
  *     # Generating starting values for the chain
  *     dcur = Abs(dcur + gsl_ran_gaussian(r, Sqrt(dvar)))             # <<<<<<<<<<<<<<
  *     scur = Abs(scur + gsl_ran_gaussian(r, Sqrt(svar)))
- *     pcur = cposterior_full(dcur, scur, N, N2, beta, sum1, sum2, iprior)
+ *     pcur = cposterior_full_bkp(dcur, scur, N, N2, beta, sum1, sum2, iprior)
  */
     __pyx_v_dcur = __pyx_f_6SeqSeg_6SeqSeg_Abs((__pyx_v_dcur + gsl_ran_gaussian(__pyx_v_6SeqSeg_6SeqSeg_r, __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_dvar))));
 
-    /* "SeqSeg/SeqSeg.pyx":188
+    /* "SeqSeg/SeqSeg.pyx":262
  *     # Generating starting values for the chain
  *     dcur = Abs(dcur + gsl_ran_gaussian(r, Sqrt(dvar)))
  *     scur = Abs(scur + gsl_ran_gaussian(r, Sqrt(svar)))             # <<<<<<<<<<<<<<
- *     pcur = cposterior_full(dcur, scur, N, N2, beta, sum1, sum2, iprior)
+ *     pcur = cposterior_full_bkp(dcur, scur, N, N2, beta, sum1, sum2, iprior)
  * 
  */
     __pyx_v_scur = __pyx_f_6SeqSeg_6SeqSeg_Abs((__pyx_v_scur + gsl_ran_gaussian(__pyx_v_6SeqSeg_6SeqSeg_r, __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_svar))));
 
-    /* "SeqSeg/SeqSeg.pyx":189
+    /* "SeqSeg/SeqSeg.pyx":263
  *     dcur = Abs(dcur + gsl_ran_gaussian(r, Sqrt(dvar)))
  *     scur = Abs(scur + gsl_ran_gaussian(r, Sqrt(svar)))
- *     pcur = cposterior_full(dcur, scur, N, N2, beta, sum1, sum2, iprior)             # <<<<<<<<<<<<<<
+ *     pcur = cposterior_full_bkp(dcur, scur, N, N2, beta, sum1, sum2, iprior)             # <<<<<<<<<<<<<<
  * 
  *     # Parameters for adaptive MH
  */
-    __pyx_v_pcur = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(__pyx_v_dcur, __pyx_v_scur, __pyx_v_N, __pyx_v_N2, __pyx_v_beta, __pyx_v_sum1, __pyx_v_sum2, __pyx_v_iprior);
+    __pyx_v_pcur = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full_bkp(__pyx_v_dcur, __pyx_v_scur, __pyx_v_N, __pyx_v_N2, __pyx_v_beta, __pyx_v_sum1, __pyx_v_sum2, __pyx_v_iprior);
 
-    /* "SeqSeg/SeqSeg.pyx":192
+    /* "SeqSeg/SeqSeg.pyx":266
  * 
  *     # Parameters for adaptive MH
  *     sd = (2.4*2.4)/2.0             # <<<<<<<<<<<<<<
@@ -3105,7 +3356,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_sd = ((2.4 * 2.4) / 2.0);
 
-    /* "SeqSeg/SeqSeg.pyx":193
+    /* "SeqSeg/SeqSeg.pyx":267
  *     # Parameters for adaptive MH
  *     sd = (2.4*2.4)/2.0
  *     eps = 1e-30             # <<<<<<<<<<<<<<
@@ -3114,7 +3365,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_eps = 1e-30;
 
-    /* "SeqSeg/SeqSeg.pyx":196
+    /* "SeqSeg/SeqSeg.pyx":270
  * 
  *     # Starting point for adaptive MH
  *     t0 = 1000             # <<<<<<<<<<<<<<
@@ -3123,7 +3374,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_t0 = 0x3E8;
 
-    /* "SeqSeg/SeqSeg.pyx":198
+    /* "SeqSeg/SeqSeg.pyx":272
  *     t0 = 1000
  * 
  *     dmean = 0.0             # <<<<<<<<<<<<<<
@@ -3132,7 +3383,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_dmean = 0.0;
 
-    /* "SeqSeg/SeqSeg.pyx":199
+    /* "SeqSeg/SeqSeg.pyx":273
  * 
  *     dmean = 0.0
  *     smean = 0.0             # <<<<<<<<<<<<<<
@@ -3141,7 +3392,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_smean = 0.0;
 
-    /* "SeqSeg/SeqSeg.pyx":200
+    /* "SeqSeg/SeqSeg.pyx":274
  *     dmean = 0.0
  *     smean = 0.0
  *     sumdsq = 0.0             # <<<<<<<<<<<<<<
@@ -3150,7 +3401,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_sumdsq = 0.0;
 
-    /* "SeqSeg/SeqSeg.pyx":201
+    /* "SeqSeg/SeqSeg.pyx":275
  *     smean = 0.0
  *     sumdsq = 0.0
  *     sumssq = 0.0             # <<<<<<<<<<<<<<
@@ -3159,7 +3410,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_sumssq = 0.0;
 
-    /* "SeqSeg/SeqSeg.pyx":202
+    /* "SeqSeg/SeqSeg.pyx":276
  *     sumdsq = 0.0
  *     sumssq = 0.0
  *     cov0 = 0.0             # <<<<<<<<<<<<<<
@@ -3168,7 +3419,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_cov0 = 0.0;
 
-    /* "SeqSeg/SeqSeg.pyx":203
+    /* "SeqSeg/SeqSeg.pyx":277
  *     sumssq = 0.0
  *     cov0 = 0.0
  *     accept = 0             # <<<<<<<<<<<<<<
@@ -3177,7 +3428,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_accept = 0.0;
 
-    /* "SeqSeg/SeqSeg.pyx":204
+    /* "SeqSeg/SeqSeg.pyx":278
  *     cov0 = 0.0
  *     accept = 0
  *     for i in range(t0):             # <<<<<<<<<<<<<<
@@ -3188,7 +3439,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
     for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
       __pyx_v_i = __pyx_t_5;
 
-      /* "SeqSeg/SeqSeg.pyx":207
+      /* "SeqSeg/SeqSeg.pyx":281
  * 
  *         # Generate candidates
  *         u1 = gsl_ran_ugaussian(r)             # <<<<<<<<<<<<<<
@@ -3197,7 +3448,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_u1 = gsl_ran_ugaussian(__pyx_v_6SeqSeg_6SeqSeg_r);
 
-      /* "SeqSeg/SeqSeg.pyx":208
+      /* "SeqSeg/SeqSeg.pyx":282
  *         # Generate candidates
  *         u1 = gsl_ran_ugaussian(r)
  *         dcand = dcur + u1*Sqrt(dvar)             # <<<<<<<<<<<<<<
@@ -3206,16 +3457,16 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_dcand = (__pyx_v_dcur + (__pyx_v_u1 * __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_dvar)));
 
-      /* "SeqSeg/SeqSeg.pyx":211
+      /* "SeqSeg/SeqSeg.pyx":285
  * 
  *         # Calculates full posterior
- *         pcand = cposterior_full(dcand, scur, N, N2, beta, sum1, sum2, iprior)             # <<<<<<<<<<<<<<
+ *         pcand = cposterior_full_bkp(dcand, scur, N, N2, beta, sum1, sum2, iprior)             # <<<<<<<<<<<<<<
  * 
  *         # Acceptance ratio
  */
-      __pyx_v_pcand = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(__pyx_v_dcand, __pyx_v_scur, __pyx_v_N, __pyx_v_N2, __pyx_v_beta, __pyx_v_sum1, __pyx_v_sum2, __pyx_v_iprior);
+      __pyx_v_pcand = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full_bkp(__pyx_v_dcand, __pyx_v_scur, __pyx_v_N, __pyx_v_N2, __pyx_v_beta, __pyx_v_sum1, __pyx_v_sum2, __pyx_v_iprior);
 
-      /* "SeqSeg/SeqSeg.pyx":214
+      /* "SeqSeg/SeqSeg.pyx":288
  * 
  *         # Acceptance ratio
  *         a = pcand - pcur             # <<<<<<<<<<<<<<
@@ -3224,7 +3475,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_a = (__pyx_v_pcand - __pyx_v_pcur);
 
-      /* "SeqSeg/SeqSeg.pyx":216
+      /* "SeqSeg/SeqSeg.pyx":290
  *         a = pcand - pcur
  * 
  *         if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
@@ -3234,7 +3485,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       __pyx_t_6 = ((__pyx_f_6SeqSeg_6SeqSeg_Ln(gsl_rng_uniform(__pyx_v_6SeqSeg_6SeqSeg_r)) < __pyx_v_a) != 0);
       if (__pyx_t_6) {
 
-        /* "SeqSeg/SeqSeg.pyx":217
+        /* "SeqSeg/SeqSeg.pyx":291
  * 
  *         if Ln(gsl_rng_uniform(r)) < a:
  *             dcur = dcand             # <<<<<<<<<<<<<<
@@ -3243,7 +3494,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
         __pyx_v_dcur = __pyx_v_dcand;
 
-        /* "SeqSeg/SeqSeg.pyx":218
+        /* "SeqSeg/SeqSeg.pyx":292
  *         if Ln(gsl_rng_uniform(r)) < a:
  *             dcur = dcand
  *             pcur = pcand             # <<<<<<<<<<<<<<
@@ -3252,7 +3503,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
         __pyx_v_pcur = __pyx_v_pcand;
 
-        /* "SeqSeg/SeqSeg.pyx":219
+        /* "SeqSeg/SeqSeg.pyx":293
  *             dcur = dcand
  *             pcur = pcand
  *             accept = accept + 1             # <<<<<<<<<<<<<<
@@ -3261,7 +3512,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
         __pyx_v_accept = (__pyx_v_accept + 1.0);
 
-        /* "SeqSeg/SeqSeg.pyx":216
+        /* "SeqSeg/SeqSeg.pyx":290
  *         a = pcand - pcur
  * 
  *         if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
@@ -3270,7 +3521,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       }
 
-      /* "SeqSeg/SeqSeg.pyx":222
+      /* "SeqSeg/SeqSeg.pyx":296
  *         #endif
  * 
  *         u2 = gsl_ran_ugaussian(r)             # <<<<<<<<<<<<<<
@@ -3279,7 +3530,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_u2 = gsl_ran_ugaussian(__pyx_v_6SeqSeg_6SeqSeg_r);
 
-      /* "SeqSeg/SeqSeg.pyx":223
+      /* "SeqSeg/SeqSeg.pyx":297
  * 
  *         u2 = gsl_ran_ugaussian(r)
  *         scand = scur + Sqrt(svar)*u2             # <<<<<<<<<<<<<<
@@ -3288,16 +3539,16 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_scand = (__pyx_v_scur + (__pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_svar) * __pyx_v_u2));
 
-      /* "SeqSeg/SeqSeg.pyx":226
+      /* "SeqSeg/SeqSeg.pyx":300
  * 
  *         # Calculates full posterior
- *         pcand = cposterior_full(dcur, scand, N, N2, beta, sum1, sum2, iprior)             # <<<<<<<<<<<<<<
+ *         pcand = cposterior_full_bkp(dcur, scand, N, N2, beta, sum1, sum2, iprior)             # <<<<<<<<<<<<<<
  * 
  *         # Acceptance ratio
  */
-      __pyx_v_pcand = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(__pyx_v_dcur, __pyx_v_scand, __pyx_v_N, __pyx_v_N2, __pyx_v_beta, __pyx_v_sum1, __pyx_v_sum2, __pyx_v_iprior);
+      __pyx_v_pcand = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full_bkp(__pyx_v_dcur, __pyx_v_scand, __pyx_v_N, __pyx_v_N2, __pyx_v_beta, __pyx_v_sum1, __pyx_v_sum2, __pyx_v_iprior);
 
-      /* "SeqSeg/SeqSeg.pyx":229
+      /* "SeqSeg/SeqSeg.pyx":303
  * 
  *         # Acceptance ratio
  *         a = pcand - pcur             # <<<<<<<<<<<<<<
@@ -3306,7 +3557,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_a = (__pyx_v_pcand - __pyx_v_pcur);
 
-      /* "SeqSeg/SeqSeg.pyx":231
+      /* "SeqSeg/SeqSeg.pyx":305
  *         a = pcand - pcur
  * 
  *         if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
@@ -3316,7 +3567,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       __pyx_t_6 = ((__pyx_f_6SeqSeg_6SeqSeg_Ln(gsl_rng_uniform(__pyx_v_6SeqSeg_6SeqSeg_r)) < __pyx_v_a) != 0);
       if (__pyx_t_6) {
 
-        /* "SeqSeg/SeqSeg.pyx":232
+        /* "SeqSeg/SeqSeg.pyx":306
  * 
  *         if Ln(gsl_rng_uniform(r)) < a:
  *             scur = scand             # <<<<<<<<<<<<<<
@@ -3325,7 +3576,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
         __pyx_v_scur = __pyx_v_scand;
 
-        /* "SeqSeg/SeqSeg.pyx":233
+        /* "SeqSeg/SeqSeg.pyx":307
  *         if Ln(gsl_rng_uniform(r)) < a:
  *             scur = scand
  *             pcur = pcand             # <<<<<<<<<<<<<<
@@ -3334,7 +3585,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
         __pyx_v_pcur = __pyx_v_pcand;
 
-        /* "SeqSeg/SeqSeg.pyx":234
+        /* "SeqSeg/SeqSeg.pyx":308
  *             scur = scand
  *             pcur = pcand
  *             accept = accept + 1             # <<<<<<<<<<<<<<
@@ -3343,7 +3594,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
         __pyx_v_accept = (__pyx_v_accept + 1.0);
 
-        /* "SeqSeg/SeqSeg.pyx":231
+        /* "SeqSeg/SeqSeg.pyx":305
  *         a = pcand - pcur
  * 
  *         if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
@@ -3352,7 +3603,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       }
 
-      /* "SeqSeg/SeqSeg.pyx":237
+      /* "SeqSeg/SeqSeg.pyx":311
  *         #endif
  * 
  *         dmean = dmean + dcur             # <<<<<<<<<<<<<<
@@ -3361,7 +3612,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_dmean = (__pyx_v_dmean + __pyx_v_dcur);
 
-      /* "SeqSeg/SeqSeg.pyx":238
+      /* "SeqSeg/SeqSeg.pyx":312
  * 
  *         dmean = dmean + dcur
  *         smean = smean + scur             # <<<<<<<<<<<<<<
@@ -3370,7 +3621,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_smean = (__pyx_v_smean + __pyx_v_scur);
 
-      /* "SeqSeg/SeqSeg.pyx":239
+      /* "SeqSeg/SeqSeg.pyx":313
  *         dmean = dmean + dcur
  *         smean = smean + scur
  *         cov0 = cov0 + dcur*scur             # <<<<<<<<<<<<<<
@@ -3379,7 +3630,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_cov0 = (__pyx_v_cov0 + (__pyx_v_dcur * __pyx_v_scur));
 
-      /* "SeqSeg/SeqSeg.pyx":240
+      /* "SeqSeg/SeqSeg.pyx":314
  *         smean = smean + scur
  *         cov0 = cov0 + dcur*scur
  *         sumdsq = sumdsq + dcur*dcur             # <<<<<<<<<<<<<<
@@ -3388,7 +3639,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_sumdsq = (__pyx_v_sumdsq + (__pyx_v_dcur * __pyx_v_dcur));
 
-      /* "SeqSeg/SeqSeg.pyx":241
+      /* "SeqSeg/SeqSeg.pyx":315
  *         cov0 = cov0 + dcur*scur
  *         sumdsq = sumdsq + dcur*dcur
  *         sumssq = sumssq + scur*scur             # <<<<<<<<<<<<<<
@@ -3398,7 +3649,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       __pyx_v_sumssq = (__pyx_v_sumssq + (__pyx_v_scur * __pyx_v_scur));
     }
 
-    /* "SeqSeg/SeqSeg.pyx":245
+    /* "SeqSeg/SeqSeg.pyx":319
  *     #endfor
  * 
  *     dvar = (sumdsq - (dmean*dmean)/t0)/(t0-1)             # <<<<<<<<<<<<<<
@@ -3414,7 +3665,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 245, __pyx_L4_error)
+      __PYX_ERR(0, 319, __pyx_L4_error)
     }
     __pyx_t_2 = (__pyx_v_sumdsq - (__pyx_t_3 / __pyx_v_t0));
     __pyx_t_1 = (__pyx_v_t0 - 1);
@@ -3426,11 +3677,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 245, __pyx_L4_error)
+      __PYX_ERR(0, 319, __pyx_L4_error)
     }
     __pyx_v_dvar = (__pyx_t_2 / __pyx_t_1);
 
-    /* "SeqSeg/SeqSeg.pyx":246
+    /* "SeqSeg/SeqSeg.pyx":320
  * 
  *     dvar = (sumdsq - (dmean*dmean)/t0)/(t0-1)
  *     svar = (sumssq - (smean*smean)/t0)/(t0-1)             # <<<<<<<<<<<<<<
@@ -3446,7 +3697,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 246, __pyx_L4_error)
+      __PYX_ERR(0, 320, __pyx_L4_error)
     }
     __pyx_t_3 = (__pyx_v_sumssq - (__pyx_t_2 / __pyx_v_t0));
     __pyx_t_1 = (__pyx_v_t0 - 1);
@@ -3458,11 +3709,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 246, __pyx_L4_error)
+      __PYX_ERR(0, 320, __pyx_L4_error)
     }
     __pyx_v_svar = (__pyx_t_3 / __pyx_t_1);
 
-    /* "SeqSeg/SeqSeg.pyx":249
+    /* "SeqSeg/SeqSeg.pyx":323
  * 
  * 
  *     if svar < 0:             # <<<<<<<<<<<<<<
@@ -3472,7 +3723,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
     __pyx_t_6 = ((__pyx_v_svar < 0.0) != 0);
     if (__pyx_t_6) {
 
-      /* "SeqSeg/SeqSeg.pyx":250
+      /* "SeqSeg/SeqSeg.pyx":324
  * 
  *     if svar < 0:
  *         with gil:             # <<<<<<<<<<<<<<
@@ -3485,17 +3736,17 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
           #endif
           /*try:*/ {
 
-            /* "SeqSeg/SeqSeg.pyx":252
+            /* "SeqSeg/SeqSeg.pyx":326
  *         with gil:
  *             # This shouldn't happen, but if it does we reset the variance to a valid value
  *             print("Posterior variance of signal power with negative value!")             # <<<<<<<<<<<<<<
  *         svar = svarmin
  * 
  */
-            if (__Pyx_PrintOne(0, __pyx_kp_s_Posterior_variance_of_signal_pow) < 0) __PYX_ERR(0, 252, __pyx_L12_error)
+            if (__Pyx_PrintOne(0, __pyx_kp_s_Posterior_variance_of_signal_pow) < 0) __PYX_ERR(0, 326, __pyx_L12_error)
           }
 
-          /* "SeqSeg/SeqSeg.pyx":250
+          /* "SeqSeg/SeqSeg.pyx":324
  * 
  *     if svar < 0:
  *         with gil:             # <<<<<<<<<<<<<<
@@ -3519,7 +3770,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
           }
       }
 
-      /* "SeqSeg/SeqSeg.pyx":253
+      /* "SeqSeg/SeqSeg.pyx":327
  *             # This shouldn't happen, but if it does we reset the variance to a valid value
  *             print("Posterior variance of signal power with negative value!")
  *         svar = svarmin             # <<<<<<<<<<<<<<
@@ -3528,7 +3779,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_svar = __pyx_v_svarmin;
 
-      /* "SeqSeg/SeqSeg.pyx":249
+      /* "SeqSeg/SeqSeg.pyx":323
  * 
  * 
  *     if svar < 0:             # <<<<<<<<<<<<<<
@@ -3537,7 +3788,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     }
 
-    /* "SeqSeg/SeqSeg.pyx":255
+    /* "SeqSeg/SeqSeg.pyx":329
  *         svar = svarmin
  * 
  *     if dvar < 0:             # <<<<<<<<<<<<<<
@@ -3547,7 +3798,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
     __pyx_t_6 = ((__pyx_v_dvar < 0.0) != 0);
     if (__pyx_t_6) {
 
-      /* "SeqSeg/SeqSeg.pyx":256
+      /* "SeqSeg/SeqSeg.pyx":330
  * 
  *     if dvar < 0:
  *         with gil:             # <<<<<<<<<<<<<<
@@ -3560,17 +3811,17 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
           #endif
           /*try:*/ {
 
-            /* "SeqSeg/SeqSeg.pyx":258
+            /* "SeqSeg/SeqSeg.pyx":332
  *         with gil:
  *             # This shouldn't happen, but if it does we reset the variance to a valid value
  *             print("Posterior variance of delta with negative value!")             # <<<<<<<<<<<<<<
  *         dvar = dvarmin
  * 
  */
-            if (__Pyx_PrintOne(0, __pyx_kp_s_Posterior_variance_of_delta_with) < 0) __PYX_ERR(0, 258, __pyx_L16_error)
+            if (__Pyx_PrintOne(0, __pyx_kp_s_Posterior_variance_of_delta_with) < 0) __PYX_ERR(0, 332, __pyx_L16_error)
           }
 
-          /* "SeqSeg/SeqSeg.pyx":256
+          /* "SeqSeg/SeqSeg.pyx":330
  * 
  *     if dvar < 0:
  *         with gil:             # <<<<<<<<<<<<<<
@@ -3594,7 +3845,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
           }
       }
 
-      /* "SeqSeg/SeqSeg.pyx":259
+      /* "SeqSeg/SeqSeg.pyx":333
  *             # This shouldn't happen, but if it does we reset the variance to a valid value
  *             print("Posterior variance of delta with negative value!")
  *         dvar = dvarmin             # <<<<<<<<<<<<<<
@@ -3603,7 +3854,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_dvar = __pyx_v_dvarmin;
 
-      /* "SeqSeg/SeqSeg.pyx":255
+      /* "SeqSeg/SeqSeg.pyx":329
  *         svar = svarmin
  * 
  *     if dvar < 0:             # <<<<<<<<<<<<<<
@@ -3612,7 +3863,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     }
 
-    /* "SeqSeg/SeqSeg.pyx":261
+    /* "SeqSeg/SeqSeg.pyx":335
  *         dvar = dvarmin
  * 
  *     cov = (1/(t0-1))*(cov0 - dmean*smean/t0)             # <<<<<<<<<<<<<<
@@ -3628,7 +3879,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 261, __pyx_L4_error)
+      __PYX_ERR(0, 335, __pyx_L4_error)
     }
     else if (sizeof(long) == sizeof(long) && (!(((long)-1) > 0)) && unlikely(__pyx_t_1 == (long)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(1))) {
       #ifdef WITH_THREAD
@@ -3638,7 +3889,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 261, __pyx_L4_error)
+      __PYX_ERR(0, 335, __pyx_L4_error)
     }
     __pyx_t_3 = (__pyx_v_dmean * __pyx_v_smean);
     if (unlikely(__pyx_v_t0 == 0)) {
@@ -3649,11 +3900,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 261, __pyx_L4_error)
+      __PYX_ERR(0, 335, __pyx_L4_error)
     }
     __pyx_v_cov = (__Pyx_div_long(1, __pyx_t_1) * (__pyx_v_cov0 - (__pyx_t_3 / __pyx_v_t0)));
 
-    /* "SeqSeg/SeqSeg.pyx":262
+    /* "SeqSeg/SeqSeg.pyx":336
  * 
  *     cov = (1/(t0-1))*(cov0 - dmean*smean/t0)
  *     rho = cov/Sqrt(dvar*svar)             # <<<<<<<<<<<<<<
@@ -3669,11 +3920,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 262, __pyx_L4_error)
+      __PYX_ERR(0, 336, __pyx_L4_error)
     }
     __pyx_v_rho = (__pyx_v_cov / __pyx_t_3);
 
-    /* "SeqSeg/SeqSeg.pyx":263
+    /* "SeqSeg/SeqSeg.pyx":337
  *     cov = (1/(t0-1))*(cov0 - dmean*smean/t0)
  *     rho = cov/Sqrt(dvar*svar)
  *     dmean = dmean / t0             # <<<<<<<<<<<<<<
@@ -3688,11 +3939,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 263, __pyx_L4_error)
+      __PYX_ERR(0, 337, __pyx_L4_error)
     }
     __pyx_v_dmean = (__pyx_v_dmean / __pyx_v_t0);
 
-    /* "SeqSeg/SeqSeg.pyx":264
+    /* "SeqSeg/SeqSeg.pyx":338
  *     rho = cov/Sqrt(dvar*svar)
  *     dmean = dmean / t0
  *     smean = smean / t0             # <<<<<<<<<<<<<<
@@ -3707,11 +3958,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 264, __pyx_L4_error)
+      __PYX_ERR(0, 338, __pyx_L4_error)
     }
     __pyx_v_smean = (__pyx_v_smean / __pyx_v_t0);
 
-    /* "SeqSeg/SeqSeg.pyx":265
+    /* "SeqSeg/SeqSeg.pyx":339
  *     dmean = dmean / t0
  *     smean = smean / t0
  *     t = t0             # <<<<<<<<<<<<<<
@@ -3720,7 +3971,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_t = __pyx_v_t0;
 
-    /* "SeqSeg/SeqSeg.pyx":267
+    /* "SeqSeg/SeqSeg.pyx":341
  *     t = t0
  * 
  *     accept = 0             # <<<<<<<<<<<<<<
@@ -3729,7 +3980,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_accept = 0.0;
 
-    /* "SeqSeg/SeqSeg.pyx":268
+    /* "SeqSeg/SeqSeg.pyx":342
  * 
  *     accept = 0
  *     for i in range(mcburn):             # <<<<<<<<<<<<<<
@@ -3740,7 +3991,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
     for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
       __pyx_v_i = __pyx_t_5;
 
-      /* "SeqSeg/SeqSeg.pyx":271
+      /* "SeqSeg/SeqSeg.pyx":345
  * 
  *         # Generate candidates
  *         u1 = gsl_ran_ugaussian(r)             # <<<<<<<<<<<<<<
@@ -3749,7 +4000,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_u1 = gsl_ran_ugaussian(__pyx_v_6SeqSeg_6SeqSeg_r);
 
-      /* "SeqSeg/SeqSeg.pyx":272
+      /* "SeqSeg/SeqSeg.pyx":346
  *         # Generate candidates
  *         u1 = gsl_ran_ugaussian(r)
  *         u2 = gsl_ran_ugaussian(r)             # <<<<<<<<<<<<<<
@@ -3758,7 +4009,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_u2 = gsl_ran_ugaussian(__pyx_v_6SeqSeg_6SeqSeg_r);
 
-      /* "SeqSeg/SeqSeg.pyx":273
+      /* "SeqSeg/SeqSeg.pyx":347
  *         u1 = gsl_ran_ugaussian(r)
  *         u2 = gsl_ran_ugaussian(r)
  *         if Abs(rho) > 1:             # <<<<<<<<<<<<<<
@@ -3768,7 +4019,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       __pyx_t_6 = ((__pyx_f_6SeqSeg_6SeqSeg_Abs(__pyx_v_rho) > 1.0) != 0);
       if (__pyx_t_6) {
 
-        /* "SeqSeg/SeqSeg.pyx":274
+        /* "SeqSeg/SeqSeg.pyx":348
  *         u2 = gsl_ran_ugaussian(r)
  *         if Abs(rho) > 1:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -3781,17 +4032,17 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
             #endif
             /*try:*/ {
 
-              /* "SeqSeg/SeqSeg.pyx":276
+              /* "SeqSeg/SeqSeg.pyx":350
  *             with gil:
  *                 # This also shouldn't happen. If it does, we set the correlation to 0
  *                 print("Adaptive covariance defective!")             # <<<<<<<<<<<<<<
  *             rho = 0
  *         u2 = rho*u1 + (1-rho)*u2
  */
-              if (__Pyx_PrintOne(0, __pyx_kp_s_Adaptive_covariance_defective) < 0) __PYX_ERR(0, 276, __pyx_L24_error)
+              if (__Pyx_PrintOne(0, __pyx_kp_s_Adaptive_covariance_defective) < 0) __PYX_ERR(0, 350, __pyx_L24_error)
             }
 
-            /* "SeqSeg/SeqSeg.pyx":274
+            /* "SeqSeg/SeqSeg.pyx":348
  *         u2 = gsl_ran_ugaussian(r)
  *         if Abs(rho) > 1:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -3815,7 +4066,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
             }
         }
 
-        /* "SeqSeg/SeqSeg.pyx":277
+        /* "SeqSeg/SeqSeg.pyx":351
  *                 # This also shouldn't happen. If it does, we set the correlation to 0
  *                 print("Adaptive covariance defective!")
  *             rho = 0             # <<<<<<<<<<<<<<
@@ -3824,7 +4075,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
         __pyx_v_rho = 0.0;
 
-        /* "SeqSeg/SeqSeg.pyx":273
+        /* "SeqSeg/SeqSeg.pyx":347
  *         u1 = gsl_ran_ugaussian(r)
  *         u2 = gsl_ran_ugaussian(r)
  *         if Abs(rho) > 1:             # <<<<<<<<<<<<<<
@@ -3833,7 +4084,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       }
 
-      /* "SeqSeg/SeqSeg.pyx":278
+      /* "SeqSeg/SeqSeg.pyx":352
  *                 print("Adaptive covariance defective!")
  *             rho = 0
  *         u2 = rho*u1 + (1-rho)*u2             # <<<<<<<<<<<<<<
@@ -3842,7 +4093,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_u2 = ((__pyx_v_rho * __pyx_v_u1) + ((1.0 - __pyx_v_rho) * __pyx_v_u2));
 
-      /* "SeqSeg/SeqSeg.pyx":281
+      /* "SeqSeg/SeqSeg.pyx":355
  * 
  * 
  *         dcand = dcur + u1*Sqrt(dvar)             # <<<<<<<<<<<<<<
@@ -3851,7 +4102,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_dcand = (__pyx_v_dcur + (__pyx_v_u1 * __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_dvar)));
 
-      /* "SeqSeg/SeqSeg.pyx":282
+      /* "SeqSeg/SeqSeg.pyx":356
  * 
  *         dcand = dcur + u1*Sqrt(dvar)
  *         scand = scur + u2*Sqrt(svar)             # <<<<<<<<<<<<<<
@@ -3860,12 +4111,12 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_scand = (__pyx_v_scur + (__pyx_v_u2 * __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_svar)));
 
-      /* "SeqSeg/SeqSeg.pyx":284
+      /* "SeqSeg/SeqSeg.pyx":358
  *         scand = scur + u2*Sqrt(svar)
  * 
  *         if dcand > 0 and scand > 0:             # <<<<<<<<<<<<<<
  *             # Calculates full posterior
- *             pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2, iprior)
+ *             pcand = cposterior_full_bkp(dcand, scand, N, N2, beta, sum1, sum2, iprior)
  */
       __pyx_t_7 = ((__pyx_v_dcand > 0.0) != 0);
       if (__pyx_t_7) {
@@ -3878,16 +4129,16 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       __pyx_L27_bool_binop_done:;
       if (__pyx_t_6) {
 
-        /* "SeqSeg/SeqSeg.pyx":286
+        /* "SeqSeg/SeqSeg.pyx":360
  *         if dcand > 0 and scand > 0:
  *             # Calculates full posterior
- *             pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2, iprior)             # <<<<<<<<<<<<<<
+ *             pcand = cposterior_full_bkp(dcand, scand, N, N2, beta, sum1, sum2, iprior)             # <<<<<<<<<<<<<<
  * 
  *             # Acceptance ratio
  */
-        __pyx_v_pcand = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(__pyx_v_dcand, __pyx_v_scand, __pyx_v_N, __pyx_v_N2, __pyx_v_beta, __pyx_v_sum1, __pyx_v_sum2, __pyx_v_iprior);
+        __pyx_v_pcand = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full_bkp(__pyx_v_dcand, __pyx_v_scand, __pyx_v_N, __pyx_v_N2, __pyx_v_beta, __pyx_v_sum1, __pyx_v_sum2, __pyx_v_iprior);
 
-        /* "SeqSeg/SeqSeg.pyx":289
+        /* "SeqSeg/SeqSeg.pyx":363
  * 
  *             # Acceptance ratio
  *             a = pcand - pcur             # <<<<<<<<<<<<<<
@@ -3896,7 +4147,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
         __pyx_v_a = (__pyx_v_pcand - __pyx_v_pcur);
 
-        /* "SeqSeg/SeqSeg.pyx":291
+        /* "SeqSeg/SeqSeg.pyx":365
  *             a = pcand - pcur
  * 
  *             if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
@@ -3906,7 +4157,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
         __pyx_t_6 = ((__pyx_f_6SeqSeg_6SeqSeg_Ln(gsl_rng_uniform(__pyx_v_6SeqSeg_6SeqSeg_r)) < __pyx_v_a) != 0);
         if (__pyx_t_6) {
 
-          /* "SeqSeg/SeqSeg.pyx":292
+          /* "SeqSeg/SeqSeg.pyx":366
  * 
  *             if Ln(gsl_rng_uniform(r)) < a:
  *                 scur = scand             # <<<<<<<<<<<<<<
@@ -3915,7 +4166,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
           __pyx_v_scur = __pyx_v_scand;
 
-          /* "SeqSeg/SeqSeg.pyx":293
+          /* "SeqSeg/SeqSeg.pyx":367
  *             if Ln(gsl_rng_uniform(r)) < a:
  *                 scur = scand
  *                 dcur = dcand             # <<<<<<<<<<<<<<
@@ -3924,7 +4175,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
           __pyx_v_dcur = __pyx_v_dcand;
 
-          /* "SeqSeg/SeqSeg.pyx":294
+          /* "SeqSeg/SeqSeg.pyx":368
  *                 scur = scand
  *                 dcur = dcand
  *                 pcur = pcand             # <<<<<<<<<<<<<<
@@ -3933,7 +4184,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
           __pyx_v_pcur = __pyx_v_pcand;
 
-          /* "SeqSeg/SeqSeg.pyx":295
+          /* "SeqSeg/SeqSeg.pyx":369
  *                 dcur = dcand
  *                 pcur = pcand
  *                 accept = accept + 1             # <<<<<<<<<<<<<<
@@ -3942,7 +4193,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
           __pyx_v_accept = (__pyx_v_accept + 1.0);
 
-          /* "SeqSeg/SeqSeg.pyx":291
+          /* "SeqSeg/SeqSeg.pyx":365
  *             a = pcand - pcur
  * 
  *             if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
@@ -3951,16 +4202,16 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
         }
 
-        /* "SeqSeg/SeqSeg.pyx":284
+        /* "SeqSeg/SeqSeg.pyx":358
  *         scand = scur + u2*Sqrt(svar)
  * 
  *         if dcand > 0 and scand > 0:             # <<<<<<<<<<<<<<
  *             # Calculates full posterior
- *             pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2, iprior)
+ *             pcand = cposterior_full_bkp(dcand, scand, N, N2, beta, sum1, sum2, iprior)
  */
       }
 
-      /* "SeqSeg/SeqSeg.pyx":300
+      /* "SeqSeg/SeqSeg.pyx":374
  * 
  *         # Updating covariance matrix
  *         dmeanant = dmean             # <<<<<<<<<<<<<<
@@ -3969,7 +4220,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_dmeanant = __pyx_v_dmean;
 
-      /* "SeqSeg/SeqSeg.pyx":301
+      /* "SeqSeg/SeqSeg.pyx":375
  *         # Updating covariance matrix
  *         dmeanant = dmean
  *         smeanant = smean             # <<<<<<<<<<<<<<
@@ -3978,7 +4229,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_smeanant = __pyx_v_smean;
 
-      /* "SeqSeg/SeqSeg.pyx":302
+      /* "SeqSeg/SeqSeg.pyx":376
  *         dmeanant = dmean
  *         smeanant = smean
  *         dmean = (t*dmeanant + dcur) / (t + 1)             # <<<<<<<<<<<<<<
@@ -3995,11 +4246,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 302, __pyx_L4_error)
+        __PYX_ERR(0, 376, __pyx_L4_error)
       }
       __pyx_v_dmean = (__pyx_t_3 / __pyx_t_1);
 
-      /* "SeqSeg/SeqSeg.pyx":303
+      /* "SeqSeg/SeqSeg.pyx":377
  *         smeanant = smean
  *         dmean = (t*dmeanant + dcur) / (t + 1)
  *         smean = (t*smeanant + scur) / (t + 1)             # <<<<<<<<<<<<<<
@@ -4016,11 +4267,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 303, __pyx_L4_error)
+        __PYX_ERR(0, 377, __pyx_L4_error)
       }
       __pyx_v_smean = (__pyx_t_3 / __pyx_t_1);
 
-      /* "SeqSeg/SeqSeg.pyx":305
+      /* "SeqSeg/SeqSeg.pyx":379
  *         smean = (t*smeanant + scur) / (t + 1)
  * 
  *         dvar =  (((t-1)*dvar)/t) + (sd/t)*(t*dmeanant*dmeanant - (t+1)*dmean*dmean + dcur*dcur + eps)             # <<<<<<<<<<<<<<
@@ -4036,7 +4287,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 305, __pyx_L4_error)
+        __PYX_ERR(0, 379, __pyx_L4_error)
       }
       if (unlikely(__pyx_v_t == 0)) {
         #ifdef WITH_THREAD
@@ -4046,11 +4297,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 305, __pyx_L4_error)
+        __PYX_ERR(0, 379, __pyx_L4_error)
       }
       __pyx_v_dvar = ((__pyx_t_3 / __pyx_v_t) + ((__pyx_v_sd / __pyx_v_t) * (((((__pyx_v_t * __pyx_v_dmeanant) * __pyx_v_dmeanant) - (((__pyx_v_t + 1) * __pyx_v_dmean) * __pyx_v_dmean)) + (__pyx_v_dcur * __pyx_v_dcur)) + __pyx_v_eps)));
 
-      /* "SeqSeg/SeqSeg.pyx":306
+      /* "SeqSeg/SeqSeg.pyx":380
  * 
  *         dvar =  (((t-1)*dvar)/t) + (sd/t)*(t*dmeanant*dmeanant - (t+1)*dmean*dmean + dcur*dcur + eps)
  *         svar =  (((t-1)*svar)/t) + (sd/t)*(t*smeanant*smeanant - (t+1)*smean*smean + scur*scur + eps)             # <<<<<<<<<<<<<<
@@ -4066,7 +4317,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 306, __pyx_L4_error)
+        __PYX_ERR(0, 380, __pyx_L4_error)
       }
       if (unlikely(__pyx_v_t == 0)) {
         #ifdef WITH_THREAD
@@ -4076,11 +4327,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 306, __pyx_L4_error)
+        __PYX_ERR(0, 380, __pyx_L4_error)
       }
       __pyx_v_svar = ((__pyx_t_3 / __pyx_v_t) + ((__pyx_v_sd / __pyx_v_t) * (((((__pyx_v_t * __pyx_v_smeanant) * __pyx_v_smeanant) - (((__pyx_v_t + 1) * __pyx_v_smean) * __pyx_v_smean)) + (__pyx_v_scur * __pyx_v_scur)) + __pyx_v_eps)));
 
-      /* "SeqSeg/SeqSeg.pyx":307
+      /* "SeqSeg/SeqSeg.pyx":381
  *         dvar =  (((t-1)*dvar)/t) + (sd/t)*(t*dmeanant*dmeanant - (t+1)*dmean*dmean + dcur*dcur + eps)
  *         svar =  (((t-1)*svar)/t) + (sd/t)*(t*smeanant*smeanant - (t+1)*smean*smean + scur*scur + eps)
  *         cov = (((t-1)*cov)/t) + (sd/t)*(t*dmeanant*smeanant - (t+1)*dmean*smean + dcur*scur)             # <<<<<<<<<<<<<<
@@ -4096,7 +4347,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 307, __pyx_L4_error)
+        __PYX_ERR(0, 381, __pyx_L4_error)
       }
       if (unlikely(__pyx_v_t == 0)) {
         #ifdef WITH_THREAD
@@ -4106,11 +4357,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 307, __pyx_L4_error)
+        __PYX_ERR(0, 381, __pyx_L4_error)
       }
       __pyx_v_cov = ((__pyx_t_3 / __pyx_v_t) + ((__pyx_v_sd / __pyx_v_t) * ((((__pyx_v_t * __pyx_v_dmeanant) * __pyx_v_smeanant) - (((__pyx_v_t + 1) * __pyx_v_dmean) * __pyx_v_smean)) + (__pyx_v_dcur * __pyx_v_scur))));
 
-      /* "SeqSeg/SeqSeg.pyx":308
+      /* "SeqSeg/SeqSeg.pyx":382
  *         svar =  (((t-1)*svar)/t) + (sd/t)*(t*smeanant*smeanant - (t+1)*smean*smean + scur*scur + eps)
  *         cov = (((t-1)*cov)/t) + (sd/t)*(t*dmeanant*smeanant - (t+1)*dmean*smean + dcur*scur)
  *         rho = cov/Sqrt(dvar*svar)             # <<<<<<<<<<<<<<
@@ -4126,11 +4377,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
         #ifdef WITH_THREAD
         __Pyx_PyGILState_Release(__pyx_gilstate_save);
         #endif
-        __PYX_ERR(0, 308, __pyx_L4_error)
+        __PYX_ERR(0, 382, __pyx_L4_error)
       }
       __pyx_v_rho = (__pyx_v_cov / __pyx_t_3);
 
-      /* "SeqSeg/SeqSeg.pyx":309
+      /* "SeqSeg/SeqSeg.pyx":383
  *         cov = (((t-1)*cov)/t) + (sd/t)*(t*dmeanant*smeanant - (t+1)*dmean*smean + dcur*scur)
  *         rho = cov/Sqrt(dvar*svar)
  *         t = t + 1             # <<<<<<<<<<<<<<
@@ -4140,7 +4391,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       __pyx_v_t = (__pyx_v_t + 1);
     }
 
-    /* "SeqSeg/SeqSeg.pyx":312
+    /* "SeqSeg/SeqSeg.pyx":386
  *     #endfor
  * 
  *     ev = 0.0             # <<<<<<<<<<<<<<
@@ -4149,7 +4400,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_ev = 0.0;
 
-    /* "SeqSeg/SeqSeg.pyx":313
+    /* "SeqSeg/SeqSeg.pyx":387
  * 
  *     ev = 0.0
  *     dtmp = 0.0             # <<<<<<<<<<<<<<
@@ -4158,7 +4409,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_dtmp = 0.0;
 
-    /* "SeqSeg/SeqSeg.pyx":314
+    /* "SeqSeg/SeqSeg.pyx":388
  *     ev = 0.0
  *     dtmp = 0.0
  *     stmp = 0.0             # <<<<<<<<<<<<<<
@@ -4167,7 +4418,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_stmp = 0.0;
 
-    /* "SeqSeg/SeqSeg.pyx":315
+    /* "SeqSeg/SeqSeg.pyx":389
  *     dtmp = 0.0
  *     stmp = 0.0
  *     accept = 0             # <<<<<<<<<<<<<<
@@ -4176,7 +4427,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
     __pyx_v_accept = 0.0;
 
-    /* "SeqSeg/SeqSeg.pyx":316
+    /* "SeqSeg/SeqSeg.pyx":390
  *     stmp = 0.0
  *     accept = 0
  *     for i in range(mciter):             # <<<<<<<<<<<<<<
@@ -4187,7 +4438,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
     for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
       __pyx_v_i = __pyx_t_5;
 
-      /* "SeqSeg/SeqSeg.pyx":318
+      /* "SeqSeg/SeqSeg.pyx":392
  *     for i in range(mciter):
  *         # Generate candidates
  *         u1 = gsl_ran_ugaussian(r)             # <<<<<<<<<<<<<<
@@ -4196,7 +4447,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_u1 = gsl_ran_ugaussian(__pyx_v_6SeqSeg_6SeqSeg_r);
 
-      /* "SeqSeg/SeqSeg.pyx":319
+      /* "SeqSeg/SeqSeg.pyx":393
  *         # Generate candidates
  *         u1 = gsl_ran_ugaussian(r)
  *         u2 = gsl_ran_ugaussian(r)             # <<<<<<<<<<<<<<
@@ -4205,7 +4456,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_u2 = gsl_ran_ugaussian(__pyx_v_6SeqSeg_6SeqSeg_r);
 
-      /* "SeqSeg/SeqSeg.pyx":320
+      /* "SeqSeg/SeqSeg.pyx":394
  *         u1 = gsl_ran_ugaussian(r)
  *         u2 = gsl_ran_ugaussian(r)
  *         u2 = rho*u1 + (1-rho)*u2             # <<<<<<<<<<<<<<
@@ -4214,7 +4465,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_u2 = ((__pyx_v_rho * __pyx_v_u1) + ((1.0 - __pyx_v_rho) * __pyx_v_u2));
 
-      /* "SeqSeg/SeqSeg.pyx":322
+      /* "SeqSeg/SeqSeg.pyx":396
  *         u2 = rho*u1 + (1-rho)*u2
  * 
  *         dcand = dcur + u1*Sqrt(dvar)             # <<<<<<<<<<<<<<
@@ -4223,7 +4474,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_dcand = (__pyx_v_dcur + (__pyx_v_u1 * __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_dvar)));
 
-      /* "SeqSeg/SeqSeg.pyx":323
+      /* "SeqSeg/SeqSeg.pyx":397
  * 
  *         dcand = dcur + u1*Sqrt(dvar)
  *         scand = scur + u2*Sqrt(svar)             # <<<<<<<<<<<<<<
@@ -4232,12 +4483,12 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
       __pyx_v_scand = (__pyx_v_scur + (__pyx_v_u2 * __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_svar)));
 
-      /* "SeqSeg/SeqSeg.pyx":325
+      /* "SeqSeg/SeqSeg.pyx":399
  *         scand = scur + u2*Sqrt(svar)
  * 
  *         if dcand > 0 and scand > 0:             # <<<<<<<<<<<<<<
  *             # Calculates full posterior
- *             pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2, iprior)
+ *             pcand = cposterior_full_bkp(dcand, scand, N, N2, beta, sum1, sum2, iprior)
  */
       __pyx_t_7 = ((__pyx_v_dcand > 0.0) != 0);
       if (__pyx_t_7) {
@@ -4250,16 +4501,16 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       __pyx_L33_bool_binop_done:;
       if (__pyx_t_6) {
 
-        /* "SeqSeg/SeqSeg.pyx":327
+        /* "SeqSeg/SeqSeg.pyx":401
  *         if dcand > 0 and scand > 0:
  *             # Calculates full posterior
- *             pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2, iprior)             # <<<<<<<<<<<<<<
+ *             pcand = cposterior_full_bkp(dcand, scand, N, N2, beta, sum1, sum2, iprior)             # <<<<<<<<<<<<<<
  * 
  *             # Acceptance ratio
  */
-        __pyx_v_pcand = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(__pyx_v_dcand, __pyx_v_scand, __pyx_v_N, __pyx_v_N2, __pyx_v_beta, __pyx_v_sum1, __pyx_v_sum2, __pyx_v_iprior);
+        __pyx_v_pcand = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full_bkp(__pyx_v_dcand, __pyx_v_scand, __pyx_v_N, __pyx_v_N2, __pyx_v_beta, __pyx_v_sum1, __pyx_v_sum2, __pyx_v_iprior);
 
-        /* "SeqSeg/SeqSeg.pyx":330
+        /* "SeqSeg/SeqSeg.pyx":404
  * 
  *             # Acceptance ratio
  *             a = pcand - pcur             # <<<<<<<<<<<<<<
@@ -4268,7 +4519,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
         __pyx_v_a = (__pyx_v_pcand - __pyx_v_pcur);
 
-        /* "SeqSeg/SeqSeg.pyx":332
+        /* "SeqSeg/SeqSeg.pyx":406
  *             a = pcand - pcur
  * 
  *             if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
@@ -4278,7 +4529,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
         __pyx_t_6 = ((__pyx_f_6SeqSeg_6SeqSeg_Ln(gsl_rng_uniform(__pyx_v_6SeqSeg_6SeqSeg_r)) < __pyx_v_a) != 0);
         if (__pyx_t_6) {
 
-          /* "SeqSeg/SeqSeg.pyx":333
+          /* "SeqSeg/SeqSeg.pyx":407
  * 
  *             if Ln(gsl_rng_uniform(r)) < a:
  *                 dcur = dcand             # <<<<<<<<<<<<<<
@@ -4287,7 +4538,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
           __pyx_v_dcur = __pyx_v_dcand;
 
-          /* "SeqSeg/SeqSeg.pyx":334
+          /* "SeqSeg/SeqSeg.pyx":408
  *             if Ln(gsl_rng_uniform(r)) < a:
  *                 dcur = dcand
  *                 scur = scand             # <<<<<<<<<<<<<<
@@ -4296,7 +4547,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
           __pyx_v_scur = __pyx_v_scand;
 
-          /* "SeqSeg/SeqSeg.pyx":335
+          /* "SeqSeg/SeqSeg.pyx":409
  *                 dcur = dcand
  *                 scur = scand
  *                 pcur = pcand             # <<<<<<<<<<<<<<
@@ -4305,7 +4556,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
           __pyx_v_pcur = __pyx_v_pcand;
 
-          /* "SeqSeg/SeqSeg.pyx":336
+          /* "SeqSeg/SeqSeg.pyx":410
  *                 scur = scand
  *                 pcur = pcand
  *                 accept = accept + 1             # <<<<<<<<<<<<<<
@@ -4314,7 +4565,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
           __pyx_v_accept = (__pyx_v_accept + 1.0);
 
-          /* "SeqSeg/SeqSeg.pyx":332
+          /* "SeqSeg/SeqSeg.pyx":406
  *             a = pcand - pcur
  * 
  *             if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
@@ -4323,16 +4574,16 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
         }
 
-        /* "SeqSeg/SeqSeg.pyx":325
+        /* "SeqSeg/SeqSeg.pyx":399
  *         scand = scur + u2*Sqrt(svar)
  * 
  *         if dcand > 0 and scand > 0:             # <<<<<<<<<<<<<<
  *             # Calculates full posterior
- *             pcand = cposterior_full(dcand, scand, N, N2, beta, sum1, sum2, iprior)
+ *             pcand = cposterior_full_bkp(dcand, scand, N, N2, beta, sum1, sum2, iprior)
  */
       }
 
-      /* "SeqSeg/SeqSeg.pyx":340
+      /* "SeqSeg/SeqSeg.pyx":414
  *         #endif
  * 
  *         if pcur > p0:             # <<<<<<<<<<<<<<
@@ -4342,7 +4593,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       __pyx_t_6 = ((__pyx_v_pcur > __pyx_v_p0) != 0);
       if (__pyx_t_6) {
 
-        /* "SeqSeg/SeqSeg.pyx":341
+        /* "SeqSeg/SeqSeg.pyx":415
  * 
  *         if pcur > p0:
  *             ev = ev + 1.0             # <<<<<<<<<<<<<<
@@ -4351,7 +4602,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
  */
         __pyx_v_ev = (__pyx_v_ev + 1.0);
 
-        /* "SeqSeg/SeqSeg.pyx":340
+        /* "SeqSeg/SeqSeg.pyx":414
  *         #endif
  * 
  *         if pcur > p0:             # <<<<<<<<<<<<<<
@@ -4361,7 +4612,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       }
     }
 
-    /* "SeqSeg/SeqSeg.pyx":346
+    /* "SeqSeg/SeqSeg.pyx":420
  * 
  * 
  *     ev = ev / mciter             # <<<<<<<<<<<<<<
@@ -4376,27 +4627,27 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
       #ifdef WITH_THREAD
       __Pyx_PyGILState_Release(__pyx_gilstate_save);
       #endif
-      __PYX_ERR(0, 346, __pyx_L4_error)
+      __PYX_ERR(0, 420, __pyx_L4_error)
     }
     __pyx_v_ev = (__pyx_v_ev / __pyx_v_mciter);
 
-    /* "SeqSeg/SeqSeg.pyx":348
+    /* "SeqSeg/SeqSeg.pyx":422
  *     ev = ev / mciter
  * 
  *     return ev             # <<<<<<<<<<<<<<
  * 
- * 
+ * cdef double cmcmc(int mcburn, int mciter, double p0, long N, long N2, double sum1, double sum2) nogil:
  */
     __pyx_r = __pyx_v_ev;
     goto __pyx_L3_return;
   }
 
-  /* "SeqSeg/SeqSeg.pyx":154
+  /* "SeqSeg/SeqSeg.pyx":228
  * 
- * cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N2, double sum1, double sum2, long iprior) nogil:
+ * cdef double cmcmc_bkp(int mcburn, int mciter, double p0, double beta, long N, long N2, double sum1, double sum2, long iprior) nogil:
  *     ''' Run MCMC             # <<<<<<<<<<<<<<
  * 
- *         Arguments:
+ *         @args:
  */
   /*finally:*/ {
     __pyx_L3_return: {
@@ -4413,10 +4664,1546 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
     }
   }
 
-  /* "SeqSeg/SeqSeg.pyx":153
+  /* "SeqSeg/SeqSeg.pyx":227
  * 
  * 
- * cdef double cmcmc(int mcburn, int mciter, double p0, double beta, long N, long N2, double sum1, double sum2, long iprior) nogil:             # <<<<<<<<<<<<<<
+ * cdef double cmcmc_bkp(int mcburn, int mciter, double p0, double beta, long N, long N2, double sum1, double sum2, long iprior) nogil:             # <<<<<<<<<<<<<<
+ *     ''' Run MCMC
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_WriteUnraisable("SeqSeg.SeqSeg.cmcmc_bkp", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __pyx_r = 0;
+  __pyx_L0:;
+  #ifdef WITH_THREAD
+  __Pyx_PyGILState_Release(__pyx_gilstate_save);
+  #endif
+  return __pyx_r;
+}
+
+/* "SeqSeg/SeqSeg.pyx":424
+ *     return ev
+ * 
+ * cdef double cmcmc(int mcburn, int mciter, double p0, long N, long N2, double sum1, double sum2) nogil:             # <<<<<<<<<<<<<<
+ *     ''' Run MCMC
+ * 
+ */
+
+static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mciter, double __pyx_v_p0, long __pyx_v_N, long __pyx_v_N2, double __pyx_v_sum1, double __pyx_v_sum2) {
+  double __pyx_v_pcur;
+  double __pyx_v_pcand;
+  double __pyx_v_s1cur;
+  double __pyx_v_s1cand;
+  double __pyx_v_s2cur;
+  double __pyx_v_s2cand;
+  double __pyx_v_a;
+  double __pyx_v_ev;
+  CYTHON_UNUSED int __pyx_v_i;
+  int __pyx_v_t0;
+  int __pyx_v_t;
+  double __pyx_v_s2var;
+  double __pyx_v_s1var;
+  double __pyx_v_cov;
+  double __pyx_v_sd;
+  double __pyx_v_eps;
+  double __pyx_v_u1;
+  double __pyx_v_u2;
+  double __pyx_v_s2mean;
+  double __pyx_v_s2meanant;
+  double __pyx_v_s1mean;
+  double __pyx_v_s1meanant;
+  double __pyx_v_cov0;
+  double __pyx_v_sums2sq;
+  double __pyx_v_sums1sq;
+  double __pyx_v_accept;
+  double __pyx_v_s2varmin;
+  double __pyx_v_s1varmin;
+  double __pyx_v_rho;
+  CYTHON_UNUSED double __pyx_v_dtmp;
+  CYTHON_UNUSED double __pyx_v_stmp;
+  double __pyx_r;
+  __Pyx_RefNannyDeclarations
+  long __pyx_t_1;
+  double __pyx_t_2;
+  double __pyx_t_3;
+  int __pyx_t_4;
+  int __pyx_t_5;
+  int __pyx_t_6;
+  int __pyx_t_7;
+  #ifdef WITH_THREAD
+  PyGILState_STATE __pyx_gilstate_save;
+  #endif
+  __Pyx_RefNannySetupContext("cmcmc", 1);
+
+  /* "SeqSeg/SeqSeg.pyx":425
+ * 
+ * cdef double cmcmc(int mcburn, int mciter, double p0, long N, long N2, double sum1, double sum2) nogil:
+ *     ''' Run MCMC             # <<<<<<<<<<<<<<
+ * 
+ *         @args:
+ */
+  /*try:*/ {
+
+    /* "SeqSeg/SeqSeg.pyx":444
+ *     cdef double accept, s2varmin, s1varmin
+ * 
+ *     s2cur = (sum2 / (N2-1))/(sum1 / (N-N2-1))             # <<<<<<<<<<<<<<
+ *     s1cur = Sqrt(sum1 / (N-N2-1))
+ * 
+ */
+    __pyx_t_1 = (__pyx_v_N2 - 1);
+    if (unlikely(__pyx_t_1 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 444, __pyx_L4_error)
+    }
+    __pyx_t_2 = (__pyx_v_sum2 / __pyx_t_1);
+    __pyx_t_1 = ((__pyx_v_N - __pyx_v_N2) - 1);
+    if (unlikely(__pyx_t_1 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 444, __pyx_L4_error)
+    }
+    __pyx_t_3 = (__pyx_v_sum1 / __pyx_t_1);
+    if (unlikely(__pyx_t_3 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 444, __pyx_L4_error)
+    }
+    __pyx_v_s2cur = (__pyx_t_2 / __pyx_t_3);
+
+    /* "SeqSeg/SeqSeg.pyx":445
+ * 
+ *     s2cur = (sum2 / (N2-1))/(sum1 / (N-N2-1))
+ *     s1cur = Sqrt(sum1 / (N-N2-1))             # <<<<<<<<<<<<<<
+ * 
+ *     # Standard deviations and covariance for random-walk candidates distributions
+ */
+    __pyx_t_1 = ((__pyx_v_N - __pyx_v_N2) - 1);
+    if (unlikely(__pyx_t_1 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 445, __pyx_L4_error)
+    }
+    __pyx_v_s1cur = __pyx_f_6SeqSeg_6SeqSeg_Sqrt((__pyx_v_sum1 / __pyx_t_1));
+
+    /* "SeqSeg/SeqSeg.pyx":448
+ * 
+ *     # Standard deviations and covariance for random-walk candidates distributions
+ *     s2var = (s2cur / 3) ** 2             # <<<<<<<<<<<<<<
+ *     s1var = (s1cur / 3) ** 2
+ *     cov = 0.0
+ */
+    __pyx_v_s2var = pow((__pyx_v_s2cur / 3.0), 2.0);
+
+    /* "SeqSeg/SeqSeg.pyx":449
+ *     # Standard deviations and covariance for random-walk candidates distributions
+ *     s2var = (s2cur / 3) ** 2
+ *     s1var = (s1cur / 3) ** 2             # <<<<<<<<<<<<<<
+ *     cov = 0.0
+ * 
+ */
+    __pyx_v_s1var = pow((__pyx_v_s1cur / 3.0), 2.0);
+
+    /* "SeqSeg/SeqSeg.pyx":450
+ *     s2var = (s2cur / 3) ** 2
+ *     s1var = (s1cur / 3) ** 2
+ *     cov = 0.0             # <<<<<<<<<<<<<<
+ * 
+ *     # To safeguard variances
+ */
+    __pyx_v_cov = 0.0;
+
+    /* "SeqSeg/SeqSeg.pyx":453
+ * 
+ *     # To safeguard variances
+ *     s2varmin = s2var             # <<<<<<<<<<<<<<
+ *     s1varmin = s1var
+ * 
+ */
+    __pyx_v_s2varmin = __pyx_v_s2var;
+
+    /* "SeqSeg/SeqSeg.pyx":454
+ *     # To safeguard variances
+ *     s2varmin = s2var
+ *     s1varmin = s1var             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+    __pyx_v_s1varmin = __pyx_v_s1var;
+
+    /* "SeqSeg/SeqSeg.pyx":458
+ * 
+ *     # Generating starting values for the chain
+ *     s2cur = Abs(s2cur + gsl_ran_gaussian(r, Sqrt(s2var)))             # <<<<<<<<<<<<<<
+ *     s1cur = Abs(s1cur + gsl_ran_gaussian(r, Sqrt(s1var)))
+ *     pcur = cposterior_full(s2cur, s1cur, N, N2, sum1, sum2)
+ */
+    __pyx_v_s2cur = __pyx_f_6SeqSeg_6SeqSeg_Abs((__pyx_v_s2cur + gsl_ran_gaussian(__pyx_v_6SeqSeg_6SeqSeg_r, __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_s2var))));
+
+    /* "SeqSeg/SeqSeg.pyx":459
+ *     # Generating starting values for the chain
+ *     s2cur = Abs(s2cur + gsl_ran_gaussian(r, Sqrt(s2var)))
+ *     s1cur = Abs(s1cur + gsl_ran_gaussian(r, Sqrt(s1var)))             # <<<<<<<<<<<<<<
+ *     pcur = cposterior_full(s2cur, s1cur, N, N2, sum1, sum2)
+ * 
+ */
+    __pyx_v_s1cur = __pyx_f_6SeqSeg_6SeqSeg_Abs((__pyx_v_s1cur + gsl_ran_gaussian(__pyx_v_6SeqSeg_6SeqSeg_r, __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_s1var))));
+
+    /* "SeqSeg/SeqSeg.pyx":460
+ *     s2cur = Abs(s2cur + gsl_ran_gaussian(r, Sqrt(s2var)))
+ *     s1cur = Abs(s1cur + gsl_ran_gaussian(r, Sqrt(s1var)))
+ *     pcur = cposterior_full(s2cur, s1cur, N, N2, sum1, sum2)             # <<<<<<<<<<<<<<
+ * 
+ *     # Parameters for adaptive MH
+ */
+    __pyx_v_pcur = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(__pyx_v_s2cur, __pyx_v_s1cur, __pyx_v_N, __pyx_v_N2, __pyx_v_sum1, __pyx_v_sum2);
+
+    /* "SeqSeg/SeqSeg.pyx":463
+ * 
+ *     # Parameters for adaptive MH
+ *     sd = (2.4*2.4)/2.0             # <<<<<<<<<<<<<<
+ *     eps = 1e-30
+ * 
+ */
+    __pyx_v_sd = ((2.4 * 2.4) / 2.0);
+
+    /* "SeqSeg/SeqSeg.pyx":464
+ *     # Parameters for adaptive MH
+ *     sd = (2.4*2.4)/2.0
+ *     eps = 1e-30             # <<<<<<<<<<<<<<
+ * 
+ *     # Starting point for adaptive MH
+ */
+    __pyx_v_eps = 1e-30;
+
+    /* "SeqSeg/SeqSeg.pyx":467
+ * 
+ *     # Starting point for adaptive MH
+ *     t0 = 1000             # <<<<<<<<<<<<<<
+ * 
+ *     s2mean = 0.0
+ */
+    __pyx_v_t0 = 0x3E8;
+
+    /* "SeqSeg/SeqSeg.pyx":469
+ *     t0 = 1000
+ * 
+ *     s2mean = 0.0             # <<<<<<<<<<<<<<
+ *     s1mean = 0.0
+ *     sums2sq = 0.0
+ */
+    __pyx_v_s2mean = 0.0;
+
+    /* "SeqSeg/SeqSeg.pyx":470
+ * 
+ *     s2mean = 0.0
+ *     s1mean = 0.0             # <<<<<<<<<<<<<<
+ *     sums2sq = 0.0
+ *     sums1sq = 0.0
+ */
+    __pyx_v_s1mean = 0.0;
+
+    /* "SeqSeg/SeqSeg.pyx":471
+ *     s2mean = 0.0
+ *     s1mean = 0.0
+ *     sums2sq = 0.0             # <<<<<<<<<<<<<<
+ *     sums1sq = 0.0
+ *     cov0 = 0.0
+ */
+    __pyx_v_sums2sq = 0.0;
+
+    /* "SeqSeg/SeqSeg.pyx":472
+ *     s1mean = 0.0
+ *     sums2sq = 0.0
+ *     sums1sq = 0.0             # <<<<<<<<<<<<<<
+ *     cov0 = 0.0
+ *     accept = 0
+ */
+    __pyx_v_sums1sq = 0.0;
+
+    /* "SeqSeg/SeqSeg.pyx":473
+ *     sums2sq = 0.0
+ *     sums1sq = 0.0
+ *     cov0 = 0.0             # <<<<<<<<<<<<<<
+ *     accept = 0
+ *     for i in range(t0):
+ */
+    __pyx_v_cov0 = 0.0;
+
+    /* "SeqSeg/SeqSeg.pyx":474
+ *     sums1sq = 0.0
+ *     cov0 = 0.0
+ *     accept = 0             # <<<<<<<<<<<<<<
+ *     for i in range(t0):
+ * 
+ */
+    __pyx_v_accept = 0.0;
+
+    /* "SeqSeg/SeqSeg.pyx":475
+ *     cov0 = 0.0
+ *     accept = 0
+ *     for i in range(t0):             # <<<<<<<<<<<<<<
+ * 
+ *         # Generate candidates
+ */
+    __pyx_t_4 = __pyx_v_t0;
+    for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
+      __pyx_v_i = __pyx_t_5;
+
+      /* "SeqSeg/SeqSeg.pyx":478
+ * 
+ *         # Generate candidates
+ *         u1 = gsl_ran_ugaussian(r)             # <<<<<<<<<<<<<<
+ *         s2cand = s2cur + u1*Sqrt(s2var)
+ * 
+ */
+      __pyx_v_u1 = gsl_ran_ugaussian(__pyx_v_6SeqSeg_6SeqSeg_r);
+
+      /* "SeqSeg/SeqSeg.pyx":479
+ *         # Generate candidates
+ *         u1 = gsl_ran_ugaussian(r)
+ *         s2cand = s2cur + u1*Sqrt(s2var)             # <<<<<<<<<<<<<<
+ * 
+ *         # Calculates full posterior
+ */
+      __pyx_v_s2cand = (__pyx_v_s2cur + (__pyx_v_u1 * __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_s2var)));
+
+      /* "SeqSeg/SeqSeg.pyx":482
+ * 
+ *         # Calculates full posterior
+ *         pcand = cposterior_full(s2cand, s1cur, N, N2, sum1, sum2)             # <<<<<<<<<<<<<<
+ * 
+ *         # Acceptance ratio
+ */
+      __pyx_v_pcand = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(__pyx_v_s2cand, __pyx_v_s1cur, __pyx_v_N, __pyx_v_N2, __pyx_v_sum1, __pyx_v_sum2);
+
+      /* "SeqSeg/SeqSeg.pyx":485
+ * 
+ *         # Acceptance ratio
+ *         a = pcand - pcur             # <<<<<<<<<<<<<<
+ * 
+ *         if Ln(gsl_rng_uniform(r)) < a:
+ */
+      __pyx_v_a = (__pyx_v_pcand - __pyx_v_pcur);
+
+      /* "SeqSeg/SeqSeg.pyx":487
+ *         a = pcand - pcur
+ * 
+ *         if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
+ *             s2cur = s2cand
+ *             pcur = pcand
+ */
+      __pyx_t_6 = ((__pyx_f_6SeqSeg_6SeqSeg_Ln(gsl_rng_uniform(__pyx_v_6SeqSeg_6SeqSeg_r)) < __pyx_v_a) != 0);
+      if (__pyx_t_6) {
+
+        /* "SeqSeg/SeqSeg.pyx":488
+ * 
+ *         if Ln(gsl_rng_uniform(r)) < a:
+ *             s2cur = s2cand             # <<<<<<<<<<<<<<
+ *             pcur = pcand
+ *             accept = accept + 1
+ */
+        __pyx_v_s2cur = __pyx_v_s2cand;
+
+        /* "SeqSeg/SeqSeg.pyx":489
+ *         if Ln(gsl_rng_uniform(r)) < a:
+ *             s2cur = s2cand
+ *             pcur = pcand             # <<<<<<<<<<<<<<
+ *             accept = accept + 1
+ *         #endif
+ */
+        __pyx_v_pcur = __pyx_v_pcand;
+
+        /* "SeqSeg/SeqSeg.pyx":490
+ *             s2cur = s2cand
+ *             pcur = pcand
+ *             accept = accept + 1             # <<<<<<<<<<<<<<
+ *         #endif
+ * 
+ */
+        __pyx_v_accept = (__pyx_v_accept + 1.0);
+
+        /* "SeqSeg/SeqSeg.pyx":487
+ *         a = pcand - pcur
+ * 
+ *         if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
+ *             s2cur = s2cand
+ *             pcur = pcand
+ */
+      }
+
+      /* "SeqSeg/SeqSeg.pyx":493
+ *         #endif
+ * 
+ *         u2 = gsl_ran_ugaussian(r)             # <<<<<<<<<<<<<<
+ *         s1cand = s1cur + Sqrt(s1var)*u2
+ * 
+ */
+      __pyx_v_u2 = gsl_ran_ugaussian(__pyx_v_6SeqSeg_6SeqSeg_r);
+
+      /* "SeqSeg/SeqSeg.pyx":494
+ * 
+ *         u2 = gsl_ran_ugaussian(r)
+ *         s1cand = s1cur + Sqrt(s1var)*u2             # <<<<<<<<<<<<<<
+ * 
+ *         # Calculates full posterior
+ */
+      __pyx_v_s1cand = (__pyx_v_s1cur + (__pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_s1var) * __pyx_v_u2));
+
+      /* "SeqSeg/SeqSeg.pyx":497
+ * 
+ *         # Calculates full posterior
+ *         pcand = cposterior_full(s2cur, s1cand, N, N2, sum1, sum2)             # <<<<<<<<<<<<<<
+ * 
+ *         # Acceptance ratio
+ */
+      __pyx_v_pcand = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(__pyx_v_s2cur, __pyx_v_s1cand, __pyx_v_N, __pyx_v_N2, __pyx_v_sum1, __pyx_v_sum2);
+
+      /* "SeqSeg/SeqSeg.pyx":500
+ * 
+ *         # Acceptance ratio
+ *         a = pcand - pcur             # <<<<<<<<<<<<<<
+ * 
+ *         if Ln(gsl_rng_uniform(r)) < a:
+ */
+      __pyx_v_a = (__pyx_v_pcand - __pyx_v_pcur);
+
+      /* "SeqSeg/SeqSeg.pyx":502
+ *         a = pcand - pcur
+ * 
+ *         if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
+ *             s1cur = s1cand
+ *             pcur = pcand
+ */
+      __pyx_t_6 = ((__pyx_f_6SeqSeg_6SeqSeg_Ln(gsl_rng_uniform(__pyx_v_6SeqSeg_6SeqSeg_r)) < __pyx_v_a) != 0);
+      if (__pyx_t_6) {
+
+        /* "SeqSeg/SeqSeg.pyx":503
+ * 
+ *         if Ln(gsl_rng_uniform(r)) < a:
+ *             s1cur = s1cand             # <<<<<<<<<<<<<<
+ *             pcur = pcand
+ *             accept = accept + 1
+ */
+        __pyx_v_s1cur = __pyx_v_s1cand;
+
+        /* "SeqSeg/SeqSeg.pyx":504
+ *         if Ln(gsl_rng_uniform(r)) < a:
+ *             s1cur = s1cand
+ *             pcur = pcand             # <<<<<<<<<<<<<<
+ *             accept = accept + 1
+ *         #endif
+ */
+        __pyx_v_pcur = __pyx_v_pcand;
+
+        /* "SeqSeg/SeqSeg.pyx":505
+ *             s1cur = s1cand
+ *             pcur = pcand
+ *             accept = accept + 1             # <<<<<<<<<<<<<<
+ *         #endif
+ * 
+ */
+        __pyx_v_accept = (__pyx_v_accept + 1.0);
+
+        /* "SeqSeg/SeqSeg.pyx":502
+ *         a = pcand - pcur
+ * 
+ *         if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
+ *             s1cur = s1cand
+ *             pcur = pcand
+ */
+      }
+
+      /* "SeqSeg/SeqSeg.pyx":508
+ *         #endif
+ * 
+ *         s2mean = s2mean + s2cur             # <<<<<<<<<<<<<<
+ *         s1mean = s1mean + s1cur
+ *         cov0 = cov0 + s2cur*s1cur
+ */
+      __pyx_v_s2mean = (__pyx_v_s2mean + __pyx_v_s2cur);
+
+      /* "SeqSeg/SeqSeg.pyx":509
+ * 
+ *         s2mean = s2mean + s2cur
+ *         s1mean = s1mean + s1cur             # <<<<<<<<<<<<<<
+ *         cov0 = cov0 + s2cur*s1cur
+ *         sums2sq = sums2sq + s2cur*s2cur
+ */
+      __pyx_v_s1mean = (__pyx_v_s1mean + __pyx_v_s1cur);
+
+      /* "SeqSeg/SeqSeg.pyx":510
+ *         s2mean = s2mean + s2cur
+ *         s1mean = s1mean + s1cur
+ *         cov0 = cov0 + s2cur*s1cur             # <<<<<<<<<<<<<<
+ *         sums2sq = sums2sq + s2cur*s2cur
+ *         sums1sq = sums1sq + s1cur*s1cur
+ */
+      __pyx_v_cov0 = (__pyx_v_cov0 + (__pyx_v_s2cur * __pyx_v_s1cur));
+
+      /* "SeqSeg/SeqSeg.pyx":511
+ *         s1mean = s1mean + s1cur
+ *         cov0 = cov0 + s2cur*s1cur
+ *         sums2sq = sums2sq + s2cur*s2cur             # <<<<<<<<<<<<<<
+ *         sums1sq = sums1sq + s1cur*s1cur
+ * 
+ */
+      __pyx_v_sums2sq = (__pyx_v_sums2sq + (__pyx_v_s2cur * __pyx_v_s2cur));
+
+      /* "SeqSeg/SeqSeg.pyx":512
+ *         cov0 = cov0 + s2cur*s1cur
+ *         sums2sq = sums2sq + s2cur*s2cur
+ *         sums1sq = sums1sq + s1cur*s1cur             # <<<<<<<<<<<<<<
+ * 
+ *     #endfor
+ */
+      __pyx_v_sums1sq = (__pyx_v_sums1sq + (__pyx_v_s1cur * __pyx_v_s1cur));
+    }
+
+    /* "SeqSeg/SeqSeg.pyx":516
+ *     #endfor
+ * 
+ *     s2var = (sums2sq - (s2mean*s2mean)/t0)/(t0-1)             # <<<<<<<<<<<<<<
+ *     s1var = (sums1sq - (s1mean*s1mean)/t0)/(t0-1)
+ * 
+ */
+    __pyx_t_3 = (__pyx_v_s2mean * __pyx_v_s2mean);
+    if (unlikely(__pyx_v_t0 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 516, __pyx_L4_error)
+    }
+    __pyx_t_2 = (__pyx_v_sums2sq - (__pyx_t_3 / __pyx_v_t0));
+    __pyx_t_1 = (__pyx_v_t0 - 1);
+    if (unlikely(__pyx_t_1 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 516, __pyx_L4_error)
+    }
+    __pyx_v_s2var = (__pyx_t_2 / __pyx_t_1);
+
+    /* "SeqSeg/SeqSeg.pyx":517
+ * 
+ *     s2var = (sums2sq - (s2mean*s2mean)/t0)/(t0-1)
+ *     s1var = (sums1sq - (s1mean*s1mean)/t0)/(t0-1)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+    __pyx_t_2 = (__pyx_v_s1mean * __pyx_v_s1mean);
+    if (unlikely(__pyx_v_t0 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 517, __pyx_L4_error)
+    }
+    __pyx_t_3 = (__pyx_v_sums1sq - (__pyx_t_2 / __pyx_v_t0));
+    __pyx_t_1 = (__pyx_v_t0 - 1);
+    if (unlikely(__pyx_t_1 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 517, __pyx_L4_error)
+    }
+    __pyx_v_s1var = (__pyx_t_3 / __pyx_t_1);
+
+    /* "SeqSeg/SeqSeg.pyx":520
+ * 
+ * 
+ *     if s1var < 0:             # <<<<<<<<<<<<<<
+ *         with gil:
+ *             # This shouldn't happen, but if it does we reset the variance to a valid value
+ */
+    __pyx_t_6 = ((__pyx_v_s1var < 0.0) != 0);
+    if (__pyx_t_6) {
+
+      /* "SeqSeg/SeqSeg.pyx":521
+ * 
+ *     if s1var < 0:
+ *         with gil:             # <<<<<<<<<<<<<<
+ *             # This shouldn't happen, but if it does we reset the variance to a valid value
+ *             print("Posterior variance of signal power with negative value!")
+ */
+      {
+          #ifdef WITH_THREAD
+          PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+          #endif
+          /*try:*/ {
+
+            /* "SeqSeg/SeqSeg.pyx":523
+ *         with gil:
+ *             # This shouldn't happen, but if it does we reset the variance to a valid value
+ *             print("Posterior variance of signal power with negative value!")             # <<<<<<<<<<<<<<
+ *         s1var = s1varmin
+ * 
+ */
+            if (__Pyx_PrintOne(0, __pyx_kp_s_Posterior_variance_of_signal_pow) < 0) __PYX_ERR(0, 523, __pyx_L12_error)
+          }
+
+          /* "SeqSeg/SeqSeg.pyx":521
+ * 
+ *     if s1var < 0:
+ *         with gil:             # <<<<<<<<<<<<<<
+ *             # This shouldn't happen, but if it does we reset the variance to a valid value
+ *             print("Posterior variance of signal power with negative value!")
+ */
+          /*finally:*/ {
+            /*normal exit:*/{
+              #ifdef WITH_THREAD
+              __Pyx_PyGILState_Release(__pyx_gilstate_save);
+              #endif
+              goto __pyx_L13;
+            }
+            __pyx_L12_error: {
+              #ifdef WITH_THREAD
+              __Pyx_PyGILState_Release(__pyx_gilstate_save);
+              #endif
+              goto __pyx_L4_error;
+            }
+            __pyx_L13:;
+          }
+      }
+
+      /* "SeqSeg/SeqSeg.pyx":524
+ *             # This shouldn't happen, but if it does we reset the variance to a valid value
+ *             print("Posterior variance of signal power with negative value!")
+ *         s1var = s1varmin             # <<<<<<<<<<<<<<
+ * 
+ *     if s2var < 0:
+ */
+      __pyx_v_s1var = __pyx_v_s1varmin;
+
+      /* "SeqSeg/SeqSeg.pyx":520
+ * 
+ * 
+ *     if s1var < 0:             # <<<<<<<<<<<<<<
+ *         with gil:
+ *             # This shouldn't happen, but if it does we reset the variance to a valid value
+ */
+    }
+
+    /* "SeqSeg/SeqSeg.pyx":526
+ *         s1var = s1varmin
+ * 
+ *     if s2var < 0:             # <<<<<<<<<<<<<<
+ *         with gil:
+ *             # This shouldn't happen, but if it does we reset the variance to a valid value
+ */
+    __pyx_t_6 = ((__pyx_v_s2var < 0.0) != 0);
+    if (__pyx_t_6) {
+
+      /* "SeqSeg/SeqSeg.pyx":527
+ * 
+ *     if s2var < 0:
+ *         with gil:             # <<<<<<<<<<<<<<
+ *             # This shouldn't happen, but if it does we reset the variance to a valid value
+ *             print("Posterior variance of delta with negative value!")
+ */
+      {
+          #ifdef WITH_THREAD
+          PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+          #endif
+          /*try:*/ {
+
+            /* "SeqSeg/SeqSeg.pyx":529
+ *         with gil:
+ *             # This shouldn't happen, but if it does we reset the variance to a valid value
+ *             print("Posterior variance of delta with negative value!")             # <<<<<<<<<<<<<<
+ *         s2var = s2varmin
+ * 
+ */
+            if (__Pyx_PrintOne(0, __pyx_kp_s_Posterior_variance_of_delta_with) < 0) __PYX_ERR(0, 529, __pyx_L16_error)
+          }
+
+          /* "SeqSeg/SeqSeg.pyx":527
+ * 
+ *     if s2var < 0:
+ *         with gil:             # <<<<<<<<<<<<<<
+ *             # This shouldn't happen, but if it does we reset the variance to a valid value
+ *             print("Posterior variance of delta with negative value!")
+ */
+          /*finally:*/ {
+            /*normal exit:*/{
+              #ifdef WITH_THREAD
+              __Pyx_PyGILState_Release(__pyx_gilstate_save);
+              #endif
+              goto __pyx_L17;
+            }
+            __pyx_L16_error: {
+              #ifdef WITH_THREAD
+              __Pyx_PyGILState_Release(__pyx_gilstate_save);
+              #endif
+              goto __pyx_L4_error;
+            }
+            __pyx_L17:;
+          }
+      }
+
+      /* "SeqSeg/SeqSeg.pyx":530
+ *             # This shouldn't happen, but if it does we reset the variance to a valid value
+ *             print("Posterior variance of delta with negative value!")
+ *         s2var = s2varmin             # <<<<<<<<<<<<<<
+ * 
+ *     cov = (1/(t0-1))*(cov0 - s2mean*s1mean/t0)
+ */
+      __pyx_v_s2var = __pyx_v_s2varmin;
+
+      /* "SeqSeg/SeqSeg.pyx":526
+ *         s1var = s1varmin
+ * 
+ *     if s2var < 0:             # <<<<<<<<<<<<<<
+ *         with gil:
+ *             # This shouldn't happen, but if it does we reset the variance to a valid value
+ */
+    }
+
+    /* "SeqSeg/SeqSeg.pyx":532
+ *         s2var = s2varmin
+ * 
+ *     cov = (1/(t0-1))*(cov0 - s2mean*s1mean/t0)             # <<<<<<<<<<<<<<
+ *     rho = cov/Sqrt(s2var*s1var)
+ *     s2mean = s2mean / t0
+ */
+    __pyx_t_1 = (__pyx_v_t0 - 1);
+    if (unlikely(__pyx_t_1 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 532, __pyx_L4_error)
+    }
+    else if (sizeof(long) == sizeof(long) && (!(((long)-1) > 0)) && unlikely(__pyx_t_1 == (long)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(1))) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 532, __pyx_L4_error)
+    }
+    __pyx_t_3 = (__pyx_v_s2mean * __pyx_v_s1mean);
+    if (unlikely(__pyx_v_t0 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 532, __pyx_L4_error)
+    }
+    __pyx_v_cov = (__Pyx_div_long(1, __pyx_t_1) * (__pyx_v_cov0 - (__pyx_t_3 / __pyx_v_t0)));
+
+    /* "SeqSeg/SeqSeg.pyx":533
+ * 
+ *     cov = (1/(t0-1))*(cov0 - s2mean*s1mean/t0)
+ *     rho = cov/Sqrt(s2var*s1var)             # <<<<<<<<<<<<<<
+ *     s2mean = s2mean / t0
+ *     s1mean = s1mean / t0
+ */
+    __pyx_t_3 = __pyx_f_6SeqSeg_6SeqSeg_Sqrt((__pyx_v_s2var * __pyx_v_s1var));
+    if (unlikely(__pyx_t_3 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 533, __pyx_L4_error)
+    }
+    __pyx_v_rho = (__pyx_v_cov / __pyx_t_3);
+
+    /* "SeqSeg/SeqSeg.pyx":534
+ *     cov = (1/(t0-1))*(cov0 - s2mean*s1mean/t0)
+ *     rho = cov/Sqrt(s2var*s1var)
+ *     s2mean = s2mean / t0             # <<<<<<<<<<<<<<
+ *     s1mean = s1mean / t0
+ *     t = t0
+ */
+    if (unlikely(__pyx_v_t0 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 534, __pyx_L4_error)
+    }
+    __pyx_v_s2mean = (__pyx_v_s2mean / __pyx_v_t0);
+
+    /* "SeqSeg/SeqSeg.pyx":535
+ *     rho = cov/Sqrt(s2var*s1var)
+ *     s2mean = s2mean / t0
+ *     s1mean = s1mean / t0             # <<<<<<<<<<<<<<
+ *     t = t0
+ * 
+ */
+    if (unlikely(__pyx_v_t0 == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 535, __pyx_L4_error)
+    }
+    __pyx_v_s1mean = (__pyx_v_s1mean / __pyx_v_t0);
+
+    /* "SeqSeg/SeqSeg.pyx":536
+ *     s2mean = s2mean / t0
+ *     s1mean = s1mean / t0
+ *     t = t0             # <<<<<<<<<<<<<<
+ * 
+ *     accept = 0
+ */
+    __pyx_v_t = __pyx_v_t0;
+
+    /* "SeqSeg/SeqSeg.pyx":538
+ *     t = t0
+ * 
+ *     accept = 0             # <<<<<<<<<<<<<<
+ *     for i in range(mcburn):
+ * 
+ */
+    __pyx_v_accept = 0.0;
+
+    /* "SeqSeg/SeqSeg.pyx":539
+ * 
+ *     accept = 0
+ *     for i in range(mcburn):             # <<<<<<<<<<<<<<
+ * 
+ *         # Generate candidates
+ */
+    __pyx_t_4 = __pyx_v_mcburn;
+    for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
+      __pyx_v_i = __pyx_t_5;
+
+      /* "SeqSeg/SeqSeg.pyx":542
+ * 
+ *         # Generate candidates
+ *         u1 = gsl_ran_ugaussian(r)             # <<<<<<<<<<<<<<
+ *         u2 = gsl_ran_ugaussian(r)
+ *         if Abs(rho) > 1:
+ */
+      __pyx_v_u1 = gsl_ran_ugaussian(__pyx_v_6SeqSeg_6SeqSeg_r);
+
+      /* "SeqSeg/SeqSeg.pyx":543
+ *         # Generate candidates
+ *         u1 = gsl_ran_ugaussian(r)
+ *         u2 = gsl_ran_ugaussian(r)             # <<<<<<<<<<<<<<
+ *         if Abs(rho) > 1:
+ *             with gil:
+ */
+      __pyx_v_u2 = gsl_ran_ugaussian(__pyx_v_6SeqSeg_6SeqSeg_r);
+
+      /* "SeqSeg/SeqSeg.pyx":544
+ *         u1 = gsl_ran_ugaussian(r)
+ *         u2 = gsl_ran_ugaussian(r)
+ *         if Abs(rho) > 1:             # <<<<<<<<<<<<<<
+ *             with gil:
+ *                 # This also shouldn't happen. If it does, we set the correlation to 0
+ */
+      __pyx_t_6 = ((__pyx_f_6SeqSeg_6SeqSeg_Abs(__pyx_v_rho) > 1.0) != 0);
+      if (__pyx_t_6) {
+
+        /* "SeqSeg/SeqSeg.pyx":545
+ *         u2 = gsl_ran_ugaussian(r)
+ *         if Abs(rho) > 1:
+ *             with gil:             # <<<<<<<<<<<<<<
+ *                 # This also shouldn't happen. If it does, we set the correlation to 0
+ *                 print("Adaptive covariance defective!")
+ */
+        {
+            #ifdef WITH_THREAD
+            PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+            #endif
+            /*try:*/ {
+
+              /* "SeqSeg/SeqSeg.pyx":547
+ *             with gil:
+ *                 # This also shouldn't happen. If it does, we set the correlation to 0
+ *                 print("Adaptive covariance defective!")             # <<<<<<<<<<<<<<
+ *             rho = 0
+ *         u2 = rho*u1 + (1-rho)*u2
+ */
+              if (__Pyx_PrintOne(0, __pyx_kp_s_Adaptive_covariance_defective) < 0) __PYX_ERR(0, 547, __pyx_L24_error)
+            }
+
+            /* "SeqSeg/SeqSeg.pyx":545
+ *         u2 = gsl_ran_ugaussian(r)
+ *         if Abs(rho) > 1:
+ *             with gil:             # <<<<<<<<<<<<<<
+ *                 # This also shouldn't happen. If it does, we set the correlation to 0
+ *                 print("Adaptive covariance defective!")
+ */
+            /*finally:*/ {
+              /*normal exit:*/{
+                #ifdef WITH_THREAD
+                __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                #endif
+                goto __pyx_L25;
+              }
+              __pyx_L24_error: {
+                #ifdef WITH_THREAD
+                __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                #endif
+                goto __pyx_L4_error;
+              }
+              __pyx_L25:;
+            }
+        }
+
+        /* "SeqSeg/SeqSeg.pyx":548
+ *                 # This also shouldn't happen. If it does, we set the correlation to 0
+ *                 print("Adaptive covariance defective!")
+ *             rho = 0             # <<<<<<<<<<<<<<
+ *         u2 = rho*u1 + (1-rho)*u2
+ * 
+ */
+        __pyx_v_rho = 0.0;
+
+        /* "SeqSeg/SeqSeg.pyx":544
+ *         u1 = gsl_ran_ugaussian(r)
+ *         u2 = gsl_ran_ugaussian(r)
+ *         if Abs(rho) > 1:             # <<<<<<<<<<<<<<
+ *             with gil:
+ *                 # This also shouldn't happen. If it does, we set the correlation to 0
+ */
+      }
+
+      /* "SeqSeg/SeqSeg.pyx":549
+ *                 print("Adaptive covariance defective!")
+ *             rho = 0
+ *         u2 = rho*u1 + (1-rho)*u2             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+      __pyx_v_u2 = ((__pyx_v_rho * __pyx_v_u1) + ((1.0 - __pyx_v_rho) * __pyx_v_u2));
+
+      /* "SeqSeg/SeqSeg.pyx":552
+ * 
+ * 
+ *         s2cand = s2cur + u1*Sqrt(s2var)             # <<<<<<<<<<<<<<
+ *         s1cand = s1cur + u2*Sqrt(s1var)
+ * 
+ */
+      __pyx_v_s2cand = (__pyx_v_s2cur + (__pyx_v_u1 * __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_s2var)));
+
+      /* "SeqSeg/SeqSeg.pyx":553
+ * 
+ *         s2cand = s2cur + u1*Sqrt(s2var)
+ *         s1cand = s1cur + u2*Sqrt(s1var)             # <<<<<<<<<<<<<<
+ * 
+ *         if s2cand > 0 and s1cand > 0:
+ */
+      __pyx_v_s1cand = (__pyx_v_s1cur + (__pyx_v_u2 * __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_s1var)));
+
+      /* "SeqSeg/SeqSeg.pyx":555
+ *         s1cand = s1cur + u2*Sqrt(s1var)
+ * 
+ *         if s2cand > 0 and s1cand > 0:             # <<<<<<<<<<<<<<
+ *             # Calculates full posterior
+ *             pcand = cposterior_full(s2cand, s1cand, N, N2, sum1, sum2)
+ */
+      __pyx_t_7 = ((__pyx_v_s2cand > 0.0) != 0);
+      if (__pyx_t_7) {
+      } else {
+        __pyx_t_6 = __pyx_t_7;
+        goto __pyx_L27_bool_binop_done;
+      }
+      __pyx_t_7 = ((__pyx_v_s1cand > 0.0) != 0);
+      __pyx_t_6 = __pyx_t_7;
+      __pyx_L27_bool_binop_done:;
+      if (__pyx_t_6) {
+
+        /* "SeqSeg/SeqSeg.pyx":557
+ *         if s2cand > 0 and s1cand > 0:
+ *             # Calculates full posterior
+ *             pcand = cposterior_full(s2cand, s1cand, N, N2, sum1, sum2)             # <<<<<<<<<<<<<<
+ * 
+ *             # Acceptance ratio
+ */
+        __pyx_v_pcand = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(__pyx_v_s2cand, __pyx_v_s1cand, __pyx_v_N, __pyx_v_N2, __pyx_v_sum1, __pyx_v_sum2);
+
+        /* "SeqSeg/SeqSeg.pyx":560
+ * 
+ *             # Acceptance ratio
+ *             a = pcand - pcur             # <<<<<<<<<<<<<<
+ * 
+ *             if Ln(gsl_rng_uniform(r)) < a:
+ */
+        __pyx_v_a = (__pyx_v_pcand - __pyx_v_pcur);
+
+        /* "SeqSeg/SeqSeg.pyx":562
+ *             a = pcand - pcur
+ * 
+ *             if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
+ *                 s1cur = s1cand
+ *                 s2cur = s2cand
+ */
+        __pyx_t_6 = ((__pyx_f_6SeqSeg_6SeqSeg_Ln(gsl_rng_uniform(__pyx_v_6SeqSeg_6SeqSeg_r)) < __pyx_v_a) != 0);
+        if (__pyx_t_6) {
+
+          /* "SeqSeg/SeqSeg.pyx":563
+ * 
+ *             if Ln(gsl_rng_uniform(r)) < a:
+ *                 s1cur = s1cand             # <<<<<<<<<<<<<<
+ *                 s2cur = s2cand
+ *                 pcur = pcand
+ */
+          __pyx_v_s1cur = __pyx_v_s1cand;
+
+          /* "SeqSeg/SeqSeg.pyx":564
+ *             if Ln(gsl_rng_uniform(r)) < a:
+ *                 s1cur = s1cand
+ *                 s2cur = s2cand             # <<<<<<<<<<<<<<
+ *                 pcur = pcand
+ *                 accept = accept + 1
+ */
+          __pyx_v_s2cur = __pyx_v_s2cand;
+
+          /* "SeqSeg/SeqSeg.pyx":565
+ *                 s1cur = s1cand
+ *                 s2cur = s2cand
+ *                 pcur = pcand             # <<<<<<<<<<<<<<
+ *                 accept = accept + 1
+ *             #endif
+ */
+          __pyx_v_pcur = __pyx_v_pcand;
+
+          /* "SeqSeg/SeqSeg.pyx":566
+ *                 s2cur = s2cand
+ *                 pcur = pcand
+ *                 accept = accept + 1             # <<<<<<<<<<<<<<
+ *             #endif
+ *         #endif
+ */
+          __pyx_v_accept = (__pyx_v_accept + 1.0);
+
+          /* "SeqSeg/SeqSeg.pyx":562
+ *             a = pcand - pcur
+ * 
+ *             if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
+ *                 s1cur = s1cand
+ *                 s2cur = s2cand
+ */
+        }
+
+        /* "SeqSeg/SeqSeg.pyx":555
+ *         s1cand = s1cur + u2*Sqrt(s1var)
+ * 
+ *         if s2cand > 0 and s1cand > 0:             # <<<<<<<<<<<<<<
+ *             # Calculates full posterior
+ *             pcand = cposterior_full(s2cand, s1cand, N, N2, sum1, sum2)
+ */
+      }
+
+      /* "SeqSeg/SeqSeg.pyx":571
+ * 
+ *         # Updating covariance matrix
+ *         s2meanant = s2mean             # <<<<<<<<<<<<<<
+ *         s1meanant = s1mean
+ *         s2mean = (t*s2meanant + s2cur) / (t + 1)
+ */
+      __pyx_v_s2meanant = __pyx_v_s2mean;
+
+      /* "SeqSeg/SeqSeg.pyx":572
+ *         # Updating covariance matrix
+ *         s2meanant = s2mean
+ *         s1meanant = s1mean             # <<<<<<<<<<<<<<
+ *         s2mean = (t*s2meanant + s2cur) / (t + 1)
+ *         s1mean = (t*s1meanant + s1cur) / (t + 1)
+ */
+      __pyx_v_s1meanant = __pyx_v_s1mean;
+
+      /* "SeqSeg/SeqSeg.pyx":573
+ *         s2meanant = s2mean
+ *         s1meanant = s1mean
+ *         s2mean = (t*s2meanant + s2cur) / (t + 1)             # <<<<<<<<<<<<<<
+ *         s1mean = (t*s1meanant + s1cur) / (t + 1)
+ * 
+ */
+      __pyx_t_3 = ((__pyx_v_t * __pyx_v_s2meanant) + __pyx_v_s2cur);
+      __pyx_t_1 = (__pyx_v_t + 1);
+      if (unlikely(__pyx_t_1 == 0)) {
+        #ifdef WITH_THREAD
+        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+        #endif
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        #ifdef WITH_THREAD
+        __Pyx_PyGILState_Release(__pyx_gilstate_save);
+        #endif
+        __PYX_ERR(0, 573, __pyx_L4_error)
+      }
+      __pyx_v_s2mean = (__pyx_t_3 / __pyx_t_1);
+
+      /* "SeqSeg/SeqSeg.pyx":574
+ *         s1meanant = s1mean
+ *         s2mean = (t*s2meanant + s2cur) / (t + 1)
+ *         s1mean = (t*s1meanant + s1cur) / (t + 1)             # <<<<<<<<<<<<<<
+ * 
+ *         s2var =  (((t-1)*s2var)/t) + (sd/t)*(t*s2meanant*s2meanant - (t+1)*s2mean*s2mean + s2cur*s2cur + eps)
+ */
+      __pyx_t_3 = ((__pyx_v_t * __pyx_v_s1meanant) + __pyx_v_s1cur);
+      __pyx_t_1 = (__pyx_v_t + 1);
+      if (unlikely(__pyx_t_1 == 0)) {
+        #ifdef WITH_THREAD
+        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+        #endif
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        #ifdef WITH_THREAD
+        __Pyx_PyGILState_Release(__pyx_gilstate_save);
+        #endif
+        __PYX_ERR(0, 574, __pyx_L4_error)
+      }
+      __pyx_v_s1mean = (__pyx_t_3 / __pyx_t_1);
+
+      /* "SeqSeg/SeqSeg.pyx":576
+ *         s1mean = (t*s1meanant + s1cur) / (t + 1)
+ * 
+ *         s2var =  (((t-1)*s2var)/t) + (sd/t)*(t*s2meanant*s2meanant - (t+1)*s2mean*s2mean + s2cur*s2cur + eps)             # <<<<<<<<<<<<<<
+ *         s1var =  (((t-1)*s1var)/t) + (sd/t)*(t*s1meanant*s1meanant - (t+1)*s1mean*s1mean + s1cur*s1cur + eps)
+ *         cov = (((t-1)*cov)/t) + (sd/t)*(t*s2meanant*s1meanant - (t+1)*s2mean*s1mean + s2cur*s1cur)
+ */
+      __pyx_t_3 = ((__pyx_v_t - 1) * __pyx_v_s2var);
+      if (unlikely(__pyx_v_t == 0)) {
+        #ifdef WITH_THREAD
+        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+        #endif
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        #ifdef WITH_THREAD
+        __Pyx_PyGILState_Release(__pyx_gilstate_save);
+        #endif
+        __PYX_ERR(0, 576, __pyx_L4_error)
+      }
+      if (unlikely(__pyx_v_t == 0)) {
+        #ifdef WITH_THREAD
+        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+        #endif
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        #ifdef WITH_THREAD
+        __Pyx_PyGILState_Release(__pyx_gilstate_save);
+        #endif
+        __PYX_ERR(0, 576, __pyx_L4_error)
+      }
+      __pyx_v_s2var = ((__pyx_t_3 / __pyx_v_t) + ((__pyx_v_sd / __pyx_v_t) * (((((__pyx_v_t * __pyx_v_s2meanant) * __pyx_v_s2meanant) - (((__pyx_v_t + 1) * __pyx_v_s2mean) * __pyx_v_s2mean)) + (__pyx_v_s2cur * __pyx_v_s2cur)) + __pyx_v_eps)));
+
+      /* "SeqSeg/SeqSeg.pyx":577
+ * 
+ *         s2var =  (((t-1)*s2var)/t) + (sd/t)*(t*s2meanant*s2meanant - (t+1)*s2mean*s2mean + s2cur*s2cur + eps)
+ *         s1var =  (((t-1)*s1var)/t) + (sd/t)*(t*s1meanant*s1meanant - (t+1)*s1mean*s1mean + s1cur*s1cur + eps)             # <<<<<<<<<<<<<<
+ *         cov = (((t-1)*cov)/t) + (sd/t)*(t*s2meanant*s1meanant - (t+1)*s2mean*s1mean + s2cur*s1cur)
+ *         rho = cov/Sqrt(s2var*s1var)
+ */
+      __pyx_t_3 = ((__pyx_v_t - 1) * __pyx_v_s1var);
+      if (unlikely(__pyx_v_t == 0)) {
+        #ifdef WITH_THREAD
+        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+        #endif
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        #ifdef WITH_THREAD
+        __Pyx_PyGILState_Release(__pyx_gilstate_save);
+        #endif
+        __PYX_ERR(0, 577, __pyx_L4_error)
+      }
+      if (unlikely(__pyx_v_t == 0)) {
+        #ifdef WITH_THREAD
+        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+        #endif
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        #ifdef WITH_THREAD
+        __Pyx_PyGILState_Release(__pyx_gilstate_save);
+        #endif
+        __PYX_ERR(0, 577, __pyx_L4_error)
+      }
+      __pyx_v_s1var = ((__pyx_t_3 / __pyx_v_t) + ((__pyx_v_sd / __pyx_v_t) * (((((__pyx_v_t * __pyx_v_s1meanant) * __pyx_v_s1meanant) - (((__pyx_v_t + 1) * __pyx_v_s1mean) * __pyx_v_s1mean)) + (__pyx_v_s1cur * __pyx_v_s1cur)) + __pyx_v_eps)));
+
+      /* "SeqSeg/SeqSeg.pyx":578
+ *         s2var =  (((t-1)*s2var)/t) + (sd/t)*(t*s2meanant*s2meanant - (t+1)*s2mean*s2mean + s2cur*s2cur + eps)
+ *         s1var =  (((t-1)*s1var)/t) + (sd/t)*(t*s1meanant*s1meanant - (t+1)*s1mean*s1mean + s1cur*s1cur + eps)
+ *         cov = (((t-1)*cov)/t) + (sd/t)*(t*s2meanant*s1meanant - (t+1)*s2mean*s1mean + s2cur*s1cur)             # <<<<<<<<<<<<<<
+ *         rho = cov/Sqrt(s2var*s1var)
+ *         t = t + 1
+ */
+      __pyx_t_3 = ((__pyx_v_t - 1) * __pyx_v_cov);
+      if (unlikely(__pyx_v_t == 0)) {
+        #ifdef WITH_THREAD
+        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+        #endif
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        #ifdef WITH_THREAD
+        __Pyx_PyGILState_Release(__pyx_gilstate_save);
+        #endif
+        __PYX_ERR(0, 578, __pyx_L4_error)
+      }
+      if (unlikely(__pyx_v_t == 0)) {
+        #ifdef WITH_THREAD
+        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+        #endif
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        #ifdef WITH_THREAD
+        __Pyx_PyGILState_Release(__pyx_gilstate_save);
+        #endif
+        __PYX_ERR(0, 578, __pyx_L4_error)
+      }
+      __pyx_v_cov = ((__pyx_t_3 / __pyx_v_t) + ((__pyx_v_sd / __pyx_v_t) * ((((__pyx_v_t * __pyx_v_s2meanant) * __pyx_v_s1meanant) - (((__pyx_v_t + 1) * __pyx_v_s2mean) * __pyx_v_s1mean)) + (__pyx_v_s2cur * __pyx_v_s1cur))));
+
+      /* "SeqSeg/SeqSeg.pyx":579
+ *         s1var =  (((t-1)*s1var)/t) + (sd/t)*(t*s1meanant*s1meanant - (t+1)*s1mean*s1mean + s1cur*s1cur + eps)
+ *         cov = (((t-1)*cov)/t) + (sd/t)*(t*s2meanant*s1meanant - (t+1)*s2mean*s1mean + s2cur*s1cur)
+ *         rho = cov/Sqrt(s2var*s1var)             # <<<<<<<<<<<<<<
+ *         t = t + 1
+ *     #endfor
+ */
+      __pyx_t_3 = __pyx_f_6SeqSeg_6SeqSeg_Sqrt((__pyx_v_s2var * __pyx_v_s1var));
+      if (unlikely(__pyx_t_3 == 0)) {
+        #ifdef WITH_THREAD
+        PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+        #endif
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        #ifdef WITH_THREAD
+        __Pyx_PyGILState_Release(__pyx_gilstate_save);
+        #endif
+        __PYX_ERR(0, 579, __pyx_L4_error)
+      }
+      __pyx_v_rho = (__pyx_v_cov / __pyx_t_3);
+
+      /* "SeqSeg/SeqSeg.pyx":580
+ *         cov = (((t-1)*cov)/t) + (sd/t)*(t*s2meanant*s1meanant - (t+1)*s2mean*s1mean + s2cur*s1cur)
+ *         rho = cov/Sqrt(s2var*s1var)
+ *         t = t + 1             # <<<<<<<<<<<<<<
+ *     #endfor
+ * 
+ */
+      __pyx_v_t = (__pyx_v_t + 1);
+    }
+
+    /* "SeqSeg/SeqSeg.pyx":583
+ *     #endfor
+ * 
+ *     ev = 0.0             # <<<<<<<<<<<<<<
+ *     dtmp = 0.0
+ *     stmp = 0.0
+ */
+    __pyx_v_ev = 0.0;
+
+    /* "SeqSeg/SeqSeg.pyx":584
+ * 
+ *     ev = 0.0
+ *     dtmp = 0.0             # <<<<<<<<<<<<<<
+ *     stmp = 0.0
+ *     accept = 0
+ */
+    __pyx_v_dtmp = 0.0;
+
+    /* "SeqSeg/SeqSeg.pyx":585
+ *     ev = 0.0
+ *     dtmp = 0.0
+ *     stmp = 0.0             # <<<<<<<<<<<<<<
+ *     accept = 0
+ *     for i in range(mciter):
+ */
+    __pyx_v_stmp = 0.0;
+
+    /* "SeqSeg/SeqSeg.pyx":586
+ *     dtmp = 0.0
+ *     stmp = 0.0
+ *     accept = 0             # <<<<<<<<<<<<<<
+ *     for i in range(mciter):
+ *         # Generate candidates
+ */
+    __pyx_v_accept = 0.0;
+
+    /* "SeqSeg/SeqSeg.pyx":587
+ *     stmp = 0.0
+ *     accept = 0
+ *     for i in range(mciter):             # <<<<<<<<<<<<<<
+ *         # Generate candidates
+ *         u1 = gsl_ran_ugaussian(r)
+ */
+    __pyx_t_4 = __pyx_v_mciter;
+    for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
+      __pyx_v_i = __pyx_t_5;
+
+      /* "SeqSeg/SeqSeg.pyx":589
+ *     for i in range(mciter):
+ *         # Generate candidates
+ *         u1 = gsl_ran_ugaussian(r)             # <<<<<<<<<<<<<<
+ *         u2 = gsl_ran_ugaussian(r)
+ *         u2 = rho*u1 + (1-rho)*u2
+ */
+      __pyx_v_u1 = gsl_ran_ugaussian(__pyx_v_6SeqSeg_6SeqSeg_r);
+
+      /* "SeqSeg/SeqSeg.pyx":590
+ *         # Generate candidates
+ *         u1 = gsl_ran_ugaussian(r)
+ *         u2 = gsl_ran_ugaussian(r)             # <<<<<<<<<<<<<<
+ *         u2 = rho*u1 + (1-rho)*u2
+ * 
+ */
+      __pyx_v_u2 = gsl_ran_ugaussian(__pyx_v_6SeqSeg_6SeqSeg_r);
+
+      /* "SeqSeg/SeqSeg.pyx":591
+ *         u1 = gsl_ran_ugaussian(r)
+ *         u2 = gsl_ran_ugaussian(r)
+ *         u2 = rho*u1 + (1-rho)*u2             # <<<<<<<<<<<<<<
+ * 
+ *         s2cand = s2cur + u1*Sqrt(s2var)
+ */
+      __pyx_v_u2 = ((__pyx_v_rho * __pyx_v_u1) + ((1.0 - __pyx_v_rho) * __pyx_v_u2));
+
+      /* "SeqSeg/SeqSeg.pyx":593
+ *         u2 = rho*u1 + (1-rho)*u2
+ * 
+ *         s2cand = s2cur + u1*Sqrt(s2var)             # <<<<<<<<<<<<<<
+ *         s1cand = s1cur + u2*Sqrt(s1var)
+ * 
+ */
+      __pyx_v_s2cand = (__pyx_v_s2cur + (__pyx_v_u1 * __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_s2var)));
+
+      /* "SeqSeg/SeqSeg.pyx":594
+ * 
+ *         s2cand = s2cur + u1*Sqrt(s2var)
+ *         s1cand = s1cur + u2*Sqrt(s1var)             # <<<<<<<<<<<<<<
+ * 
+ *         if s2cand > 0 and s1cand > 0:
+ */
+      __pyx_v_s1cand = (__pyx_v_s1cur + (__pyx_v_u2 * __pyx_f_6SeqSeg_6SeqSeg_Sqrt(__pyx_v_s1var)));
+
+      /* "SeqSeg/SeqSeg.pyx":596
+ *         s1cand = s1cur + u2*Sqrt(s1var)
+ * 
+ *         if s2cand > 0 and s1cand > 0:             # <<<<<<<<<<<<<<
+ *             # Calculates full posterior
+ *             pcand = cposterior_full(s2cand, s1cand, N, N2, sum1, sum2)
+ */
+      __pyx_t_7 = ((__pyx_v_s2cand > 0.0) != 0);
+      if (__pyx_t_7) {
+      } else {
+        __pyx_t_6 = __pyx_t_7;
+        goto __pyx_L33_bool_binop_done;
+      }
+      __pyx_t_7 = ((__pyx_v_s1cand > 0.0) != 0);
+      __pyx_t_6 = __pyx_t_7;
+      __pyx_L33_bool_binop_done:;
+      if (__pyx_t_6) {
+
+        /* "SeqSeg/SeqSeg.pyx":598
+ *         if s2cand > 0 and s1cand > 0:
+ *             # Calculates full posterior
+ *             pcand = cposterior_full(s2cand, s1cand, N, N2, sum1, sum2)             # <<<<<<<<<<<<<<
+ * 
+ *             # Acceptance ratio
+ */
+        __pyx_v_pcand = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(__pyx_v_s2cand, __pyx_v_s1cand, __pyx_v_N, __pyx_v_N2, __pyx_v_sum1, __pyx_v_sum2);
+
+        /* "SeqSeg/SeqSeg.pyx":601
+ * 
+ *             # Acceptance ratio
+ *             a = pcand - pcur             # <<<<<<<<<<<<<<
+ * 
+ *             if Ln(gsl_rng_uniform(r)) < a:
+ */
+        __pyx_v_a = (__pyx_v_pcand - __pyx_v_pcur);
+
+        /* "SeqSeg/SeqSeg.pyx":603
+ *             a = pcand - pcur
+ * 
+ *             if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
+ *                 s2cur = s2cand
+ *                 s1cur = s1cand
+ */
+        __pyx_t_6 = ((__pyx_f_6SeqSeg_6SeqSeg_Ln(gsl_rng_uniform(__pyx_v_6SeqSeg_6SeqSeg_r)) < __pyx_v_a) != 0);
+        if (__pyx_t_6) {
+
+          /* "SeqSeg/SeqSeg.pyx":604
+ * 
+ *             if Ln(gsl_rng_uniform(r)) < a:
+ *                 s2cur = s2cand             # <<<<<<<<<<<<<<
+ *                 s1cur = s1cand
+ *                 pcur = pcand
+ */
+          __pyx_v_s2cur = __pyx_v_s2cand;
+
+          /* "SeqSeg/SeqSeg.pyx":605
+ *             if Ln(gsl_rng_uniform(r)) < a:
+ *                 s2cur = s2cand
+ *                 s1cur = s1cand             # <<<<<<<<<<<<<<
+ *                 pcur = pcand
+ *                 accept = accept + 1
+ */
+          __pyx_v_s1cur = __pyx_v_s1cand;
+
+          /* "SeqSeg/SeqSeg.pyx":606
+ *                 s2cur = s2cand
+ *                 s1cur = s1cand
+ *                 pcur = pcand             # <<<<<<<<<<<<<<
+ *                 accept = accept + 1
+ *             #endif
+ */
+          __pyx_v_pcur = __pyx_v_pcand;
+
+          /* "SeqSeg/SeqSeg.pyx":607
+ *                 s1cur = s1cand
+ *                 pcur = pcand
+ *                 accept = accept + 1             # <<<<<<<<<<<<<<
+ *             #endif
+ *         #endif
+ */
+          __pyx_v_accept = (__pyx_v_accept + 1.0);
+
+          /* "SeqSeg/SeqSeg.pyx":603
+ *             a = pcand - pcur
+ * 
+ *             if Ln(gsl_rng_uniform(r)) < a:             # <<<<<<<<<<<<<<
+ *                 s2cur = s2cand
+ *                 s1cur = s1cand
+ */
+        }
+
+        /* "SeqSeg/SeqSeg.pyx":596
+ *         s1cand = s1cur + u2*Sqrt(s1var)
+ * 
+ *         if s2cand > 0 and s1cand > 0:             # <<<<<<<<<<<<<<
+ *             # Calculates full posterior
+ *             pcand = cposterior_full(s2cand, s1cand, N, N2, sum1, sum2)
+ */
+      }
+
+      /* "SeqSeg/SeqSeg.pyx":611
+ *         #endif
+ * 
+ *         if pcur > p0:             # <<<<<<<<<<<<<<
+ *             ev = ev + 1.0
+ *         #endif
+ */
+      __pyx_t_6 = ((__pyx_v_pcur > __pyx_v_p0) != 0);
+      if (__pyx_t_6) {
+
+        /* "SeqSeg/SeqSeg.pyx":612
+ * 
+ *         if pcur > p0:
+ *             ev = ev + 1.0             # <<<<<<<<<<<<<<
+ *         #endif
+ *     #endfor
+ */
+        __pyx_v_ev = (__pyx_v_ev + 1.0);
+
+        /* "SeqSeg/SeqSeg.pyx":611
+ *         #endif
+ * 
+ *         if pcur > p0:             # <<<<<<<<<<<<<<
+ *             ev = ev + 1.0
+ *         #endif
+ */
+      }
+    }
+
+    /* "SeqSeg/SeqSeg.pyx":617
+ * 
+ * 
+ *     ev = ev / mciter             # <<<<<<<<<<<<<<
+ * 
+ *     return ev
+ */
+    if (unlikely(__pyx_v_mciter == 0)) {
+      #ifdef WITH_THREAD
+      PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+      #ifdef WITH_THREAD
+      __Pyx_PyGILState_Release(__pyx_gilstate_save);
+      #endif
+      __PYX_ERR(0, 617, __pyx_L4_error)
+    }
+    __pyx_v_ev = (__pyx_v_ev / __pyx_v_mciter);
+
+    /* "SeqSeg/SeqSeg.pyx":619
+ *     ev = ev / mciter
+ * 
+ *     return ev             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+    __pyx_r = __pyx_v_ev;
+    goto __pyx_L3_return;
+  }
+
+  /* "SeqSeg/SeqSeg.pyx":425
+ * 
+ * cdef double cmcmc(int mcburn, int mciter, double p0, long N, long N2, double sum1, double sum2) nogil:
+ *     ''' Run MCMC             # <<<<<<<<<<<<<<
+ * 
+ *         @args:
+ */
+  /*finally:*/ {
+    __pyx_L3_return: {
+      #ifdef WITH_THREAD
+      __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      goto __pyx_L0;
+    }
+    __pyx_L4_error: {
+      #ifdef WITH_THREAD
+      __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+      #endif
+      goto __pyx_L1_error;
+    }
+  }
+
+  /* "SeqSeg/SeqSeg.pyx":424
+ *     return ev
+ * 
+ * cdef double cmcmc(int mcburn, int mciter, double p0, long N, long N2, double sum1, double sum2) nogil:             # <<<<<<<<<<<<<<
  *     ''' Run MCMC
  * 
  */
@@ -4434,7 +6221,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_cmcmc(int __pyx_v_mcburn, int __pyx_v_mcit
   return __pyx_r;
 }
 
-/* "SeqSeg/SeqSeg.pyx":372
+/* "SeqSeg/SeqSeg.pyx":644
  * 
  * 
  *     def __init__(self, np.ndarray wave = None, replicate = False):             # <<<<<<<<<<<<<<
@@ -4481,7 +6268,7 @@ static int __pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_1__init__(PyObject *__pyx_v_self, Py
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 372, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 644, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -4498,13 +6285,13 @@ static int __pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_1__init__(PyObject *__pyx_v_self, Py
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 372, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 644, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("SeqSeg.SeqSeg.SeqSeg.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_wave), __pyx_ptype_5numpy_ndarray, 1, "wave", 0))) __PYX_ERR(0, 372, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_wave), __pyx_ptype_5numpy_ndarray, 1, "wave", 0))) __PYX_ERR(0, 644, __pyx_L1_error)
   __pyx_r = __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(((struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self), __pyx_v_wave, __pyx_v_replicate);
 
   /* function exit code */
@@ -4527,7 +6314,7 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
   long __pyx_t_6;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "SeqSeg/SeqSeg.pyx":374
+  /* "SeqSeg/SeqSeg.pyx":646
  *     def __init__(self, np.ndarray wave = None, replicate = False):
  * 
  *         self.wave = wave             # <<<<<<<<<<<<<<
@@ -4540,7 +6327,7 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
   __Pyx_DECREF(((PyObject *)__pyx_v_self->wave));
   __pyx_v_self->wave = __pyx_v_wave;
 
-  /* "SeqSeg/SeqSeg.pyx":375
+  /* "SeqSeg/SeqSeg.pyx":647
  * 
  *         self.wave = wave
  *         if wave is None:             # <<<<<<<<<<<<<<
@@ -4551,7 +6338,7 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "SeqSeg/SeqSeg.pyx":376
+    /* "SeqSeg/SeqSeg.pyx":648
  *         self.wave = wave
  *         if wave is None:
  *             self.data_fed = False             # <<<<<<<<<<<<<<
@@ -4560,7 +6347,7 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
  */
     __pyx_v_self->data_fed = 0;
 
-    /* "SeqSeg/SeqSeg.pyx":375
+    /* "SeqSeg/SeqSeg.pyx":647
  * 
  *         self.wave = wave
  *         if wave is None:             # <<<<<<<<<<<<<<
@@ -4570,7 +6357,7 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
     goto __pyx_L3;
   }
 
-  /* "SeqSeg/SeqSeg.pyx":378
+  /* "SeqSeg/SeqSeg.pyx":650
  *             self.data_fed = False
  *         else:
  *             self.data_fed = True             # <<<<<<<<<<<<<<
@@ -4582,7 +6369,7 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
   }
   __pyx_L3:;
 
-  /* "SeqSeg/SeqSeg.pyx":380
+  /* "SeqSeg/SeqSeg.pyx":652
  *             self.data_fed = True
  * 
  *         self.initialized = False             # <<<<<<<<<<<<<<
@@ -4591,14 +6378,14 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
  */
   __pyx_v_self->initialized = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":382
+  /* "SeqSeg/SeqSeg.pyx":654
  *         self.initialized = False
  * 
  *         self.initialize()             # <<<<<<<<<<<<<<
  * 
  *         np.seterr(over = 'ignore', under = 'ignore')
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_initialize); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 382, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_initialize); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 654, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -4611,50 +6398,50 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
     }
   }
   if (__pyx_t_5) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 382, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 654, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else {
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 382, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 654, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":384
+  /* "SeqSeg/SeqSeg.pyx":656
  *         self.initialize()
  * 
  *         np.seterr(over = 'ignore', under = 'ignore')             # <<<<<<<<<<<<<<
  * 
  *         # To replication purposes
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 384, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 656, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_seterr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 384, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_seterr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 656, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 384, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 656, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_over, __pyx_n_s_ignore) < 0) __PYX_ERR(0, 384, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_under, __pyx_n_s_ignore) < 0) __PYX_ERR(0, 384, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_empty_tuple, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 384, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_over, __pyx_n_s_ignore) < 0) __PYX_ERR(0, 656, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_under, __pyx_n_s_ignore) < 0) __PYX_ERR(0, 656, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_empty_tuple, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 656, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":387
+  /* "SeqSeg/SeqSeg.pyx":659
  * 
  *         # To replication purposes
  *         if replicate == True:             # <<<<<<<<<<<<<<
  *             self.seed = 1529365132
  *             gsl_rng_set(r, self.seed)
  */
-  __pyx_t_5 = PyObject_RichCompare(__pyx_v_replicate, Py_True, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 387, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 387, __pyx_L1_error)
+  __pyx_t_5 = PyObject_RichCompare(__pyx_v_replicate, Py_True, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 659, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 659, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (__pyx_t_2) {
 
-    /* "SeqSeg/SeqSeg.pyx":388
+    /* "SeqSeg/SeqSeg.pyx":660
  *         # To replication purposes
  *         if replicate == True:
  *             self.seed = 1529365132             # <<<<<<<<<<<<<<
@@ -4663,7 +6450,7 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
  */
     __pyx_v_self->seed = 0x5B28428C;
 
-    /* "SeqSeg/SeqSeg.pyx":389
+    /* "SeqSeg/SeqSeg.pyx":661
  *         if replicate == True:
  *             self.seed = 1529365132
  *             gsl_rng_set(r, self.seed)             # <<<<<<<<<<<<<<
@@ -4672,7 +6459,7 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
  */
     gsl_rng_set(__pyx_v_6SeqSeg_6SeqSeg_r, __pyx_v_self->seed);
 
-    /* "SeqSeg/SeqSeg.pyx":387
+    /* "SeqSeg/SeqSeg.pyx":659
  * 
  *         # To replication purposes
  *         if replicate == True:             # <<<<<<<<<<<<<<
@@ -4682,7 +6469,7 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
     goto __pyx_L4;
   }
 
-  /* "SeqSeg/SeqSeg.pyx":391
+  /* "SeqSeg/SeqSeg.pyx":663
  *             gsl_rng_set(r, self.seed)
  *         else:
  *             self.seed = time.time()*1000             # <<<<<<<<<<<<<<
@@ -4690,9 +6477,9 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
  * 
  */
   /*else*/ {
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 391, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 663, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_time); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 391, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_time); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 663, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_3 = NULL;
@@ -4706,21 +6493,21 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
       }
     }
     if (__pyx_t_3) {
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 391, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 663, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     } else {
-      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 391, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 663, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyNumber_Multiply(__pyx_t_5, __pyx_int_1000); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 391, __pyx_L1_error)
+    __pyx_t_4 = PyNumber_Multiply(__pyx_t_5, __pyx_int_1000); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 663, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_6 = __Pyx_PyInt_As_long(__pyx_t_4); if (unlikely((__pyx_t_6 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 391, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_As_long(__pyx_t_4); if (unlikely((__pyx_t_6 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 663, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_self->seed = __pyx_t_6;
 
-    /* "SeqSeg/SeqSeg.pyx":392
+    /* "SeqSeg/SeqSeg.pyx":664
  *         else:
  *             self.seed = time.time()*1000
  *             gsl_rng_set(r, self.seed)             # <<<<<<<<<<<<<<
@@ -4731,7 +6518,7 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
   }
   __pyx_L4:;
 
-  /* "SeqSeg/SeqSeg.pyx":372
+  /* "SeqSeg/SeqSeg.pyx":644
  * 
  * 
  *     def __init__(self, np.ndarray wave = None, replicate = False):             # <<<<<<<<<<<<<<
@@ -4753,7 +6540,7 @@ static int __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg___init__(struct __pyx_obj_6SeqSeg_6S
   return __pyx_r;
 }
 
-/* "SeqSeg/SeqSeg.pyx":396
+/* "SeqSeg/SeqSeg.pyx":668
  * 
  * 
  *     def initialize(self, double beta = 2.9e-5, double alpha = 0.1, int mciter = 4000, int mcburn = 1000, int nchains = 1):             # <<<<<<<<<<<<<<
@@ -4826,7 +6613,7 @@ static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_3initialize(PyObject *__pyx_v_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "initialize") < 0)) __PYX_ERR(0, 396, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "initialize") < 0)) __PYX_ERR(0, 668, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -4845,34 +6632,34 @@ static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_3initialize(PyObject *__pyx_v_
       }
     }
     if (values[0]) {
-      __pyx_v_beta = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_beta == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 396, __pyx_L3_error)
+      __pyx_v_beta = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_beta == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 668, __pyx_L3_error)
     } else {
       __pyx_v_beta = ((double)2.9e-5);
     }
     if (values[1]) {
-      __pyx_v_alpha = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_alpha == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 396, __pyx_L3_error)
+      __pyx_v_alpha = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_alpha == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 668, __pyx_L3_error)
     } else {
       __pyx_v_alpha = ((double)0.1);
     }
     if (values[2]) {
-      __pyx_v_mciter = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_mciter == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 396, __pyx_L3_error)
+      __pyx_v_mciter = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_mciter == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 668, __pyx_L3_error)
     } else {
       __pyx_v_mciter = ((int)0xFA0);
     }
     if (values[3]) {
-      __pyx_v_mcburn = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_mcburn == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 396, __pyx_L3_error)
+      __pyx_v_mcburn = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_mcburn == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 668, __pyx_L3_error)
     } else {
       __pyx_v_mcburn = ((int)0x3E8);
     }
     if (values[4]) {
-      __pyx_v_nchains = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_nchains == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 396, __pyx_L3_error)
+      __pyx_v_nchains = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_nchains == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 668, __pyx_L3_error)
     } else {
       __pyx_v_nchains = ((int)1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("initialize", 0, 0, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 396, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("initialize", 0, 0, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 668, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("SeqSeg.SeqSeg.SeqSeg.initialize", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4899,7 +6686,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
   Py_ssize_t __pyx_t_9;
   __Pyx_RefNannySetupContext("initialize", 0);
 
-  /* "SeqSeg/SeqSeg.pyx":402
+  /* "SeqSeg/SeqSeg.pyx":674
  *         '''
  * 
  *         if self.wave is not None:             # <<<<<<<<<<<<<<
@@ -4910,19 +6697,19 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "SeqSeg/SeqSeg.pyx":405
+    /* "SeqSeg/SeqSeg.pyx":677
  * 
  *             # Stores the cumulative sum to speed up calculations
  *             self.sumw2 = np.cumsum(self.wave**2)             # <<<<<<<<<<<<<<
  *             self.sumw2 = np.insert(self.sumw2, 0, 0)
  *             self.N = len(self.wave)
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 405, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 677, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_cumsum); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 405, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_cumsum); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 677, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyNumber_Power(((PyObject *)__pyx_v_self->wave), __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 405, __pyx_L1_error)
+    __pyx_t_4 = PyNumber_Power(((PyObject *)__pyx_v_self->wave), __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 677, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
@@ -4935,14 +6722,14 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
       }
     }
     if (!__pyx_t_6) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 405, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 677, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_3);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_4};
-        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 405, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 677, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -4951,42 +6738,42 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_4};
-        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 405, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 677, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else
       #endif
       {
-        __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 405, __pyx_L1_error)
+        __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 677, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
         __Pyx_GIVEREF(__pyx_t_4);
         PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_4);
         __pyx_t_4 = 0;
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 405, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 677, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 405, __pyx_L1_error)
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 677, __pyx_L1_error)
     __Pyx_GIVEREF(__pyx_t_3);
     __Pyx_GOTREF(__pyx_v_self->sumw2);
     __Pyx_DECREF(((PyObject *)__pyx_v_self->sumw2));
     __pyx_v_self->sumw2 = ((PyArrayObject *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "SeqSeg/SeqSeg.pyx":406
+    /* "SeqSeg/SeqSeg.pyx":678
  *             # Stores the cumulative sum to speed up calculations
  *             self.sumw2 = np.cumsum(self.wave**2)
  *             self.sumw2 = np.insert(self.sumw2, 0, 0)             # <<<<<<<<<<<<<<
  *             self.N = len(self.wave)
  * 
  */
-    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 406, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 678, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_insert); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 406, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_insert); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 678, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_t_5 = NULL;
@@ -5004,7 +6791,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_7)) {
       PyObject *__pyx_temp[4] = {__pyx_t_5, ((PyObject *)__pyx_v_self->sumw2), __pyx_int_0, __pyx_int_0};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_8, 3+__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 406, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_8, 3+__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 678, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_3);
     } else
@@ -5012,13 +6799,13 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
       PyObject *__pyx_temp[4] = {__pyx_t_5, ((PyObject *)__pyx_v_self->sumw2), __pyx_int_0, __pyx_int_0};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_8, 3+__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 406, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_8, 3+__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 678, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_3);
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 406, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 678, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       if (__pyx_t_5) {
         __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -5032,19 +6819,19 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
       __Pyx_INCREF(__pyx_int_0);
       __Pyx_GIVEREF(__pyx_int_0);
       PyTuple_SET_ITEM(__pyx_t_4, 2+__pyx_t_8, __pyx_int_0);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 406, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 678, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 406, __pyx_L1_error)
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 678, __pyx_L1_error)
     __Pyx_GIVEREF(__pyx_t_3);
     __Pyx_GOTREF(__pyx_v_self->sumw2);
     __Pyx_DECREF(((PyObject *)__pyx_v_self->sumw2));
     __pyx_v_self->sumw2 = ((PyArrayObject *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "SeqSeg/SeqSeg.pyx":407
+    /* "SeqSeg/SeqSeg.pyx":679
  *             self.sumw2 = np.cumsum(self.wave**2)
  *             self.sumw2 = np.insert(self.sumw2, 0, 0)
  *             self.N = len(self.wave)             # <<<<<<<<<<<<<<
@@ -5053,11 +6840,11 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
  */
     __pyx_t_3 = ((PyObject *)__pyx_v_self->wave);
     __Pyx_INCREF(__pyx_t_3);
-    __pyx_t_9 = PyObject_Length(__pyx_t_3); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 407, __pyx_L1_error)
+    __pyx_t_9 = PyObject_Length(__pyx_t_3); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 679, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_self->N = __pyx_t_9;
 
-    /* "SeqSeg/SeqSeg.pyx":410
+    /* "SeqSeg/SeqSeg.pyx":682
  * 
  *             # Current segment start and end
  *             self.tstart = 0             # <<<<<<<<<<<<<<
@@ -5066,7 +6853,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
  */
     __pyx_v_self->tstart = 0;
 
-    /* "SeqSeg/SeqSeg.pyx":411
+    /* "SeqSeg/SeqSeg.pyx":683
  *             # Current segment start and end
  *             self.tstart = 0
  *             self.tend = self.N-1             # <<<<<<<<<<<<<<
@@ -5075,7 +6862,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
  */
     __pyx_v_self->tend = (__pyx_v_self->N - 1);
 
-    /* "SeqSeg/SeqSeg.pyx":402
+    /* "SeqSeg/SeqSeg.pyx":674
  *         '''
  * 
  *         if self.wave is not None:             # <<<<<<<<<<<<<<
@@ -5085,7 +6872,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
     goto __pyx_L3;
   }
 
-  /* "SeqSeg/SeqSeg.pyx":415
+  /* "SeqSeg/SeqSeg.pyx":687
  *         else:
  * 
  *             self.tstart = 0             # <<<<<<<<<<<<<<
@@ -5095,7 +6882,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
   /*else*/ {
     __pyx_v_self->tstart = 0;
 
-    /* "SeqSeg/SeqSeg.pyx":416
+    /* "SeqSeg/SeqSeg.pyx":688
  * 
  *             self.tstart = 0
  *             self.tend = 0             # <<<<<<<<<<<<<<
@@ -5104,7 +6891,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
  */
     __pyx_v_self->tend = 0;
 
-    /* "SeqSeg/SeqSeg.pyx":417
+    /* "SeqSeg/SeqSeg.pyx":689
  *             self.tstart = 0
  *             self.tend = 0
  *             self.sumw2 = None             # <<<<<<<<<<<<<<
@@ -5117,7 +6904,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
     __Pyx_DECREF(((PyObject *)__pyx_v_self->sumw2));
     __pyx_v_self->sumw2 = ((PyArrayObject *)Py_None);
 
-    /* "SeqSeg/SeqSeg.pyx":418
+    /* "SeqSeg/SeqSeg.pyx":690
  *             self.tend = 0
  *             self.sumw2 = None
  *             self.N = -1             # <<<<<<<<<<<<<<
@@ -5128,7 +6915,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
   }
   __pyx_L3:;
 
-  /* "SeqSeg/SeqSeg.pyx":421
+  /* "SeqSeg/SeqSeg.pyx":693
  * 
  * 
  *         self.mciter = mciter             # <<<<<<<<<<<<<<
@@ -5137,7 +6924,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
  */
   __pyx_v_self->mciter = __pyx_v_mciter;
 
-  /* "SeqSeg/SeqSeg.pyx":422
+  /* "SeqSeg/SeqSeg.pyx":694
  * 
  *         self.mciter = mciter
  *         self.mcburn = mcburn             # <<<<<<<<<<<<<<
@@ -5146,7 +6933,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
  */
   __pyx_v_self->mcburn = __pyx_v_mcburn;
 
-  /* "SeqSeg/SeqSeg.pyx":423
+  /* "SeqSeg/SeqSeg.pyx":695
  *         self.mciter = mciter
  *         self.mcburn = mcburn
  *         self.nchains = nchains             # <<<<<<<<<<<<<<
@@ -5155,7 +6942,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
  */
   __pyx_v_self->nchains = __pyx_v_nchains;
 
-  /* "SeqSeg/SeqSeg.pyx":425
+  /* "SeqSeg/SeqSeg.pyx":697
  *         self.nchains = nchains
  * 
  *         self.beta = beta             # <<<<<<<<<<<<<<
@@ -5164,7 +6951,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
  */
   __pyx_v_self->beta = __pyx_v_beta;
 
-  /* "SeqSeg/SeqSeg.pyx":426
+  /* "SeqSeg/SeqSeg.pyx":698
  * 
  *         self.beta = beta
  *         self.alpha = alpha             # <<<<<<<<<<<<<<
@@ -5173,7 +6960,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
  */
   __pyx_v_self->alpha = __pyx_v_alpha;
 
-  /* "SeqSeg/SeqSeg.pyx":428
+  /* "SeqSeg/SeqSeg.pyx":700
  *         self.alpha = alpha
  * 
  *         self.initialized = True             # <<<<<<<<<<<<<<
@@ -5182,7 +6969,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
  */
   __pyx_v_self->initialized = 1;
 
-  /* "SeqSeg/SeqSeg.pyx":396
+  /* "SeqSeg/SeqSeg.pyx":668
  * 
  * 
  *     def initialize(self, double beta = 2.9e-5, double alpha = 0.1, int mciter = 4000, int mcburn = 1000, int nchains = 1):             # <<<<<<<<<<<<<<
@@ -5207,7 +6994,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_2initialize(struct __pyx_obj_6
   return __pyx_r;
 }
 
-/* "SeqSeg/SeqSeg.pyx":431
+/* "SeqSeg/SeqSeg.pyx":703
  * 
  * 
  *     def feed_data(self, wave):             # <<<<<<<<<<<<<<
@@ -5241,14 +7028,14 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_4feed_data(struct __pyx_obj_6S
   int __pyx_t_7;
   __Pyx_RefNannySetupContext("feed_data", 0);
 
-  /* "SeqSeg/SeqSeg.pyx":436
+  /* "SeqSeg/SeqSeg.pyx":708
  * 
  *         # Store the wave and precalculates the cumulative sums
  *         self.wave = wave             # <<<<<<<<<<<<<<
  *         self.N = len(wave)
  *         self.sumw2 = np.cumsum(self.wave**2)
  */
-  if (!(likely(((__pyx_v_wave) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_wave, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 436, __pyx_L1_error)
+  if (!(likely(((__pyx_v_wave) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_wave, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 708, __pyx_L1_error)
   __pyx_t_1 = __pyx_v_wave;
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
@@ -5257,29 +7044,29 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_4feed_data(struct __pyx_obj_6S
   __pyx_v_self->wave = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":437
+  /* "SeqSeg/SeqSeg.pyx":709
  *         # Store the wave and precalculates the cumulative sums
  *         self.wave = wave
  *         self.N = len(wave)             # <<<<<<<<<<<<<<
  *         self.sumw2 = np.cumsum(self.wave**2)
  *         self.sumw2 = np.insert(self.sumw2, 0, 0)
  */
-  __pyx_t_2 = PyObject_Length(__pyx_v_wave); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 437, __pyx_L1_error)
+  __pyx_t_2 = PyObject_Length(__pyx_v_wave); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 709, __pyx_L1_error)
   __pyx_v_self->N = __pyx_t_2;
 
-  /* "SeqSeg/SeqSeg.pyx":438
+  /* "SeqSeg/SeqSeg.pyx":710
  *         self.wave = wave
  *         self.N = len(wave)
  *         self.sumw2 = np.cumsum(self.wave**2)             # <<<<<<<<<<<<<<
  *         self.sumw2 = np.insert(self.sumw2, 0, 0)
  * 
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 438, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 710, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_cumsum); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 438, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_cumsum); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 710, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Power(((PyObject *)__pyx_v_self->wave), __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 438, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Power(((PyObject *)__pyx_v_self->wave), __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 710, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_5 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
@@ -5292,14 +7079,14 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_4feed_data(struct __pyx_obj_6S
     }
   }
   if (!__pyx_t_5) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 438, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 710, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_3};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 438, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 710, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5308,42 +7095,42 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_4feed_data(struct __pyx_obj_6S
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_3};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 438, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 710, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     } else
     #endif
     {
-      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 438, __pyx_L1_error)
+      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 710, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 438, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 710, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 438, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 710, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->sumw2);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->sumw2));
   __pyx_v_self->sumw2 = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":439
+  /* "SeqSeg/SeqSeg.pyx":711
  *         self.N = len(wave)
  *         self.sumw2 = np.cumsum(self.wave**2)
  *         self.sumw2 = np.insert(self.sumw2, 0, 0)             # <<<<<<<<<<<<<<
  * 
  *         # Current segment start and end
  */
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 439, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 711, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_insert); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 439, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_insert); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 711, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -5361,7 +7148,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_4feed_data(struct __pyx_obj_6S
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_6)) {
     PyObject *__pyx_temp[4] = {__pyx_t_4, ((PyObject *)__pyx_v_self->sumw2), __pyx_int_0, __pyx_int_0};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 439, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 711, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else
@@ -5369,13 +7156,13 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_4feed_data(struct __pyx_obj_6S
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
     PyObject *__pyx_temp[4] = {__pyx_t_4, ((PyObject *)__pyx_v_self->sumw2), __pyx_int_0, __pyx_int_0};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 439, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 711, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else
   #endif
   {
-    __pyx_t_3 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 439, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 711, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     if (__pyx_t_4) {
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -5389,19 +7176,19 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_4feed_data(struct __pyx_obj_6S
     __Pyx_INCREF(__pyx_int_0);
     __Pyx_GIVEREF(__pyx_int_0);
     PyTuple_SET_ITEM(__pyx_t_3, 2+__pyx_t_7, __pyx_int_0);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 439, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 711, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 439, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 711, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->sumw2);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->sumw2));
   __pyx_v_self->sumw2 = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":442
+  /* "SeqSeg/SeqSeg.pyx":714
  * 
  *         # Current segment start and end
  *         self.tstart = 0             # <<<<<<<<<<<<<<
@@ -5410,7 +7197,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_4feed_data(struct __pyx_obj_6S
  */
   __pyx_v_self->tstart = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":443
+  /* "SeqSeg/SeqSeg.pyx":715
  *         # Current segment start and end
  *         self.tstart = 0
  *         self.tend = self.N-1             # <<<<<<<<<<<<<<
@@ -5419,7 +7206,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_4feed_data(struct __pyx_obj_6S
  */
   __pyx_v_self->tend = (__pyx_v_self->N - 1);
 
-  /* "SeqSeg/SeqSeg.pyx":445
+  /* "SeqSeg/SeqSeg.pyx":717
  *         self.tend = self.N-1
  * 
  *         self.data_fed = True             # <<<<<<<<<<<<<<
@@ -5428,7 +7215,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_4feed_data(struct __pyx_obj_6S
  */
   __pyx_v_self->data_fed = 1;
 
-  /* "SeqSeg/SeqSeg.pyx":431
+  /* "SeqSeg/SeqSeg.pyx":703
  * 
  * 
  *     def feed_data(self, wave):             # <<<<<<<<<<<<<<
@@ -5453,23 +7240,25 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_4feed_data(struct __pyx_obj_6S
   return __pyx_r;
 }
 
-/* "SeqSeg/SeqSeg.pyx":448
+/* "SeqSeg/SeqSeg.pyx":720
  * 
  * 
- *     cpdef double tester(self, long tcut, long iprior, bint normalize = False):             # <<<<<<<<<<<<<<
+ *     cpdef double tester(self, long tcut, int iprior = 0, bint normalize = False, bint regularize = False):             # <<<<<<<<<<<<<<
  *         ''' Tests if tcut is a significant cutpoint
  *             Can be called separately to test the current segment.
  */
 
 static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_7tester(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, long __pyx_v_tcut, long __pyx_v_iprior, int __pyx_skip_dispatch, struct __pyx_opt_args_6SeqSeg_6SeqSeg_6SeqSeg_tester *__pyx_optional_args) {
+static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, long __pyx_v_tcut, int __pyx_skip_dispatch, struct __pyx_opt_args_6SeqSeg_6SeqSeg_6SeqSeg_tester *__pyx_optional_args) {
+  int __pyx_v_iprior = ((int)0);
   int __pyx_v_normalize = ((int)0);
+  int __pyx_v_regularize = ((int)0);
   double __pyx_v_s0;
   double __pyx_v_p0;
   double __pyx_v_ev;
   double __pyx_v_sum1;
   double __pyx_v_sum2;
-  double __pyx_v_beta;
+  CYTHON_UNUSED double __pyx_v_beta;
   long __pyx_v_N;
   long __pyx_v_N2;
   int __pyx_v_i;
@@ -5487,20 +7276,27 @@ static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6S
   PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
   PyObject *__pyx_t_7 = NULL;
-  int __pyx_t_8;
-  PyObject *__pyx_t_9 = NULL;
-  double __pyx_t_10;
-  PyArrayObject *__pyx_t_11 = NULL;
-  int __pyx_t_12;
-  long __pyx_t_13;
-  double __pyx_t_14;
-  int __pyx_t_15;
+  PyObject *__pyx_t_8 = NULL;
+  int __pyx_t_9;
+  PyObject *__pyx_t_10 = NULL;
+  double __pyx_t_11;
+  PyArrayObject *__pyx_t_12 = NULL;
+  int __pyx_t_13;
+  long __pyx_t_14;
+  double __pyx_t_15;
   int __pyx_t_16;
-  Py_ssize_t __pyx_t_17;
+  int __pyx_t_17;
+  Py_ssize_t __pyx_t_18;
   __Pyx_RefNannySetupContext("tester", 0);
   if (__pyx_optional_args) {
     if (__pyx_optional_args->__pyx_n > 0) {
-      __pyx_v_normalize = __pyx_optional_args->normalize;
+      __pyx_v_iprior = __pyx_optional_args->iprior;
+      if (__pyx_optional_args->__pyx_n > 1) {
+        __pyx_v_normalize = __pyx_optional_args->normalize;
+        if (__pyx_optional_args->__pyx_n > 2) {
+          __pyx_v_regularize = __pyx_optional_args->regularize;
+        }
+      }
     }
   }
   __pyx_pybuffer_vev.pybuffer.buf = NULL;
@@ -5511,203 +7307,210 @@ static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6S
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_tester); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 448, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_tester); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 720, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_7tester)) {
-      __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_tcut); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 448, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_tcut); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 720, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_From_long(__pyx_v_iprior); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 448, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_iprior); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 720, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyBool_FromLong(__pyx_v_normalize); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 448, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyBool_FromLong(__pyx_v_normalize); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 720, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_6 = __Pyx_PyBool_FromLong(__pyx_v_regularize); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 720, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
       __Pyx_INCREF(__pyx_t_1);
-      __pyx_t_6 = __pyx_t_1; __pyx_t_7 = NULL;
-      __pyx_t_8 = 0;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-        __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_6);
-        if (likely(__pyx_t_7)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-          __Pyx_INCREF(__pyx_t_7);
+      __pyx_t_7 = __pyx_t_1; __pyx_t_8 = NULL;
+      __pyx_t_9 = 0;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
+        __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
+        if (likely(__pyx_t_8)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+          __Pyx_INCREF(__pyx_t_8);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_6, function);
-          __pyx_t_8 = 1;
+          __Pyx_DECREF_SET(__pyx_t_7, function);
+          __pyx_t_9 = 1;
         }
       }
       #if CYTHON_FAST_PYCALL
-      if (PyFunction_Check(__pyx_t_6)) {
-        PyObject *__pyx_temp[4] = {__pyx_t_7, __pyx_t_3, __pyx_t_4, __pyx_t_5};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_8, 3+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 448, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (PyFunction_Check(__pyx_t_7)) {
+        PyObject *__pyx_temp[5] = {__pyx_t_8, __pyx_t_3, __pyx_t_4, __pyx_t_5, __pyx_t_6};
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_9, 4+__pyx_t_9); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 720, __pyx_L1_error)
+        __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       } else
       #endif
       #if CYTHON_FAST_PYCCALL
-      if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
-        PyObject *__pyx_temp[4] = {__pyx_t_7, __pyx_t_3, __pyx_t_4, __pyx_t_5};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_8, 3+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 448, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
+        PyObject *__pyx_temp[5] = {__pyx_t_8, __pyx_t_3, __pyx_t_4, __pyx_t_5, __pyx_t_6};
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_9, 4+__pyx_t_9); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 720, __pyx_L1_error)
+        __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       } else
       #endif
       {
-        __pyx_t_9 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 448, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_9);
-        if (__pyx_t_7) {
-          __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7); __pyx_t_7 = NULL;
+        __pyx_t_10 = PyTuple_New(4+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 720, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_10);
+        if (__pyx_t_8) {
+          __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_8); __pyx_t_8 = NULL;
         }
         __Pyx_GIVEREF(__pyx_t_3);
-        PyTuple_SET_ITEM(__pyx_t_9, 0+__pyx_t_8, __pyx_t_3);
+        PyTuple_SET_ITEM(__pyx_t_10, 0+__pyx_t_9, __pyx_t_3);
         __Pyx_GIVEREF(__pyx_t_4);
-        PyTuple_SET_ITEM(__pyx_t_9, 1+__pyx_t_8, __pyx_t_4);
+        PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_9, __pyx_t_4);
         __Pyx_GIVEREF(__pyx_t_5);
-        PyTuple_SET_ITEM(__pyx_t_9, 2+__pyx_t_8, __pyx_t_5);
+        PyTuple_SET_ITEM(__pyx_t_10, 2+__pyx_t_9, __pyx_t_5);
+        __Pyx_GIVEREF(__pyx_t_6);
+        PyTuple_SET_ITEM(__pyx_t_10, 3+__pyx_t_9, __pyx_t_6);
         __pyx_t_3 = 0;
         __pyx_t_4 = 0;
         __pyx_t_5 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 448, __pyx_L1_error)
+        __pyx_t_6 = 0;
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_10, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 720, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+        __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       }
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_10 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 448, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_11 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_11 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 720, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_r = __pyx_t_10;
+      __pyx_r = __pyx_t_11;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       goto __pyx_L0;
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "SeqSeg/SeqSeg.pyx":455
+  /* "SeqSeg/SeqSeg.pyx":727
  *         cdef long n, N, N2
  *         cdef int i, nburn, npoints
  *         cdef np.ndarray[DTYPE_t, ndim = 1] vev = np.repeat(0.0, self.nchains)             # <<<<<<<<<<<<<<
  * 
  *         # Calculating sum of squares of amplitudes for both segments
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 455, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 727, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_repeat); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 455, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_repeat); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 727, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->nchains); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 455, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->nchains); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 727, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_9 = NULL;
-  __pyx_t_8 = 0;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_6);
-    if (likely(__pyx_t_9)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-      __Pyx_INCREF(__pyx_t_9);
+  __pyx_t_10 = NULL;
+  __pyx_t_9 = 0;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
+    __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_7);
+    if (likely(__pyx_t_10)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+      __Pyx_INCREF(__pyx_t_10);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
-      __pyx_t_8 = 1;
+      __Pyx_DECREF_SET(__pyx_t_7, function);
+      __pyx_t_9 = 1;
     }
   }
   #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_6)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_9, __pyx_float_0_0, __pyx_t_2};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 455, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+  if (PyFunction_Check(__pyx_t_7)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_10, __pyx_float_0_0, __pyx_t_2};
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 727, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_9, __pyx_float_0_0, __pyx_t_2};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 455, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_10, __pyx_float_0_0, __pyx_t_2};
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 727, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else
   #endif
   {
-    __pyx_t_5 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 455, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    if (__pyx_t_9) {
-      __Pyx_GIVEREF(__pyx_t_9); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_9); __pyx_t_9 = NULL;
+    __pyx_t_6 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 727, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    if (__pyx_t_10) {
+      __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_10); __pyx_t_10 = NULL;
     }
     __Pyx_INCREF(__pyx_float_0_0);
     __Pyx_GIVEREF(__pyx_float_0_0);
-    PyTuple_SET_ITEM(__pyx_t_5, 0+__pyx_t_8, __pyx_float_0_0);
+    PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_9, __pyx_float_0_0);
     __Pyx_GIVEREF(__pyx_t_2);
-    PyTuple_SET_ITEM(__pyx_t_5, 1+__pyx_t_8, __pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_9, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 455, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 727, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 455, __pyx_L1_error)
-  __pyx_t_11 = ((PyArrayObject *)__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 727, __pyx_L1_error)
+  __pyx_t_12 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_vev.rcbuffer->pybuffer, (PyObject*)__pyx_t_11, &__Pyx_TypeInfo_nn___pyx_t_6SeqSeg_6SeqSeg_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_vev.rcbuffer->pybuffer, (PyObject*)__pyx_t_12, &__Pyx_TypeInfo_nn___pyx_t_6SeqSeg_6SeqSeg_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_vev = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_vev.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 455, __pyx_L1_error)
+      __PYX_ERR(0, 727, __pyx_L1_error)
     } else {__pyx_pybuffernd_vev.diminfo[0].strides = __pyx_pybuffernd_vev.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_vev.diminfo[0].shape = __pyx_pybuffernd_vev.rcbuffer->pybuffer.shape[0];
     }
   }
-  __pyx_t_11 = 0;
+  __pyx_t_12 = 0;
   __pyx_v_vev = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":458
+  /* "SeqSeg/SeqSeg.pyx":730
  * 
  *         # Calculating sum of squares of amplitudes for both segments
  *         sum1 = self.sumw2[tcut] - self.sumw2[self.tstart]             # <<<<<<<<<<<<<<
  *         sum2 = self.sumw2[self.tend] - self.sumw2[tcut]
  * 
  */
-  __pyx_t_1 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_tcut, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 458, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_tcut, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 730, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tstart, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 458, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tstart, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 730, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_6 = PyNumber_Subtract(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 730, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_5 = PyNumber_Subtract(__pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 458, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_11 = __pyx_PyFloat_AsDouble(__pyx_t_6); if (unlikely((__pyx_t_11 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 730, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_10 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 458, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_v_sum1 = __pyx_t_10;
+  __pyx_v_sum1 = __pyx_t_11;
 
-  /* "SeqSeg/SeqSeg.pyx":459
+  /* "SeqSeg/SeqSeg.pyx":731
  *         # Calculating sum of squares of amplitudes for both segments
  *         sum1 = self.sumw2[tcut] - self.sumw2[self.tstart]
  *         sum2 = self.sumw2[self.tend] - self.sumw2[tcut]             # <<<<<<<<<<<<<<
  * 
  *         if normalize:
  */
-  __pyx_t_5 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tend, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 459, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_tcut, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 459, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tend, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 731, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_1 = PyNumber_Subtract(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 459, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_tcut, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 731, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_1 = PyNumber_Subtract(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 731, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_10 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 459, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_11 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_11 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 731, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_sum2 = __pyx_t_10;
+  __pyx_v_sum2 = __pyx_t_11;
 
-  /* "SeqSeg/SeqSeg.pyx":461
+  /* "SeqSeg/SeqSeg.pyx":733
  *         sum2 = self.sumw2[self.tend] - self.sumw2[tcut]
  * 
  *         if normalize:             # <<<<<<<<<<<<<<
  *             sum2 = sum2 / sum1
  *             sum1 = 1.0
  */
-  __pyx_t_12 = (__pyx_v_normalize != 0);
-  if (__pyx_t_12) {
+  __pyx_t_13 = (__pyx_v_normalize != 0);
+  if (__pyx_t_13) {
 
-    /* "SeqSeg/SeqSeg.pyx":462
+    /* "SeqSeg/SeqSeg.pyx":734
  * 
  *         if normalize:
  *             sum2 = sum2 / sum1             # <<<<<<<<<<<<<<
@@ -5716,11 +7519,11 @@ static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6S
  */
     if (unlikely(__pyx_v_sum1 == 0)) {
       PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-      __PYX_ERR(0, 462, __pyx_L1_error)
+      __PYX_ERR(0, 734, __pyx_L1_error)
     }
     __pyx_v_sum2 = (__pyx_v_sum2 / __pyx_v_sum1);
 
-    /* "SeqSeg/SeqSeg.pyx":463
+    /* "SeqSeg/SeqSeg.pyx":735
  *         if normalize:
  *             sum2 = sum2 / sum1
  *             sum1 = 1.0             # <<<<<<<<<<<<<<
@@ -5729,7 +7532,7 @@ static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6S
  */
     __pyx_v_sum1 = 1.0;
 
-    /* "SeqSeg/SeqSeg.pyx":461
+    /* "SeqSeg/SeqSeg.pyx":733
  *         sum2 = self.sumw2[self.tend] - self.sumw2[tcut]
  * 
  *         if normalize:             # <<<<<<<<<<<<<<
@@ -5738,17 +7541,17 @@ static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6S
  */
   }
 
-  /* "SeqSeg/SeqSeg.pyx":465
+  /* "SeqSeg/SeqSeg.pyx":737
  *             sum1 = 1.0
  * 
  *         N = self.N             # <<<<<<<<<<<<<<
  *         N2 = self.tend - tcut
  *         nburn = self.mcburn
  */
-  __pyx_t_13 = __pyx_v_self->N;
-  __pyx_v_N = __pyx_t_13;
+  __pyx_t_14 = __pyx_v_self->N;
+  __pyx_v_N = __pyx_t_14;
 
-  /* "SeqSeg/SeqSeg.pyx":466
+  /* "SeqSeg/SeqSeg.pyx":738
  * 
  *         N = self.N
  *         N2 = self.tend - tcut             # <<<<<<<<<<<<<<
@@ -5757,66 +7560,66 @@ static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6S
  */
   __pyx_v_N2 = (__pyx_v_self->tend - __pyx_v_tcut);
 
-  /* "SeqSeg/SeqSeg.pyx":467
+  /* "SeqSeg/SeqSeg.pyx":739
  *         N = self.N
  *         N2 = self.tend - tcut
  *         nburn = self.mcburn             # <<<<<<<<<<<<<<
  *         npoints = self.mciter
  *         beta = self.beta
  */
-  __pyx_t_8 = __pyx_v_self->mcburn;
-  __pyx_v_nburn = __pyx_t_8;
+  __pyx_t_9 = __pyx_v_self->mcburn;
+  __pyx_v_nburn = __pyx_t_9;
 
-  /* "SeqSeg/SeqSeg.pyx":468
+  /* "SeqSeg/SeqSeg.pyx":740
  *         N2 = self.tend - tcut
  *         nburn = self.mcburn
  *         npoints = self.mciter             # <<<<<<<<<<<<<<
  *         beta = self.beta
  * 
  */
-  __pyx_t_8 = __pyx_v_self->mciter;
-  __pyx_v_npoints = __pyx_t_8;
+  __pyx_t_9 = __pyx_v_self->mciter;
+  __pyx_v_npoints = __pyx_t_9;
 
-  /* "SeqSeg/SeqSeg.pyx":469
+  /* "SeqSeg/SeqSeg.pyx":741
  *         nburn = self.mcburn
  *         npoints = self.mciter
  *         beta = self.beta             # <<<<<<<<<<<<<<
  * 
  *         # Calculates maximum posterior under H0
  */
-  __pyx_t_10 = __pyx_v_self->beta;
-  __pyx_v_beta = __pyx_t_10;
+  __pyx_t_11 = __pyx_v_self->beta;
+  __pyx_v_beta = __pyx_t_11;
 
-  /* "SeqSeg/SeqSeg.pyx":472
+  /* "SeqSeg/SeqSeg.pyx":744
  * 
  *         # Calculates maximum posterior under H0
- *         s0 = Sqrt((sum1 + sum2)/(N + 1.))             # <<<<<<<<<<<<<<
- *         p0 = cposterior_full(1.0, s0, N, N2, beta, sum1, sum2, iprior)
+ *         s0 = Sqrt((sum1 + sum2)/(N + 2.))             # <<<<<<<<<<<<<<
+ *         p0 = cposterior_full(s0, s0, N, N2, sum1, sum2)
  * 
  */
-  __pyx_t_10 = (__pyx_v_sum1 + __pyx_v_sum2);
-  __pyx_t_14 = (__pyx_v_N + 1.);
-  if (unlikely(__pyx_t_14 == 0)) {
+  __pyx_t_11 = (__pyx_v_sum1 + __pyx_v_sum2);
+  __pyx_t_15 = (__pyx_v_N + 2.);
+  if (unlikely(__pyx_t_15 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 472, __pyx_L1_error)
+    __PYX_ERR(0, 744, __pyx_L1_error)
   }
-  __pyx_v_s0 = __pyx_f_6SeqSeg_6SeqSeg_Sqrt((__pyx_t_10 / __pyx_t_14));
+  __pyx_v_s0 = __pyx_f_6SeqSeg_6SeqSeg_Sqrt((__pyx_t_11 / __pyx_t_15));
 
-  /* "SeqSeg/SeqSeg.pyx":473
+  /* "SeqSeg/SeqSeg.pyx":745
  *         # Calculates maximum posterior under H0
- *         s0 = Sqrt((sum1 + sum2)/(N + 1.))
- *         p0 = cposterior_full(1.0, s0, N, N2, beta, sum1, sum2, iprior)             # <<<<<<<<<<<<<<
+ *         s0 = Sqrt((sum1 + sum2)/(N + 2.))
+ *         p0 = cposterior_full(s0, s0, N, N2, sum1, sum2)             # <<<<<<<<<<<<<<
  * 
  *         # Run chains
  */
-  __pyx_v_p0 = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(1.0, __pyx_v_s0, __pyx_v_N, __pyx_v_N2, __pyx_v_beta, __pyx_v_sum1, __pyx_v_sum2, __pyx_v_iprior);
+  __pyx_v_p0 = __pyx_f_6SeqSeg_6SeqSeg_cposterior_full(__pyx_v_s0, __pyx_v_s0, __pyx_v_N, __pyx_v_N2, __pyx_v_sum1, __pyx_v_sum2);
 
-  /* "SeqSeg/SeqSeg.pyx":476
+  /* "SeqSeg/SeqSeg.pyx":748
  * 
  *         # Run chains
  *         with nogil, parallel():             # <<<<<<<<<<<<<<
  *             for i in prange(self.nchains, schedule = 'static'):
- *                 vev[i] = cmcmc(nburn, npoints, p0, beta, N, N2, sum1, sum2, iprior)
+ *                 vev[i] = cmcmc(nburn, npoints, p0, N, N2, sum1, sum2)
  */
   {
       #ifdef WITH_THREAD
@@ -5833,39 +7636,39 @@ static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6S
                 #define unlikely(x) (x)
             #endif
             #ifdef _OPENMP
-            #pragma omp parallel  private(__pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_8)
+            #pragma omp parallel  private(__pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_9)
             #endif /* _OPENMP */
             {
 
-                /* "SeqSeg/SeqSeg.pyx":477
+                /* "SeqSeg/SeqSeg.pyx":749
  *         # Run chains
  *         with nogil, parallel():
  *             for i in prange(self.nchains, schedule = 'static'):             # <<<<<<<<<<<<<<
- *                 vev[i] = cmcmc(nburn, npoints, p0, beta, N, N2, sum1, sum2, iprior)
+ *                 vev[i] = cmcmc(nburn, npoints, p0, N, N2, sum1, sum2)
  * 
  */
-                __pyx_t_8 = __pyx_v_self->nchains;
+                __pyx_t_9 = __pyx_v_self->nchains;
                 if (1 == 0) abort();
                 {
-                    __pyx_t_16 = (__pyx_t_8 - 0 + 1 - 1/abs(1)) / 1;
-                    if (__pyx_t_16 > 0)
+                    __pyx_t_17 = (__pyx_t_9 - 0 + 1 - 1/abs(1)) / 1;
+                    if (__pyx_t_17 > 0)
                     {
                         #ifdef _OPENMP
                         #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) schedule(static)
                         #endif /* _OPENMP */
-                        for (__pyx_t_15 = 0; __pyx_t_15 < __pyx_t_16; __pyx_t_15++){
+                        for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_17; __pyx_t_16++){
                             {
-                                __pyx_v_i = (int)(0 + 1 * __pyx_t_15);
+                                __pyx_v_i = (int)(0 + 1 * __pyx_t_16);
 
-                                /* "SeqSeg/SeqSeg.pyx":478
+                                /* "SeqSeg/SeqSeg.pyx":750
  *         with nogil, parallel():
  *             for i in prange(self.nchains, schedule = 'static'):
- *                 vev[i] = cmcmc(nburn, npoints, p0, beta, N, N2, sum1, sum2, iprior)             # <<<<<<<<<<<<<<
+ *                 vev[i] = cmcmc(nburn, npoints, p0, N, N2, sum1, sum2)             # <<<<<<<<<<<<<<
  * 
  *         # Evidence IN FAVOR OF null hypothesis (delta = 1)
  */
-                                __pyx_t_17 = __pyx_v_i;
-                                *__Pyx_BufPtrStrided1d(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t *, __pyx_pybuffernd_vev.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_vev.diminfo[0].strides) = __pyx_f_6SeqSeg_6SeqSeg_cmcmc(__pyx_v_nburn, __pyx_v_npoints, __pyx_v_p0, __pyx_v_beta, __pyx_v_N, __pyx_v_N2, __pyx_v_sum1, __pyx_v_sum2, __pyx_v_iprior);
+                                __pyx_t_18 = __pyx_v_i;
+                                *__Pyx_BufPtrStrided1d(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t *, __pyx_pybuffernd_vev.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_vev.diminfo[0].strides) = __pyx_f_6SeqSeg_6SeqSeg_cmcmc(__pyx_v_nburn, __pyx_v_npoints, __pyx_v_p0, __pyx_v_N, __pyx_v_N2, __pyx_v_sum1, __pyx_v_sum2);
                             }
                         }
                     }
@@ -5880,12 +7683,12 @@ static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6S
         #endif
       }
 
-      /* "SeqSeg/SeqSeg.pyx":476
+      /* "SeqSeg/SeqSeg.pyx":748
  * 
  *         # Run chains
  *         with nogil, parallel():             # <<<<<<<<<<<<<<
  *             for i in prange(self.nchains, schedule = 'static'):
- *                 vev[i] = cmcmc(nburn, npoints, p0, beta, N, N2, sum1, sum2, iprior)
+ *                 vev[i] = cmcmc(nburn, npoints, p0, N, N2, sum1, sum2)
  */
       /*finally:*/ {
         /*normal exit:*/{
@@ -5899,48 +7702,159 @@ static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6S
       }
   }
 
-  /* "SeqSeg/SeqSeg.pyx":481
+  /* "SeqSeg/SeqSeg.pyx":753
  * 
  *         # Evidence IN FAVOR OF null hypothesis (delta = 1)
  *         ev = 1 - sum(vev) / self.nchains             # <<<<<<<<<<<<<<
  * 
- *         return ev
+ *         if regularize == True:
  */
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 481, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 753, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(((PyObject *)__pyx_v_vev));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_vev));
   PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)__pyx_v_vev));
-  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_sum, __pyx_t_1, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 481, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_sum, __pyx_t_1, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 753, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->nchains); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 753, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_6 = __Pyx_PyNumber_Divide(__pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 753, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->nchains); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 481, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_SubtractCObj(__pyx_int_1, __pyx_t_6, 1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 753, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __Pyx_PyNumber_Divide(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 481, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_15 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_15 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 753, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_SubtractCObj(__pyx_int_1, __pyx_t_5, 1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 481, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 481, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_ev = __pyx_t_14;
+  __pyx_v_ev = __pyx_t_15;
 
-  /* "SeqSeg/SeqSeg.pyx":483
+  /* "SeqSeg/SeqSeg.pyx":755
  *         ev = 1 - sum(vev) / self.nchains
+ * 
+ *         if regularize == True:             # <<<<<<<<<<<<<<
+ *             ev = 1-stats.chi2.cdf(stats.chi2.ppf(1 - ev, df = 2), 1)
+ * 
+ */
+  __pyx_t_13 = ((__pyx_v_regularize == 1) != 0);
+  if (__pyx_t_13) {
+
+    /* "SeqSeg/SeqSeg.pyx":756
+ * 
+ *         if regularize == True:
+ *             ev = 1-stats.chi2.cdf(stats.chi2.ppf(1 - ev, df = 2), 1)             # <<<<<<<<<<<<<<
+ * 
+ *         return ev
+ */
+    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_stats); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 756, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_chi2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 756, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_cdf); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 756, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_stats); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 756, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_chi2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 756, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_ppf); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 756, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = PyFloat_FromDouble((1.0 - __pyx_v_ev)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 756, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 756, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_10);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_2);
+    __pyx_t_2 = 0;
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 756, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_df, __pyx_int_2) < 0) __PYX_ERR(0, 756, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_10, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 756, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = NULL;
+    __pyx_t_17 = 0;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
+      __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_6);
+      if (likely(__pyx_t_2)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+        __Pyx_INCREF(__pyx_t_2);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_6, function);
+        __pyx_t_17 = 1;
+      }
+    }
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(__pyx_t_6)) {
+      PyObject *__pyx_temp[3] = {__pyx_t_2, __pyx_t_5, __pyx_int_1};
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_17, 2+__pyx_t_17); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 756, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    } else
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
+      PyObject *__pyx_temp[3] = {__pyx_t_2, __pyx_t_5, __pyx_int_1};
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_17, 2+__pyx_t_17); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 756, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    } else
+    #endif
+    {
+      __pyx_t_10 = PyTuple_New(2+__pyx_t_17); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 756, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_10);
+      if (__pyx_t_2) {
+        __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_2); __pyx_t_2 = NULL;
+      }
+      __Pyx_GIVEREF(__pyx_t_5);
+      PyTuple_SET_ITEM(__pyx_t_10, 0+__pyx_t_17, __pyx_t_5);
+      __Pyx_INCREF(__pyx_int_1);
+      __Pyx_GIVEREF(__pyx_int_1);
+      PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_17, __pyx_int_1);
+      __pyx_t_5 = 0;
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 756, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_6 = __Pyx_PyInt_SubtractCObj(__pyx_int_1, __pyx_t_1, 1, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 756, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_15 = __pyx_PyFloat_AsDouble(__pyx_t_6); if (unlikely((__pyx_t_15 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 756, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_v_ev = __pyx_t_15;
+
+    /* "SeqSeg/SeqSeg.pyx":755
+ *         ev = 1 - sum(vev) / self.nchains
+ * 
+ *         if regularize == True:             # <<<<<<<<<<<<<<
+ *             ev = 1-stats.chi2.cdf(stats.chi2.ppf(1 - ev, df = 2), 1)
+ * 
+ */
+  }
+
+  /* "SeqSeg/SeqSeg.pyx":758
+ *             ev = 1-stats.chi2.cdf(stats.chi2.ppf(1 - ev, df = 2), 1)
  * 
  *         return ev             # <<<<<<<<<<<<<<
  * 
- *     def get_posterior(self, start, end, res = 1):
+ *     def get_posterior(self, start, end, minlen = 0, res = 1):
  */
   __pyx_r = __pyx_v_ev;
   goto __pyx_L0;
 
-  /* "SeqSeg/SeqSeg.pyx":448
+  /* "SeqSeg/SeqSeg.pyx":720
  * 
  * 
- *     cpdef double tester(self, long tcut, long iprior, bint normalize = False):             # <<<<<<<<<<<<<<
+ *     cpdef double tester(self, long tcut, int iprior = 0, bint normalize = False, bint regularize = False):             # <<<<<<<<<<<<<<
  *         ''' Tests if tcut is a significant cutpoint
  *             Can be called separately to test the current segment.
  */
@@ -5954,7 +7868,8 @@ static double __pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester(struct __pyx_obj_6SeqSeg_6S
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_10);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_PyThreadState_declare
     __Pyx_PyThreadState_assign
@@ -5977,18 +7892,21 @@ static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_7tester(PyObject *__pyx_v_self
 static char __pyx_doc_6SeqSeg_6SeqSeg_6SeqSeg_6tester[] = " Tests if tcut is a significant cutpoint\n            Can be called separately to test the current segment.\n        ";
 static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_7tester(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   long __pyx_v_tcut;
-  long __pyx_v_iprior;
+  int __pyx_v_iprior;
   int __pyx_v_normalize;
+  int __pyx_v_regularize;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("tester (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_tcut,&__pyx_n_s_iprior,&__pyx_n_s_normalize,0};
-    PyObject* values[3] = {0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_tcut,&__pyx_n_s_iprior,&__pyx_n_s_normalize,&__pyx_n_s_regularize,0};
+    PyObject* values[4] = {0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         CYTHON_FALLTHROUGH;
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
@@ -6005,9 +7923,9 @@ static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_7tester(PyObject *__pyx_v_self
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
-        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_iprior)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("tester", 0, 2, 3, 1); __PYX_ERR(0, 448, __pyx_L3_error)
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_iprior);
+          if (value) { values[1] = value; kw_args--; }
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -6015,44 +7933,62 @@ static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_7tester(PyObject *__pyx_v_self
           PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_normalize);
           if (value) { values[2] = value; kw_args--; }
         }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_regularize);
+          if (value) { values[3] = value; kw_args--; }
+        }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "tester") < 0)) __PYX_ERR(0, 448, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "tester") < 0)) __PYX_ERR(0, 720, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         CYTHON_FALLTHROUGH;
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
         break;
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_tcut = __Pyx_PyInt_As_long(values[0]); if (unlikely((__pyx_v_tcut == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 448, __pyx_L3_error)
-    __pyx_v_iprior = __Pyx_PyInt_As_long(values[1]); if (unlikely((__pyx_v_iprior == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 448, __pyx_L3_error)
+    __pyx_v_tcut = __Pyx_PyInt_As_long(values[0]); if (unlikely((__pyx_v_tcut == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 720, __pyx_L3_error)
+    if (values[1]) {
+      __pyx_v_iprior = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_iprior == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 720, __pyx_L3_error)
+    } else {
+      __pyx_v_iprior = ((int)0);
+    }
     if (values[2]) {
-      __pyx_v_normalize = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_normalize == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 448, __pyx_L3_error)
+      __pyx_v_normalize = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_normalize == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 720, __pyx_L3_error)
     } else {
       __pyx_v_normalize = ((int)0);
+    }
+    if (values[3]) {
+      __pyx_v_regularize = __Pyx_PyObject_IsTrue(values[3]); if (unlikely((__pyx_v_regularize == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 720, __pyx_L3_error)
+    } else {
+      __pyx_v_regularize = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("tester", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 448, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("tester", 0, 1, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 720, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("SeqSeg.SeqSeg.SeqSeg.tester", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_6tester(((struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self), __pyx_v_tcut, __pyx_v_iprior, __pyx_v_normalize);
+  __pyx_r = __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_6tester(((struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self), __pyx_v_tcut, __pyx_v_iprior, __pyx_v_normalize, __pyx_v_regularize);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_6tester(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, long __pyx_v_tcut, long __pyx_v_iprior, int __pyx_v_normalize) {
+static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_6tester(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, long __pyx_v_tcut, int __pyx_v_iprior, int __pyx_v_normalize, int __pyx_v_regularize) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   double __pyx_t_1;
@@ -6060,10 +7996,12 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_6tester(struct __pyx_obj_6SeqS
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("tester", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2.__pyx_n = 1;
+  __pyx_t_2.__pyx_n = 3;
+  __pyx_t_2.iprior = __pyx_v_iprior;
   __pyx_t_2.normalize = __pyx_v_normalize;
-  __pyx_t_1 = __pyx_vtabptr_6SeqSeg_6SeqSeg_SeqSeg->tester(__pyx_v_self, __pyx_v_tcut, __pyx_v_iprior, 1, &__pyx_t_2); 
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 448, __pyx_L1_error)
+  __pyx_t_2.regularize = __pyx_v_regularize;
+  __pyx_t_1 = __pyx_vtabptr_6SeqSeg_6SeqSeg_SeqSeg->tester(__pyx_v_self, __pyx_v_tcut, 1, &__pyx_t_2); 
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 720, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
@@ -6080,32 +8018,36 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_6tester(struct __pyx_obj_6SeqS
   return __pyx_r;
 }
 
-/* "SeqSeg/SeqSeg.pyx":485
+/* "SeqSeg/SeqSeg.pyx":760
  *         return ev
  * 
- *     def get_posterior(self, start, end, res = 1):             # <<<<<<<<<<<<<<
- *         ''' Returns the posterior values for the changepoint.
+ *     def get_posterior(self, start, end, minlen = 0, res = 1):             # <<<<<<<<<<<<<<
+ *         ''' Returns the posterior values for the changepoint using SNR parameterization.
  * 
  */
 
 /* Python wrapper */
 static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_9get_posterior(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior[] = " Returns the posterior values for the changepoint.\n\n            @args:\n\n                start: first point to calculate the posterior\n                end: last point to calculate the posterior\n\n\t\t\t\t@returns:\n\n\t\t\t\t\ttvec - vector with posterior density values\n\t\t\t\t\telapsed - time elapsed\n        ";
+static char __pyx_doc_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior[] = " Returns the posterior values for the changepoint using SNR parameterization.\n\n            @args:\n\n                start: first point to calculate the posterior\n                end: last point to calculate the posterior\n\n            @returns:\n\n                tvec - vector with posterior density values\n                elapsed - time elapsed\n        ";
 static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_9get_posterior(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_start = 0;
   PyObject *__pyx_v_end = 0;
+  PyObject *__pyx_v_minlen = 0;
   PyObject *__pyx_v_res = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_posterior (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_start,&__pyx_n_s_end,&__pyx_n_s_res,0};
-    PyObject* values[3] = {0,0,0};
-    values[2] = ((PyObject *)__pyx_int_1);
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_start,&__pyx_n_s_end,&__pyx_n_s_minlen,&__pyx_n_s_res,0};
+    PyObject* values[4] = {0,0,0,0};
+    values[2] = ((PyObject *)__pyx_int_0);
+    values[3] = ((PyObject *)__pyx_int_1);
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         CYTHON_FALLTHROUGH;
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
@@ -6124,20 +8066,28 @@ static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_9get_posterior(PyObject *__pyx
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_end)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("get_posterior", 0, 2, 3, 1); __PYX_ERR(0, 485, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("get_posterior", 0, 2, 4, 1); __PYX_ERR(0, 760, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (kw_args > 0) {
-          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_res);
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_minlen);
           if (value) { values[2] = value; kw_args--; }
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_res);
+          if (value) { values[3] = value; kw_args--; }
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_posterior") < 0)) __PYX_ERR(0, 485, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_posterior") < 0)) __PYX_ERR(0, 760, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         CYTHON_FALLTHROUGH;
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
@@ -6148,24 +8098,25 @@ static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_9get_posterior(PyObject *__pyx
     }
     __pyx_v_start = values[0];
     __pyx_v_end = values[1];
-    __pyx_v_res = values[2];
+    __pyx_v_minlen = values[2];
+    __pyx_v_res = values[3];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_posterior", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 485, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_posterior", 0, 2, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 760, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("SeqSeg.SeqSeg.SeqSeg.get_posterior", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(((struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self), __pyx_v_start, __pyx_v_end, __pyx_v_res);
+  __pyx_r = __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(((struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self), __pyx_v_start, __pyx_v_end, __pyx_v_minlen, __pyx_v_res);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v_start, PyObject *__pyx_v_end, PyObject *__pyx_v_res) {
+static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v_start, PyObject *__pyx_v_end, PyObject *__pyx_v_minlen, PyObject *__pyx_v_res) {
   long __pyx_v_t;
   long __pyx_v_n;
   long __pyx_v_istart;
@@ -6177,8 +8128,10 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   double __pyx_v_send;
   double __pyx_v_st;
   double __pyx_v_st1;
+  double __pyx_v_dprior;
   PyArrayObject *__pyx_v_tvec = 0;
   PyArrayObject *__pyx_v_esumw2 = 0;
+  long __pyx_v_mlen;
   CYTHON_UNUSED double __pyx_v_beta;
   PyObject *__pyx_v_begin = NULL;
   PyObject *__pyx_v_elapsed = NULL;
@@ -6197,8 +8150,8 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   int __pyx_t_7;
   PyObject *__pyx_t_8 = NULL;
   PyArrayObject *__pyx_t_9 = NULL;
-  Py_ssize_t __pyx_t_10;
-  long __pyx_t_11;
+  long __pyx_t_10;
+  Py_ssize_t __pyx_t_11;
   double __pyx_t_12;
   PyObject *__pyx_t_13 = NULL;
   PyObject *__pyx_t_14 = NULL;
@@ -6207,7 +8160,8 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   long __pyx_t_17;
   Py_ssize_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
-  Py_ssize_t __pyx_t_20;
+  struct __pyx_opt_args_6SeqSeg_6SeqSeg_cprior_t __pyx_t_20;
+  Py_ssize_t __pyx_t_21;
   __Pyx_RefNannySetupContext("get_posterior", 0);
   __Pyx_INCREF(__pyx_v_end);
   __pyx_pybuffer_tvec.pybuffer.buf = NULL;
@@ -6219,7 +8173,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   __pyx_pybuffernd_esumw2.data = NULL;
   __pyx_pybuffernd_esumw2.rcbuffer = &__pyx_pybuffer_esumw2;
 
-  /* "SeqSeg/SeqSeg.pyx":500
+  /* "SeqSeg/SeqSeg.pyx":775
  * 
  * 
  *         if not self.data_fed:             # <<<<<<<<<<<<<<
@@ -6229,16 +8183,16 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   __pyx_t_1 = ((!(__pyx_v_self->data_fed != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "SeqSeg/SeqSeg.pyx":502
+    /* "SeqSeg/SeqSeg.pyx":777
  *         if not self.data_fed:
  * 
  *             print("Data not initialized! Call feed_data.")             # <<<<<<<<<<<<<<
  *             return(-1)
  * 
  */
-    if (__Pyx_PrintOne(0, __pyx_kp_s_Data_not_initialized_Call_feed_d) < 0) __PYX_ERR(0, 502, __pyx_L1_error)
+    if (__Pyx_PrintOne(0, __pyx_kp_s_Data_not_initialized_Call_feed_d) < 0) __PYX_ERR(0, 777, __pyx_L1_error)
 
-    /* "SeqSeg/SeqSeg.pyx":503
+    /* "SeqSeg/SeqSeg.pyx":778
  * 
  *             print("Data not initialized! Call feed_data.")
  *             return(-1)             # <<<<<<<<<<<<<<
@@ -6250,7 +8204,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
     __pyx_r = __pyx_int_neg_1;
     goto __pyx_L0;
 
-    /* "SeqSeg/SeqSeg.pyx":500
+    /* "SeqSeg/SeqSeg.pyx":775
  * 
  * 
  *         if not self.data_fed:             # <<<<<<<<<<<<<<
@@ -6259,27 +8213,27 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
  */
   }
 
-  /* "SeqSeg/SeqSeg.pyx":507
+  /* "SeqSeg/SeqSeg.pyx":782
  *         cdef long t, n, istart, iend, tstep, tstart, tend
- *         cdef double sstart, send, st, st1
+ *         cdef double sstart, send, st, st1, dprior
  *         cdef np.ndarray[DTYPE_t, ndim = 1] tvec = np.repeat(-np.inf, self.N)             # <<<<<<<<<<<<<<
  *         cdef np.ndarray[DTYPE_t, ndim = 1] esumw2 = self.sumw2
  * 
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 507, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 782, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_repeat); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 507, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_repeat); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 782, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 507, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 782, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_inf); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 507, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_inf); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 782, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Negative(__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 507, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Negative(__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 782, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_v_self->N); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 507, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_v_self->N); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 782, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_6 = NULL;
   __pyx_t_7 = 0;
@@ -6296,7 +8250,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_4)) {
     PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_3, __pyx_t_5};
-    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 507, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 782, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6306,7 +8260,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
     PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_3, __pyx_t_5};
-    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 507, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 782, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6314,7 +8268,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   } else
   #endif
   {
-    __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 507, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 782, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     if (__pyx_t_6) {
       __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
@@ -6325,18 +8279,18 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
     PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_5);
     __pyx_t_3 = 0;
     __pyx_t_5 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 507, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 782, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 507, __pyx_L1_error)
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 782, __pyx_L1_error)
   __pyx_t_9 = ((PyArrayObject *)__pyx_t_2);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_tvec.rcbuffer->pybuffer, (PyObject*)__pyx_t_9, &__Pyx_TypeInfo_nn___pyx_t_6SeqSeg_6SeqSeg_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_tvec = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_tvec.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 507, __pyx_L1_error)
+      __PYX_ERR(0, 782, __pyx_L1_error)
     } else {__pyx_pybuffernd_tvec.diminfo[0].strides = __pyx_pybuffernd_tvec.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_tvec.diminfo[0].shape = __pyx_pybuffernd_tvec.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -6344,12 +8298,12 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   __pyx_v_tvec = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":508
- *         cdef double sstart, send, st, st1
+  /* "SeqSeg/SeqSeg.pyx":783
+ *         cdef double sstart, send, st, st1, dprior
  *         cdef np.ndarray[DTYPE_t, ndim = 1] tvec = np.repeat(-np.inf, self.N)
  *         cdef np.ndarray[DTYPE_t, ndim = 1] esumw2 = self.sumw2             # <<<<<<<<<<<<<<
  * 
- *         self.N = len(self.wave)
+ *         cdef long mlen = minlen
  */
   __pyx_t_2 = ((PyObject *)__pyx_v_self->sumw2);
   __Pyx_INCREF(__pyx_t_2);
@@ -6357,15 +8311,25 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_esumw2.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_2), &__Pyx_TypeInfo_nn___pyx_t_6SeqSeg_6SeqSeg_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_esumw2 = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 508, __pyx_L1_error)
+      __PYX_ERR(0, 783, __pyx_L1_error)
     } else {__pyx_pybuffernd_esumw2.diminfo[0].strides = __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_esumw2.diminfo[0].shape = __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.shape[0];
     }
   }
   __pyx_v_esumw2 = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":510
+  /* "SeqSeg/SeqSeg.pyx":785
  *         cdef np.ndarray[DTYPE_t, ndim = 1] esumw2 = self.sumw2
+ * 
+ *         cdef long mlen = minlen             # <<<<<<<<<<<<<<
+ * 
+ *         self.N = len(self.wave)
+ */
+  __pyx_t_10 = __Pyx_PyInt_As_long(__pyx_v_minlen); if (unlikely((__pyx_t_10 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 785, __pyx_L1_error)
+  __pyx_v_mlen = __pyx_t_10;
+
+  /* "SeqSeg/SeqSeg.pyx":787
+ *         cdef long mlen = minlen
  * 
  *         self.N = len(self.wave)             # <<<<<<<<<<<<<<
  * 
@@ -6373,39 +8337,39 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
  */
   __pyx_t_2 = ((PyObject *)__pyx_v_self->wave);
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_10 = PyObject_Length(__pyx_t_2); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 510, __pyx_L1_error)
+  __pyx_t_11 = PyObject_Length(__pyx_t_2); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 787, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_self->N = __pyx_t_10;
+  __pyx_v_self->N = __pyx_t_11;
 
-  /* "SeqSeg/SeqSeg.pyx":512
+  /* "SeqSeg/SeqSeg.pyx":789
  *         self.N = len(self.wave)
  * 
  *         if end > self.N:             # <<<<<<<<<<<<<<
  *             raise ValueError("Invalid value for tend.")
  * 
  */
-  __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_self->N); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 512, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_self->N); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 789, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyObject_RichCompare(__pyx_v_end, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 512, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_v_end, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 789, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 512, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 789, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (__pyx_t_1) {
 
-    /* "SeqSeg/SeqSeg.pyx":513
+    /* "SeqSeg/SeqSeg.pyx":790
  * 
  *         if end > self.N:
  *             raise ValueError("Invalid value for tend.")             # <<<<<<<<<<<<<<
  * 
  *         if start < 0:
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 513, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 790, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 513, __pyx_L1_error)
+    __PYX_ERR(0, 790, __pyx_L1_error)
 
-    /* "SeqSeg/SeqSeg.pyx":512
+    /* "SeqSeg/SeqSeg.pyx":789
  *         self.N = len(self.wave)
  * 
  *         if end > self.N:             # <<<<<<<<<<<<<<
@@ -6414,32 +8378,32 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
  */
   }
 
-  /* "SeqSeg/SeqSeg.pyx":515
+  /* "SeqSeg/SeqSeg.pyx":792
  *             raise ValueError("Invalid value for tend.")
  * 
  *         if start < 0:             # <<<<<<<<<<<<<<
  *             raise ValueError("Invalid value for start.")
  * 
  */
-  __pyx_t_4 = PyObject_RichCompare(__pyx_v_start, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 515, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 515, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_v_start, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 792, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 792, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (__pyx_t_1) {
 
-    /* "SeqSeg/SeqSeg.pyx":516
+    /* "SeqSeg/SeqSeg.pyx":793
  * 
  *         if start < 0:
  *             raise ValueError("Invalid value for start.")             # <<<<<<<<<<<<<<
  * 
  *         tstep = res
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 516, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 793, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 516, __pyx_L1_error)
+    __PYX_ERR(0, 793, __pyx_L1_error)
 
-    /* "SeqSeg/SeqSeg.pyx":515
+    /* "SeqSeg/SeqSeg.pyx":792
  *             raise ValueError("Invalid value for tend.")
  * 
  *         if start < 0:             # <<<<<<<<<<<<<<
@@ -6448,37 +8412,37 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
  */
   }
 
-  /* "SeqSeg/SeqSeg.pyx":518
+  /* "SeqSeg/SeqSeg.pyx":795
  *             raise ValueError("Invalid value for start.")
  * 
  *         tstep = res             # <<<<<<<<<<<<<<
  * 
  *         # Sets start and end
  */
-  __pyx_t_11 = __Pyx_PyInt_As_long(__pyx_v_res); if (unlikely((__pyx_t_11 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 518, __pyx_L1_error)
-  __pyx_v_tstep = __pyx_t_11;
+  __pyx_t_10 = __Pyx_PyInt_As_long(__pyx_v_res); if (unlikely((__pyx_t_10 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 795, __pyx_L1_error)
+  __pyx_v_tstep = __pyx_t_10;
 
-  /* "SeqSeg/SeqSeg.pyx":521
+  /* "SeqSeg/SeqSeg.pyx":798
  * 
  *         # Sets start and end
  *         tstart = start             # <<<<<<<<<<<<<<
  *         tend = end
  * 
  */
-  __pyx_t_11 = __Pyx_PyInt_As_long(__pyx_v_start); if (unlikely((__pyx_t_11 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 521, __pyx_L1_error)
-  __pyx_v_tstart = __pyx_t_11;
+  __pyx_t_10 = __Pyx_PyInt_As_long(__pyx_v_start); if (unlikely((__pyx_t_10 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 798, __pyx_L1_error)
+  __pyx_v_tstart = __pyx_t_10;
 
-  /* "SeqSeg/SeqSeg.pyx":522
+  /* "SeqSeg/SeqSeg.pyx":799
  *         # Sets start and end
  *         tstart = start
  *         tend = end             # <<<<<<<<<<<<<<
  * 
  *         # Obtains MAP estimate of the cut point
  */
-  __pyx_t_11 = __Pyx_PyInt_As_long(__pyx_v_end); if (unlikely((__pyx_t_11 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 522, __pyx_L1_error)
-  __pyx_v_tend = __pyx_t_11;
+  __pyx_t_10 = __Pyx_PyInt_As_long(__pyx_v_end); if (unlikely((__pyx_t_10 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 799, __pyx_L1_error)
+  __pyx_v_tend = __pyx_t_10;
 
-  /* "SeqSeg/SeqSeg.pyx":528
+  /* "SeqSeg/SeqSeg.pyx":805
  * 
  *         # Bounds for start and end
  *         istart = tstart + 3             # <<<<<<<<<<<<<<
@@ -6487,7 +8451,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
  */
   __pyx_v_istart = (__pyx_v_tstart + 3);
 
-  /* "SeqSeg/SeqSeg.pyx":529
+  /* "SeqSeg/SeqSeg.pyx":806
  *         # Bounds for start and end
  *         istart = tstart + 3
  *         iend = tend - 3             # <<<<<<<<<<<<<<
@@ -6496,71 +8460,71 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
  */
   __pyx_v_iend = (__pyx_v_tend - 3);
 
-  /* "SeqSeg/SeqSeg.pyx":530
+  /* "SeqSeg/SeqSeg.pyx":807
  *         istart = tstart + 3
  *         iend = tend - 3
  *         n = int((iend-istart)/tstep)             # <<<<<<<<<<<<<<
  * 
  *         sstart = self.sumw2[self.tstart]
  */
-  __pyx_t_11 = (__pyx_v_iend - __pyx_v_istart);
+  __pyx_t_10 = (__pyx_v_iend - __pyx_v_istart);
   if (unlikely(__pyx_v_tstep == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-    __PYX_ERR(0, 530, __pyx_L1_error)
+    __PYX_ERR(0, 807, __pyx_L1_error)
   }
-  else if (sizeof(long) == sizeof(long) && (!(((long)-1) > 0)) && unlikely(__pyx_v_tstep == (long)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_t_11))) {
+  else if (sizeof(long) == sizeof(long) && (!(((long)-1) > 0)) && unlikely(__pyx_v_tstep == (long)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_t_10))) {
     PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-    __PYX_ERR(0, 530, __pyx_L1_error)
+    __PYX_ERR(0, 807, __pyx_L1_error)
   }
-  __pyx_v_n = __Pyx_div_long(__pyx_t_11, __pyx_v_tstep);
+  __pyx_v_n = __Pyx_div_long(__pyx_t_10, __pyx_v_tstep);
 
-  /* "SeqSeg/SeqSeg.pyx":532
+  /* "SeqSeg/SeqSeg.pyx":809
  *         n = int((iend-istart)/tstep)
  * 
  *         sstart = self.sumw2[self.tstart]             # <<<<<<<<<<<<<<
  *         send = self.sumw2[self.tend]
  * 
  */
-  __pyx_t_4 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tstart, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 532, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tstart, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 809, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 532, __pyx_L1_error)
+  __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 809, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_sstart = __pyx_t_12;
 
-  /* "SeqSeg/SeqSeg.pyx":533
+  /* "SeqSeg/SeqSeg.pyx":810
  * 
  *         sstart = self.sumw2[self.tstart]
  *         send = self.sumw2[self.tend]             # <<<<<<<<<<<<<<
  * 
  *         tvec = np.repeat(-np.inf, n + 1)
  */
-  __pyx_t_4 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tend, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 533, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tend, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 810, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 533, __pyx_L1_error)
+  __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 810, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_send = __pyx_t_12;
 
-  /* "SeqSeg/SeqSeg.pyx":535
+  /* "SeqSeg/SeqSeg.pyx":812
  *         send = self.sumw2[self.tend]
  * 
  *         tvec = np.repeat(-np.inf, n + 1)             # <<<<<<<<<<<<<<
  *         beta = self.beta
  * 
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 535, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 812, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_repeat); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 535, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_repeat); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 812, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 535, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 812, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_inf); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 535, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_inf); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 812, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Negative(__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 535, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Negative(__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 812, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyInt_From_long((__pyx_v_n + 1)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 535, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_long((__pyx_v_n + 1)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 812, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_3 = NULL;
   __pyx_t_7 = 0;
@@ -6577,7 +8541,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_8)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_2, __pyx_t_5};
-    __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 535, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 812, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -6587,7 +8551,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_2, __pyx_t_5};
-    __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 535, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 812, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -6595,7 +8559,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   } else
   #endif
   {
-    __pyx_t_6 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 535, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 812, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     if (__pyx_t_3) {
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -6606,12 +8570,12 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
     PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_7, __pyx_t_5);
     __pyx_t_2 = 0;
     __pyx_t_5 = 0;
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 535, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 812, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 535, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 812, __pyx_L1_error)
   __pyx_t_9 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -6628,13 +8592,13 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
       __pyx_t_13 = __pyx_t_14 = __pyx_t_15 = 0;
     }
     __pyx_pybuffernd_tvec.diminfo[0].strides = __pyx_pybuffernd_tvec.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_tvec.diminfo[0].shape = __pyx_pybuffernd_tvec.rcbuffer->pybuffer.shape[0];
-    if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 535, __pyx_L1_error)
+    if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 812, __pyx_L1_error)
   }
   __pyx_t_9 = 0;
   __Pyx_DECREF_SET(__pyx_v_tvec, ((PyArrayObject *)__pyx_t_4));
   __pyx_t_4 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":536
+  /* "SeqSeg/SeqSeg.pyx":813
  * 
  *         tvec = np.repeat(-np.inf, n + 1)
  *         beta = self.beta             # <<<<<<<<<<<<<<
@@ -6644,16 +8608,16 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   __pyx_t_12 = __pyx_v_self->beta;
   __pyx_v_beta = __pyx_t_12;
 
-  /* "SeqSeg/SeqSeg.pyx":539
+  /* "SeqSeg/SeqSeg.pyx":816
  * 
  * 
  *         begin = time.time()             # <<<<<<<<<<<<<<
  *         with nogil, parallel():
  *             for t in prange(n + 1, schedule = 'static'):
  */
-  __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 539, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 816, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_time); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 539, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_time); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 816, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_t_8 = NULL;
@@ -6667,17 +8631,17 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
     }
   }
   if (__pyx_t_8) {
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 539, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 816, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   } else {
-    __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 539, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 816, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_v_begin = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":540
+  /* "SeqSeg/SeqSeg.pyx":817
  * 
  *         begin = time.time()
  *         with nogil, parallel():             # <<<<<<<<<<<<<<
@@ -6699,62 +8663,75 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
                 #define unlikely(x) (x)
             #endif
             #ifdef _OPENMP
-            #pragma omp parallel  private(__pyx_t_11, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20)
+            #pragma omp parallel  private(__pyx_t_10, __pyx_t_12, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21)
             #endif /* _OPENMP */
             {
 
-                /* "SeqSeg/SeqSeg.pyx":541
+                /* "SeqSeg/SeqSeg.pyx":818
  *         begin = time.time()
  *         with nogil, parallel():
  *             for t in prange(n + 1, schedule = 'static'):             # <<<<<<<<<<<<<<
  *                 st = esumw2[istart + t*tstep]
  *                 st1 = esumw2[istart + t*tstep + 1]
  */
-                __pyx_t_11 = (__pyx_v_n + 1);
+                __pyx_t_10 = (__pyx_v_n + 1);
                 if (1 == 0) abort();
                 {
-                    __pyx_t_17 = (__pyx_t_11 - 0 + 1 - 1/abs(1)) / 1;
+                    __pyx_t_17 = (__pyx_t_10 - 0 + 1 - 1/abs(1)) / 1;
                     if (__pyx_t_17 > 0)
                     {
                         #ifdef _OPENMP
-                        #pragma omp for lastprivate(__pyx_v_st) lastprivate(__pyx_v_st1) firstprivate(__pyx_v_t) lastprivate(__pyx_v_t) schedule(static)
+                        #pragma omp for lastprivate(__pyx_v_dprior) lastprivate(__pyx_v_st) lastprivate(__pyx_v_st1) firstprivate(__pyx_v_t) lastprivate(__pyx_v_t) schedule(static)
                         #endif /* _OPENMP */
                         for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_17; __pyx_t_16++){
                             {
                                 __pyx_v_t = (long)(0 + 1 * __pyx_t_16);
                                 /* Initialize private variables to invalid values */
+                                __pyx_v_dprior = ((double)__PYX_NAN());
                                 __pyx_v_st = ((double)__PYX_NAN());
                                 __pyx_v_st1 = ((double)__PYX_NAN());
 
-                                /* "SeqSeg/SeqSeg.pyx":542
+                                /* "SeqSeg/SeqSeg.pyx":819
  *         with nogil, parallel():
  *             for t in prange(n + 1, schedule = 'static'):
  *                 st = esumw2[istart + t*tstep]             # <<<<<<<<<<<<<<
  *                 st1 = esumw2[istart + t*tstep + 1]
- *                 tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend), send, sstart, st, st1)
+ *                 dprior = cprior_t(istart + t*tstep, tstart, tend, mlen)
  */
                                 __pyx_t_18 = (__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep));
                                 __pyx_v_st = (*__Pyx_BufPtrStrided1d(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t *, __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_esumw2.diminfo[0].strides));
 
-                                /* "SeqSeg/SeqSeg.pyx":543
+                                /* "SeqSeg/SeqSeg.pyx":820
  *             for t in prange(n + 1, schedule = 'static'):
  *                 st = esumw2[istart + t*tstep]
  *                 st1 = esumw2[istart + t*tstep + 1]             # <<<<<<<<<<<<<<
- *                 tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend), send, sstart, st, st1)
+ *                 dprior = cprior_t(istart + t*tstep, tstart, tend, mlen)
  * 
  */
                                 __pyx_t_19 = ((__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep)) + 1);
                                 __pyx_v_st1 = (*__Pyx_BufPtrStrided1d(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t *, __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.buf, __pyx_t_19, __pyx_pybuffernd_esumw2.diminfo[0].strides));
 
-                                /* "SeqSeg/SeqSeg.pyx":544
+                                /* "SeqSeg/SeqSeg.pyx":821
  *                 st = esumw2[istart + t*tstep]
  *                 st1 = esumw2[istart + t*tstep + 1]
- *                 tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend), send, sstart, st, st1)             # <<<<<<<<<<<<<<
+ *                 dprior = cprior_t(istart + t*tstep, tstart, tend, mlen)             # <<<<<<<<<<<<<<
+ * 
+ *                 tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, dprior, send, sstart, st, st1)
+ */
+                                __pyx_t_20.__pyx_n = 1;
+                                __pyx_t_20.minlen = __pyx_v_mlen;
+                                __pyx_t_12 = __pyx_f_6SeqSeg_6SeqSeg_cprior_t((__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep)), __pyx_v_tstart, __pyx_v_tend, &__pyx_t_20); 
+                                __pyx_v_dprior = __pyx_t_12;
+
+                                /* "SeqSeg/SeqSeg.pyx":823
+ *                 dprior = cprior_t(istart + t*tstep, tstart, tend, mlen)
+ * 
+ *                 tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, dprior, send, sstart, st, st1)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-                                __pyx_t_20 = __pyx_v_t;
-                                *__Pyx_BufPtrStrided1d(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t *, __pyx_pybuffernd_tvec.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_tvec.diminfo[0].strides) = __pyx_f_6SeqSeg_6SeqSeg_cposterior_t((__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep)), __pyx_v_tstart, __pyx_v_tend, __pyx_f_6SeqSeg_6SeqSeg_cprior_t((__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep)), __pyx_v_tstart, __pyx_v_tend, NULL), __pyx_v_send, __pyx_v_sstart, __pyx_v_st, __pyx_v_st1);
+                                __pyx_t_21 = __pyx_v_t;
+                                *__Pyx_BufPtrStrided1d(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t *, __pyx_pybuffernd_tvec.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_tvec.diminfo[0].strides) = __pyx_f_6SeqSeg_6SeqSeg_cposterior_t((__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep)), __pyx_v_tstart, __pyx_v_tend, __pyx_v_dprior, __pyx_v_send, __pyx_v_sstart, __pyx_v_st, __pyx_v_st1);
                             }
                         }
                     }
@@ -6769,7 +8746,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
         #endif
       }
 
-      /* "SeqSeg/SeqSeg.pyx":540
+      /* "SeqSeg/SeqSeg.pyx":817
  * 
  *         begin = time.time()
  *         with nogil, parallel():             # <<<<<<<<<<<<<<
@@ -6788,16 +8765,16 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
       }
   }
 
-  /* "SeqSeg/SeqSeg.pyx":547
+  /* "SeqSeg/SeqSeg.pyx":826
  * 
  * 
  *         end = time.time()             # <<<<<<<<<<<<<<
  *         elapsed = end - begin
  * 
  */
-  __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 547, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 826, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_time); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 547, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_time); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 826, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -6811,37 +8788,37 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
     }
   }
   if (__pyx_t_6) {
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 547, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 826, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   } else {
-    __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 547, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 826, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF_SET(__pyx_v_end, __pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":548
+  /* "SeqSeg/SeqSeg.pyx":827
  * 
  *         end = time.time()
  *         elapsed = end - begin             # <<<<<<<<<<<<<<
  * 
  *         return tvec, elapsed
  */
-  __pyx_t_4 = PyNumber_Subtract(__pyx_v_end, __pyx_v_begin); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 548, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Subtract(__pyx_v_end, __pyx_v_begin); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 827, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_v_elapsed = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":550
+  /* "SeqSeg/SeqSeg.pyx":829
  *         elapsed = end - begin
  * 
  *         return tvec, elapsed             # <<<<<<<<<<<<<<
  * 
- * 
+ *     def get_posterior_var(self, start, end, minlen = 0, res = 1):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 550, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 829, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(((PyObject *)__pyx_v_tvec));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_tvec));
@@ -6853,11 +8830,11 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "SeqSeg/SeqSeg.pyx":485
+  /* "SeqSeg/SeqSeg.pyx":760
  *         return ev
  * 
- *     def get_posterior(self, start, end, res = 1):             # <<<<<<<<<<<<<<
- *         ''' Returns the posterior values for the changepoint.
+ *     def get_posterior(self, start, end, minlen = 0, res = 1):             # <<<<<<<<<<<<<<
+ *         ''' Returns the posterior values for the changepoint using SNR parameterization.
  * 
  */
 
@@ -6893,7 +8870,859 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "SeqSeg/SeqSeg.pyx":556
+/* "SeqSeg/SeqSeg.pyx":831
+ *         return tvec, elapsed
+ * 
+ *     def get_posterior_var(self, start, end, minlen = 0, res = 1):             # <<<<<<<<<<<<<<
+ *         ''' Returns the posterior values for the changepoint using variance parameterization.
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_11get_posterior_var(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_6SeqSeg_6SeqSeg_6SeqSeg_10get_posterior_var[] = " Returns the posterior values for the changepoint using variance parameterization.\n\n            @args:\n\n                start: first point to calculate the posterior\n                end: last point to calculate the posterior\n\n            @returns:\n\n                tvec - vector with posterior density values\n                elapsed - time elapsed\n        ";
+static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_11get_posterior_var(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_start = 0;
+  PyObject *__pyx_v_end = 0;
+  PyObject *__pyx_v_minlen = 0;
+  PyObject *__pyx_v_res = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("get_posterior_var (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_start,&__pyx_n_s_end,&__pyx_n_s_minlen,&__pyx_n_s_res,0};
+    PyObject* values[4] = {0,0,0,0};
+    values[2] = ((PyObject *)__pyx_int_0);
+    values[3] = ((PyObject *)__pyx_int_1);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_start)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_end)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("get_posterior_var", 0, 2, 4, 1); __PYX_ERR(0, 831, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_minlen);
+          if (value) { values[2] = value; kw_args--; }
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_res);
+          if (value) { values[3] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_posterior_var") < 0)) __PYX_ERR(0, 831, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_start = values[0];
+    __pyx_v_end = values[1];
+    __pyx_v_minlen = values[2];
+    __pyx_v_res = values[3];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("get_posterior_var", 0, 2, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 831, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("SeqSeg.SeqSeg.SeqSeg.get_posterior_var", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10get_posterior_var(((struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self), __pyx_v_start, __pyx_v_end, __pyx_v_minlen, __pyx_v_res);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10get_posterior_var(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v_start, PyObject *__pyx_v_end, PyObject *__pyx_v_minlen, PyObject *__pyx_v_res) {
+  long __pyx_v_t;
+  long __pyx_v_n;
+  long __pyx_v_istart;
+  long __pyx_v_iend;
+  long __pyx_v_tstep;
+  long __pyx_v_tstart;
+  long __pyx_v_tend;
+  double __pyx_v_sstart;
+  double __pyx_v_send;
+  double __pyx_v_st;
+  double __pyx_v_st1;
+  double __pyx_v_dprior;
+  PyArrayObject *__pyx_v_tvec = 0;
+  PyArrayObject *__pyx_v_esumw2 = 0;
+  long __pyx_v_mlen;
+  CYTHON_UNUSED double __pyx_v_beta;
+  PyObject *__pyx_v_begin = NULL;
+  PyObject *__pyx_v_elapsed = NULL;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_esumw2;
+  __Pyx_Buffer __pyx_pybuffer_esumw2;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_tvec;
+  __Pyx_Buffer __pyx_pybuffer_tvec;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
+  PyObject *__pyx_t_8 = NULL;
+  PyArrayObject *__pyx_t_9 = NULL;
+  long __pyx_t_10;
+  Py_ssize_t __pyx_t_11;
+  double __pyx_t_12;
+  PyObject *__pyx_t_13 = NULL;
+  PyObject *__pyx_t_14 = NULL;
+  PyObject *__pyx_t_15 = NULL;
+  long __pyx_t_16;
+  long __pyx_t_17;
+  Py_ssize_t __pyx_t_18;
+  Py_ssize_t __pyx_t_19;
+  struct __pyx_opt_args_6SeqSeg_6SeqSeg_cprior_t __pyx_t_20;
+  Py_ssize_t __pyx_t_21;
+  __Pyx_RefNannySetupContext("get_posterior_var", 0);
+  __Pyx_INCREF(__pyx_v_end);
+  __pyx_pybuffer_tvec.pybuffer.buf = NULL;
+  __pyx_pybuffer_tvec.refcount = 0;
+  __pyx_pybuffernd_tvec.data = NULL;
+  __pyx_pybuffernd_tvec.rcbuffer = &__pyx_pybuffer_tvec;
+  __pyx_pybuffer_esumw2.pybuffer.buf = NULL;
+  __pyx_pybuffer_esumw2.refcount = 0;
+  __pyx_pybuffernd_esumw2.data = NULL;
+  __pyx_pybuffernd_esumw2.rcbuffer = &__pyx_pybuffer_esumw2;
+
+  /* "SeqSeg/SeqSeg.pyx":846
+ * 
+ * 
+ *         if not self.data_fed:             # <<<<<<<<<<<<<<
+ * 
+ *             print("Data not initialized! Call feed_data.")
+ */
+  __pyx_t_1 = ((!(__pyx_v_self->data_fed != 0)) != 0);
+  if (__pyx_t_1) {
+
+    /* "SeqSeg/SeqSeg.pyx":848
+ *         if not self.data_fed:
+ * 
+ *             print("Data not initialized! Call feed_data.")             # <<<<<<<<<<<<<<
+ *             return(-1)
+ * 
+ */
+    if (__Pyx_PrintOne(0, __pyx_kp_s_Data_not_initialized_Call_feed_d) < 0) __PYX_ERR(0, 848, __pyx_L1_error)
+
+    /* "SeqSeg/SeqSeg.pyx":849
+ * 
+ *             print("Data not initialized! Call feed_data.")
+ *             return(-1)             # <<<<<<<<<<<<<<
+ * 
+ *         cdef long t, n, istart, iend, tstep, tstart, tend
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_INCREF(__pyx_int_neg_1);
+    __pyx_r = __pyx_int_neg_1;
+    goto __pyx_L0;
+
+    /* "SeqSeg/SeqSeg.pyx":846
+ * 
+ * 
+ *         if not self.data_fed:             # <<<<<<<<<<<<<<
+ * 
+ *             print("Data not initialized! Call feed_data.")
+ */
+  }
+
+  /* "SeqSeg/SeqSeg.pyx":853
+ *         cdef long t, n, istart, iend, tstep, tstart, tend
+ *         cdef double sstart, send, st, st1, dprior
+ *         cdef np.ndarray[DTYPE_t, ndim = 1] tvec = np.repeat(-np.inf, self.N)             # <<<<<<<<<<<<<<
+ *         cdef np.ndarray[DTYPE_t, ndim = 1] esumw2 = self.sumw2
+ * 
+ */
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 853, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_repeat); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 853, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 853, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_inf); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 853, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyNumber_Negative(__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 853, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_v_self->N); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 853, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = NULL;
+  __pyx_t_7 = 0;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_4);
+    if (likely(__pyx_t_6)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+      __Pyx_INCREF(__pyx_t_6);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_4, function);
+      __pyx_t_7 = 1;
+    }
+  }
+  #if CYTHON_FAST_PYCALL
+  if (PyFunction_Check(__pyx_t_4)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_3, __pyx_t_5};
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 853, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  } else
+  #endif
+  #if CYTHON_FAST_PYCCALL
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_3, __pyx_t_5};
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 853, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  } else
+  #endif
+  {
+    __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 853, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    if (__pyx_t_6) {
+      __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
+    }
+    __Pyx_GIVEREF(__pyx_t_3);
+    PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_t_3);
+    __Pyx_GIVEREF(__pyx_t_5);
+    PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_5);
+    __pyx_t_3 = 0;
+    __pyx_t_5 = 0;
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 853, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 853, __pyx_L1_error)
+  __pyx_t_9 = ((PyArrayObject *)__pyx_t_2);
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_tvec.rcbuffer->pybuffer, (PyObject*)__pyx_t_9, &__Pyx_TypeInfo_nn___pyx_t_6SeqSeg_6SeqSeg_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
+      __pyx_v_tvec = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_tvec.rcbuffer->pybuffer.buf = NULL;
+      __PYX_ERR(0, 853, __pyx_L1_error)
+    } else {__pyx_pybuffernd_tvec.diminfo[0].strides = __pyx_pybuffernd_tvec.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_tvec.diminfo[0].shape = __pyx_pybuffernd_tvec.rcbuffer->pybuffer.shape[0];
+    }
+  }
+  __pyx_t_9 = 0;
+  __pyx_v_tvec = ((PyArrayObject *)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "SeqSeg/SeqSeg.pyx":854
+ *         cdef double sstart, send, st, st1, dprior
+ *         cdef np.ndarray[DTYPE_t, ndim = 1] tvec = np.repeat(-np.inf, self.N)
+ *         cdef np.ndarray[DTYPE_t, ndim = 1] esumw2 = self.sumw2             # <<<<<<<<<<<<<<
+ * 
+ *         cdef long mlen = minlen
+ */
+  __pyx_t_2 = ((PyObject *)__pyx_v_self->sumw2);
+  __Pyx_INCREF(__pyx_t_2);
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_esumw2.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_2), &__Pyx_TypeInfo_nn___pyx_t_6SeqSeg_6SeqSeg_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
+      __pyx_v_esumw2 = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.buf = NULL;
+      __PYX_ERR(0, 854, __pyx_L1_error)
+    } else {__pyx_pybuffernd_esumw2.diminfo[0].strides = __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_esumw2.diminfo[0].shape = __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.shape[0];
+    }
+  }
+  __pyx_v_esumw2 = ((PyArrayObject *)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "SeqSeg/SeqSeg.pyx":856
+ *         cdef np.ndarray[DTYPE_t, ndim = 1] esumw2 = self.sumw2
+ * 
+ *         cdef long mlen = minlen             # <<<<<<<<<<<<<<
+ * 
+ *         self.N = len(self.wave)
+ */
+  __pyx_t_10 = __Pyx_PyInt_As_long(__pyx_v_minlen); if (unlikely((__pyx_t_10 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 856, __pyx_L1_error)
+  __pyx_v_mlen = __pyx_t_10;
+
+  /* "SeqSeg/SeqSeg.pyx":858
+ *         cdef long mlen = minlen
+ * 
+ *         self.N = len(self.wave)             # <<<<<<<<<<<<<<
+ * 
+ *         if end > self.N:
+ */
+  __pyx_t_2 = ((PyObject *)__pyx_v_self->wave);
+  __Pyx_INCREF(__pyx_t_2);
+  __pyx_t_11 = PyObject_Length(__pyx_t_2); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 858, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_self->N = __pyx_t_11;
+
+  /* "SeqSeg/SeqSeg.pyx":860
+ *         self.N = len(self.wave)
+ * 
+ *         if end > self.N:             # <<<<<<<<<<<<<<
+ *             raise ValueError("Invalid value for tend.")
+ * 
+ */
+  __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_self->N); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 860, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_4 = PyObject_RichCompare(__pyx_v_end, __pyx_t_2, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 860, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 860, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (__pyx_t_1) {
+
+    /* "SeqSeg/SeqSeg.pyx":861
+ * 
+ *         if end > self.N:
+ *             raise ValueError("Invalid value for tend.")             # <<<<<<<<<<<<<<
+ * 
+ *         if start < 0:
+ */
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 861, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_Raise(__pyx_t_4, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __PYX_ERR(0, 861, __pyx_L1_error)
+
+    /* "SeqSeg/SeqSeg.pyx":860
+ *         self.N = len(self.wave)
+ * 
+ *         if end > self.N:             # <<<<<<<<<<<<<<
+ *             raise ValueError("Invalid value for tend.")
+ * 
+ */
+  }
+
+  /* "SeqSeg/SeqSeg.pyx":863
+ *             raise ValueError("Invalid value for tend.")
+ * 
+ *         if start < 0:             # <<<<<<<<<<<<<<
+ *             raise ValueError("Invalid value for start.")
+ * 
+ */
+  __pyx_t_4 = PyObject_RichCompare(__pyx_v_start, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 863, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 863, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (__pyx_t_1) {
+
+    /* "SeqSeg/SeqSeg.pyx":864
+ * 
+ *         if start < 0:
+ *             raise ValueError("Invalid value for start.")             # <<<<<<<<<<<<<<
+ * 
+ *         tstep = res
+ */
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 864, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_Raise(__pyx_t_4, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __PYX_ERR(0, 864, __pyx_L1_error)
+
+    /* "SeqSeg/SeqSeg.pyx":863
+ *             raise ValueError("Invalid value for tend.")
+ * 
+ *         if start < 0:             # <<<<<<<<<<<<<<
+ *             raise ValueError("Invalid value for start.")
+ * 
+ */
+  }
+
+  /* "SeqSeg/SeqSeg.pyx":866
+ *             raise ValueError("Invalid value for start.")
+ * 
+ *         tstep = res             # <<<<<<<<<<<<<<
+ * 
+ *         # Sets start and end
+ */
+  __pyx_t_10 = __Pyx_PyInt_As_long(__pyx_v_res); if (unlikely((__pyx_t_10 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 866, __pyx_L1_error)
+  __pyx_v_tstep = __pyx_t_10;
+
+  /* "SeqSeg/SeqSeg.pyx":869
+ * 
+ *         # Sets start and end
+ *         tstart = start             # <<<<<<<<<<<<<<
+ *         tend = end
+ * 
+ */
+  __pyx_t_10 = __Pyx_PyInt_As_long(__pyx_v_start); if (unlikely((__pyx_t_10 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 869, __pyx_L1_error)
+  __pyx_v_tstart = __pyx_t_10;
+
+  /* "SeqSeg/SeqSeg.pyx":870
+ *         # Sets start and end
+ *         tstart = start
+ *         tend = end             # <<<<<<<<<<<<<<
+ * 
+ *         # Obtains MAP estimate of the cut point
+ */
+  __pyx_t_10 = __Pyx_PyInt_As_long(__pyx_v_end); if (unlikely((__pyx_t_10 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 870, __pyx_L1_error)
+  __pyx_v_tend = __pyx_t_10;
+
+  /* "SeqSeg/SeqSeg.pyx":876
+ * 
+ *         # Bounds for start and end
+ *         istart = tstart + 3             # <<<<<<<<<<<<<<
+ *         iend = tend - 3
+ *         n = int((iend-istart)/tstep)
+ */
+  __pyx_v_istart = (__pyx_v_tstart + 3);
+
+  /* "SeqSeg/SeqSeg.pyx":877
+ *         # Bounds for start and end
+ *         istart = tstart + 3
+ *         iend = tend - 3             # <<<<<<<<<<<<<<
+ *         n = int((iend-istart)/tstep)
+ * 
+ */
+  __pyx_v_iend = (__pyx_v_tend - 3);
+
+  /* "SeqSeg/SeqSeg.pyx":878
+ *         istart = tstart + 3
+ *         iend = tend - 3
+ *         n = int((iend-istart)/tstep)             # <<<<<<<<<<<<<<
+ * 
+ *         sstart = self.sumw2[self.tstart]
+ */
+  __pyx_t_10 = (__pyx_v_iend - __pyx_v_istart);
+  if (unlikely(__pyx_v_tstep == 0)) {
+    PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
+    __PYX_ERR(0, 878, __pyx_L1_error)
+  }
+  else if (sizeof(long) == sizeof(long) && (!(((long)-1) > 0)) && unlikely(__pyx_v_tstep == (long)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_t_10))) {
+    PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
+    __PYX_ERR(0, 878, __pyx_L1_error)
+  }
+  __pyx_v_n = __Pyx_div_long(__pyx_t_10, __pyx_v_tstep);
+
+  /* "SeqSeg/SeqSeg.pyx":880
+ *         n = int((iend-istart)/tstep)
+ * 
+ *         sstart = self.sumw2[self.tstart]             # <<<<<<<<<<<<<<
+ *         send = self.sumw2[self.tend]
+ * 
+ */
+  __pyx_t_4 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tstart, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 880, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 880, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_v_sstart = __pyx_t_12;
+
+  /* "SeqSeg/SeqSeg.pyx":881
+ * 
+ *         sstart = self.sumw2[self.tstart]
+ *         send = self.sumw2[self.tend]             # <<<<<<<<<<<<<<
+ * 
+ *         tvec = np.repeat(-np.inf, n + 1)
+ */
+  __pyx_t_4 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tend, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 881, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 881, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_v_send = __pyx_t_12;
+
+  /* "SeqSeg/SeqSeg.pyx":883
+ *         send = self.sumw2[self.tend]
+ * 
+ *         tvec = np.repeat(-np.inf, n + 1)             # <<<<<<<<<<<<<<
+ *         beta = self.beta
+ * 
+ */
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 883, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_repeat); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 883, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 883, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_inf); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 883, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyNumber_Negative(__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 883, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyInt_From_long((__pyx_v_n + 1)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 883, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_3 = NULL;
+  __pyx_t_7 = 0;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_8))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_8);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_8, function);
+      __pyx_t_7 = 1;
+    }
+  }
+  #if CYTHON_FAST_PYCALL
+  if (PyFunction_Check(__pyx_t_8)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_2, __pyx_t_5};
+    __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 883, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  } else
+  #endif
+  #if CYTHON_FAST_PYCCALL
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_2, __pyx_t_5};
+    __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 883, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  } else
+  #endif
+  {
+    __pyx_t_6 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 883, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    if (__pyx_t_3) {
+      __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_3); __pyx_t_3 = NULL;
+    }
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_7, __pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_5);
+    PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_7, __pyx_t_5);
+    __pyx_t_2 = 0;
+    __pyx_t_5 = 0;
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 883, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 883, __pyx_L1_error)
+  __pyx_t_9 = ((PyArrayObject *)__pyx_t_4);
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_tvec.rcbuffer->pybuffer);
+    __pyx_t_7 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_tvec.rcbuffer->pybuffer, (PyObject*)__pyx_t_9, &__Pyx_TypeInfo_nn___pyx_t_6SeqSeg_6SeqSeg_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack);
+    if (unlikely(__pyx_t_7 < 0)) {
+      PyErr_Fetch(&__pyx_t_13, &__pyx_t_14, &__pyx_t_15);
+      if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_tvec.rcbuffer->pybuffer, (PyObject*)__pyx_v_tvec, &__Pyx_TypeInfo_nn___pyx_t_6SeqSeg_6SeqSeg_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
+        Py_XDECREF(__pyx_t_13); Py_XDECREF(__pyx_t_14); Py_XDECREF(__pyx_t_15);
+        __Pyx_RaiseBufferFallbackError();
+      } else {
+        PyErr_Restore(__pyx_t_13, __pyx_t_14, __pyx_t_15);
+      }
+      __pyx_t_13 = __pyx_t_14 = __pyx_t_15 = 0;
+    }
+    __pyx_pybuffernd_tvec.diminfo[0].strides = __pyx_pybuffernd_tvec.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_tvec.diminfo[0].shape = __pyx_pybuffernd_tvec.rcbuffer->pybuffer.shape[0];
+    if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 883, __pyx_L1_error)
+  }
+  __pyx_t_9 = 0;
+  __Pyx_DECREF_SET(__pyx_v_tvec, ((PyArrayObject *)__pyx_t_4));
+  __pyx_t_4 = 0;
+
+  /* "SeqSeg/SeqSeg.pyx":884
+ * 
+ *         tvec = np.repeat(-np.inf, n + 1)
+ *         beta = self.beta             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_t_12 = __pyx_v_self->beta;
+  __pyx_v_beta = __pyx_t_12;
+
+  /* "SeqSeg/SeqSeg.pyx":887
+ * 
+ * 
+ *         begin = time.time()             # <<<<<<<<<<<<<<
+ *         with nogil, parallel():
+ *             for t in prange(n + 1, schedule = 'static'):
+ */
+  __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 887, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_time); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 887, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __pyx_t_8 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
+    __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_6);
+    if (likely(__pyx_t_8)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+      __Pyx_INCREF(__pyx_t_8);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_6, function);
+    }
+  }
+  if (__pyx_t_8) {
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 887, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  } else {
+    __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 887, __pyx_L1_error)
+  }
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_v_begin = __pyx_t_4;
+  __pyx_t_4 = 0;
+
+  /* "SeqSeg/SeqSeg.pyx":888
+ * 
+ *         begin = time.time()
+ *         with nogil, parallel():             # <<<<<<<<<<<<<<
+ *             for t in prange(n + 1, schedule = 'static'):
+ *                 st = esumw2[istart + t*tstep]
+ */
+  {
+      #ifdef WITH_THREAD
+      PyThreadState *_save;
+      Py_UNBLOCK_THREADS
+      __Pyx_FastGIL_Remember();
+      #endif
+      /*try:*/ {
+        {
+            #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
+                #undef likely
+                #undef unlikely
+                #define likely(x)   (x)
+                #define unlikely(x) (x)
+            #endif
+            #ifdef _OPENMP
+            #pragma omp parallel  private(__pyx_t_10, __pyx_t_12, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21)
+            #endif /* _OPENMP */
+            {
+
+                /* "SeqSeg/SeqSeg.pyx":889
+ *         begin = time.time()
+ *         with nogil, parallel():
+ *             for t in prange(n + 1, schedule = 'static'):             # <<<<<<<<<<<<<<
+ *                 st = esumw2[istart + t*tstep]
+ *                 st1 = esumw2[istart + t*tstep + 1]
+ */
+                __pyx_t_10 = (__pyx_v_n + 1);
+                if (1 == 0) abort();
+                {
+                    __pyx_t_17 = (__pyx_t_10 - 0 + 1 - 1/abs(1)) / 1;
+                    if (__pyx_t_17 > 0)
+                    {
+                        #ifdef _OPENMP
+                        #pragma omp for lastprivate(__pyx_v_dprior) lastprivate(__pyx_v_st) lastprivate(__pyx_v_st1) firstprivate(__pyx_v_t) lastprivate(__pyx_v_t) schedule(static)
+                        #endif /* _OPENMP */
+                        for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_17; __pyx_t_16++){
+                            {
+                                __pyx_v_t = (long)(0 + 1 * __pyx_t_16);
+                                /* Initialize private variables to invalid values */
+                                __pyx_v_dprior = ((double)__PYX_NAN());
+                                __pyx_v_st = ((double)__PYX_NAN());
+                                __pyx_v_st1 = ((double)__PYX_NAN());
+
+                                /* "SeqSeg/SeqSeg.pyx":890
+ *         with nogil, parallel():
+ *             for t in prange(n + 1, schedule = 'static'):
+ *                 st = esumw2[istart + t*tstep]             # <<<<<<<<<<<<<<
+ *                 st1 = esumw2[istart + t*tstep + 1]
+ *                 dprior = cprior_t(istart + t*tstep, tstart, tend, mlen)
+ */
+                                __pyx_t_18 = (__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep));
+                                __pyx_v_st = (*__Pyx_BufPtrStrided1d(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t *, __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_esumw2.diminfo[0].strides));
+
+                                /* "SeqSeg/SeqSeg.pyx":891
+ *             for t in prange(n + 1, schedule = 'static'):
+ *                 st = esumw2[istart + t*tstep]
+ *                 st1 = esumw2[istart + t*tstep + 1]             # <<<<<<<<<<<<<<
+ *                 dprior = cprior_t(istart + t*tstep, tstart, tend, mlen)
+ * 
+ */
+                                __pyx_t_19 = ((__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep)) + 1);
+                                __pyx_v_st1 = (*__Pyx_BufPtrStrided1d(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t *, __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.buf, __pyx_t_19, __pyx_pybuffernd_esumw2.diminfo[0].strides));
+
+                                /* "SeqSeg/SeqSeg.pyx":892
+ *                 st = esumw2[istart + t*tstep]
+ *                 st1 = esumw2[istart + t*tstep + 1]
+ *                 dprior = cprior_t(istart + t*tstep, tstart, tend, mlen)             # <<<<<<<<<<<<<<
+ * 
+ *                 tvec[t] = cposterior_t_var(istart + t*tstep, tstart, tend, dprior, send, sstart, st, st1)
+ */
+                                __pyx_t_20.__pyx_n = 1;
+                                __pyx_t_20.minlen = __pyx_v_mlen;
+                                __pyx_t_12 = __pyx_f_6SeqSeg_6SeqSeg_cprior_t((__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep)), __pyx_v_tstart, __pyx_v_tend, &__pyx_t_20); 
+                                __pyx_v_dprior = __pyx_t_12;
+
+                                /* "SeqSeg/SeqSeg.pyx":894
+ *                 dprior = cprior_t(istart + t*tstep, tstart, tend, mlen)
+ * 
+ *                 tvec[t] = cposterior_t_var(istart + t*tstep, tstart, tend, dprior, send, sstart, st, st1)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+                                __pyx_t_21 = __pyx_v_t;
+                                *__Pyx_BufPtrStrided1d(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t *, __pyx_pybuffernd_tvec.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_tvec.diminfo[0].strides) = __pyx_f_6SeqSeg_6SeqSeg_cposterior_t_var((__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep)), __pyx_v_tstart, __pyx_v_tend, __pyx_v_dprior, __pyx_v_send, __pyx_v_sstart, __pyx_v_st, __pyx_v_st1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
+            #undef likely
+            #undef unlikely
+            #define likely(x)   __builtin_expect(!!(x), 1)
+            #define unlikely(x) __builtin_expect(!!(x), 0)
+        #endif
+      }
+
+      /* "SeqSeg/SeqSeg.pyx":888
+ * 
+ *         begin = time.time()
+ *         with nogil, parallel():             # <<<<<<<<<<<<<<
+ *             for t in prange(n + 1, schedule = 'static'):
+ *                 st = esumw2[istart + t*tstep]
+ */
+      /*finally:*/ {
+        /*normal exit:*/{
+          #ifdef WITH_THREAD
+          __Pyx_FastGIL_Forget();
+          Py_BLOCK_THREADS
+          #endif
+          goto __pyx_L8;
+        }
+        __pyx_L8:;
+      }
+  }
+
+  /* "SeqSeg/SeqSeg.pyx":897
+ * 
+ * 
+ *         end = time.time()             # <<<<<<<<<<<<<<
+ *         elapsed = end - begin
+ * 
+ */
+  __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 897, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_time); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 897, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_6 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_8))) {
+    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_8);
+    if (likely(__pyx_t_6)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+      __Pyx_INCREF(__pyx_t_6);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_8, function);
+    }
+  }
+  if (__pyx_t_6) {
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 897, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  } else {
+    __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 897, __pyx_L1_error)
+  }
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __Pyx_DECREF_SET(__pyx_v_end, __pyx_t_4);
+  __pyx_t_4 = 0;
+
+  /* "SeqSeg/SeqSeg.pyx":898
+ * 
+ *         end = time.time()
+ *         elapsed = end - begin             # <<<<<<<<<<<<<<
+ * 
+ *         return tvec, elapsed
+ */
+  __pyx_t_4 = PyNumber_Subtract(__pyx_v_end, __pyx_v_begin); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 898, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_v_elapsed = __pyx_t_4;
+  __pyx_t_4 = 0;
+
+  /* "SeqSeg/SeqSeg.pyx":900
+ *         elapsed = end - begin
+ * 
+ *         return tvec, elapsed             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 900, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_INCREF(((PyObject *)__pyx_v_tvec));
+  __Pyx_GIVEREF(((PyObject *)__pyx_v_tvec));
+  PyTuple_SET_ITEM(__pyx_t_4, 0, ((PyObject *)__pyx_v_tvec));
+  __Pyx_INCREF(__pyx_v_elapsed);
+  __Pyx_GIVEREF(__pyx_v_elapsed);
+  PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_v_elapsed);
+  __pyx_r = __pyx_t_4;
+  __pyx_t_4 = 0;
+  goto __pyx_L0;
+
+  /* "SeqSeg/SeqSeg.pyx":831
+ *         return tvec, elapsed
+ * 
+ *     def get_posterior_var(self, start, end, minlen = 0, res = 1):             # <<<<<<<<<<<<<<
+ *         ''' Returns the posterior values for the changepoint using variance parameterization.
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_8);
+  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_esumw2.rcbuffer->pybuffer);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_tvec.rcbuffer->pybuffer);
+  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
+  __Pyx_AddTraceback("SeqSeg.SeqSeg.SeqSeg.get_posterior_var", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  goto __pyx_L2;
+  __pyx_L0:;
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_esumw2.rcbuffer->pybuffer);
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_tvec.rcbuffer->pybuffer);
+  __pyx_L2:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_tvec);
+  __Pyx_XDECREF((PyObject *)__pyx_v_esumw2);
+  __Pyx_XDECREF(__pyx_v_begin);
+  __Pyx_XDECREF(__pyx_v_elapsed);
+  __Pyx_XDECREF(__pyx_v_end);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "SeqSeg/SeqSeg.pyx":905
  * 
  * 
  *     def segments(self, minlen, res, iprior, regularize = False, normalize = False, verbose = False):             # <<<<<<<<<<<<<<
@@ -6902,9 +9731,9 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior(struct __pyx_ob
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_11segments(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_6SeqSeg_6SeqSeg_6SeqSeg_10segments[] = " Applies the sequential segmentation algorithm to the wave,\n            returns the vector with segments' index\n        ";
-static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_11segments(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_13segments(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_6SeqSeg_6SeqSeg_6SeqSeg_12segments[] = " Applies the sequential segmentation algorithm to the wave,\n            returns the vector with segments' index\n        ";
+static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_13segments(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_minlen = 0;
   PyObject *__pyx_v_res = 0;
   PyObject *__pyx_v_iprior = 0;
@@ -6948,13 +9777,13 @@ static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_11segments(PyObject *__pyx_v_s
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_res)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("segments", 0, 3, 6, 1); __PYX_ERR(0, 556, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("segments", 0, 3, 6, 1); __PYX_ERR(0, 905, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_iprior)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("segments", 0, 3, 6, 2); __PYX_ERR(0, 556, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("segments", 0, 3, 6, 2); __PYX_ERR(0, 905, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -6976,7 +9805,7 @@ static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_11segments(PyObject *__pyx_v_s
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "segments") < 0)) __PYX_ERR(0, 556, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "segments") < 0)) __PYX_ERR(0, 905, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -7002,20 +9831,20 @@ static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_11segments(PyObject *__pyx_v_s
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("segments", 0, 3, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 556, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("segments", 0, 3, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 905, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("SeqSeg.SeqSeg.SeqSeg.segments", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(((struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self), __pyx_v_minlen, __pyx_v_res, __pyx_v_iprior, __pyx_v_regularize, __pyx_v_normalize, __pyx_v_verbose);
+  __pyx_r = __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_12segments(((struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self), __pyx_v_minlen, __pyx_v_res, __pyx_v_iprior, __pyx_v_regularize, __pyx_v_normalize, __pyx_v_verbose);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v_minlen, PyObject *__pyx_v_res, PyObject *__pyx_v_iprior, PyObject *__pyx_v_regularize, PyObject *__pyx_v_normalize, PyObject *__pyx_v_verbose) {
+static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_12segments(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v_minlen, PyObject *__pyx_v_res, PyObject *__pyx_v_iprior, PyObject *__pyx_v_regularize, PyObject *__pyx_v_normalize, PyObject *__pyx_v_verbose) {
   PyObject *__pyx_v_begin = NULL;
   long __pyx_v_t;
   long __pyx_v_tmax;
@@ -7025,6 +9854,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
   long __pyx_v_istart;
   long __pyx_v_iend;
   long __pyx_v_tstep;
+  long __pyx_v_mlen;
   CYTHON_UNUSED double __pyx_v_maxp;
   double __pyx_v_sstart;
   double __pyx_v_send;
@@ -7068,11 +9898,12 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
   long __pyx_t_20;
   Py_ssize_t __pyx_t_21;
   Py_ssize_t __pyx_t_22;
-  Py_ssize_t __pyx_t_23;
-  PyObject *(*__pyx_t_24)(PyObject *);
-  int __pyx_t_25;
-  struct __pyx_opt_args_6SeqSeg_6SeqSeg_6SeqSeg_tester __pyx_t_26;
-  int __pyx_t_27;
+  struct __pyx_opt_args_6SeqSeg_6SeqSeg_cprior_t __pyx_t_23;
+  Py_ssize_t __pyx_t_24;
+  PyObject *(*__pyx_t_25)(PyObject *);
+  int __pyx_t_26;
+  struct __pyx_opt_args_6SeqSeg_6SeqSeg_6SeqSeg_tester __pyx_t_27;
+  int __pyx_t_28;
   __Pyx_RefNannySetupContext("segments", 0);
   __Pyx_INCREF(__pyx_v_minlen);
   __pyx_pybuffer_tvec.pybuffer.buf = NULL;
@@ -7084,7 +9915,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
   __pyx_pybuffernd_esumw2.data = NULL;
   __pyx_pybuffernd_esumw2.rcbuffer = &__pyx_pybuffer_esumw2;
 
-  /* "SeqSeg/SeqSeg.pyx":561
+  /* "SeqSeg/SeqSeg.pyx":910
  *         '''
  * 
  *         if not self.data_fed:             # <<<<<<<<<<<<<<
@@ -7094,16 +9925,16 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
   __pyx_t_1 = ((!(__pyx_v_self->data_fed != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "SeqSeg/SeqSeg.pyx":563
+    /* "SeqSeg/SeqSeg.pyx":912
  *         if not self.data_fed:
  * 
  *             print("Data not initialized! Call feed_data.")             # <<<<<<<<<<<<<<
  *             return(-1)
  * 
  */
-    if (__Pyx_PrintOne(0, __pyx_kp_s_Data_not_initialized_Call_feed_d) < 0) __PYX_ERR(0, 563, __pyx_L1_error)
+    if (__Pyx_PrintOne(0, __pyx_kp_s_Data_not_initialized_Call_feed_d) < 0) __PYX_ERR(0, 912, __pyx_L1_error)
 
-    /* "SeqSeg/SeqSeg.pyx":564
+    /* "SeqSeg/SeqSeg.pyx":913
  * 
  *             print("Data not initialized! Call feed_data.")
  *             return(-1)             # <<<<<<<<<<<<<<
@@ -7115,7 +9946,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
     __pyx_r = __pyx_int_neg_1;
     goto __pyx_L0;
 
-    /* "SeqSeg/SeqSeg.pyx":561
+    /* "SeqSeg/SeqSeg.pyx":910
  *         '''
  * 
  *         if not self.data_fed:             # <<<<<<<<<<<<<<
@@ -7124,16 +9955,16 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  */
   }
 
-  /* "SeqSeg/SeqSeg.pyx":566
+  /* "SeqSeg/SeqSeg.pyx":915
  *             return(-1)
  * 
  *         begin = time.time()             # <<<<<<<<<<<<<<
  * 
  *         # Cannot have a minimum segment of less than 5 points for the algorithm to make sense
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 566, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 915, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_time); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 566, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_time); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 915, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -7147,37 +9978,37 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 566, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 915, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 566, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 915, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_begin = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":569
+  /* "SeqSeg/SeqSeg.pyx":918
  * 
  *         # Cannot have a minimum segment of less than 5 points for the algorithm to make sense
  *         minlen = max(5, minlen)             # <<<<<<<<<<<<<<
  * 
- *         cdef long t, tmax, tstart, tend, n, istart, iend, tstep
+ *         cdef long t, tmax, tstart, tend, n, istart, iend, tstep, mlen
  */
   __Pyx_INCREF(__pyx_v_minlen);
   __pyx_t_2 = __pyx_v_minlen;
   __pyx_t_5 = 5;
-  __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 569, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 918, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_GT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 569, __pyx_L1_error)
+  __pyx_t_6 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_GT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 918, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 569, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 918, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   if (__pyx_t_1) {
     __Pyx_INCREF(__pyx_t_2);
     __pyx_t_4 = __pyx_t_2;
   } else {
-    __pyx_t_6 = __Pyx_PyInt_From_long(__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 569, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_From_long(__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 918, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_4 = __pyx_t_6;
     __pyx_t_6 = 0;
@@ -7189,27 +10020,27 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
   __Pyx_DECREF_SET(__pyx_v_minlen, __pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":573
- *         cdef long t, tmax, tstart, tend, n, istart, iend, tstep
+  /* "SeqSeg/SeqSeg.pyx":922
+ *         cdef long t, tmax, tstart, tend, n, istart, iend, tstep, mlen
  *         cdef double maxp, posterior, sstart, send, st, st1
  *         cdef np.ndarray[DTYPE_t, ndim = 1] tvec = np.repeat(-np.inf, self.N)             # <<<<<<<<<<<<<<
  *         cdef np.ndarray[DTYPE_t, ndim = 1] esumw2 = self.sumw2
  * 
  */
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 573, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 922, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_repeat); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 573, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_repeat); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 922, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 573, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 922, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_inf); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 573, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_inf); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 922, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyNumber_Negative(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 573, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Negative(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 922, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_self->N); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 573, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_self->N); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 922, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_7 = NULL;
   __pyx_t_8 = 0;
@@ -7226,7 +10057,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_6)) {
     PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_4, __pyx_t_3};
-    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 573, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 922, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -7236,7 +10067,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
     PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_4, __pyx_t_3};
-    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 573, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 922, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -7244,7 +10075,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
   } else
   #endif
   {
-    __pyx_t_9 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 573, __pyx_L1_error)
+    __pyx_t_9 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 922, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     if (__pyx_t_7) {
       __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -7255,18 +10086,18 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
     PyTuple_SET_ITEM(__pyx_t_9, 1+__pyx_t_8, __pyx_t_3);
     __pyx_t_4 = 0;
     __pyx_t_3 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 573, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 922, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 573, __pyx_L1_error)
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 922, __pyx_L1_error)
   __pyx_t_10 = ((PyArrayObject *)__pyx_t_2);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_tvec.rcbuffer->pybuffer, (PyObject*)__pyx_t_10, &__Pyx_TypeInfo_nn___pyx_t_6SeqSeg_6SeqSeg_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_tvec = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_tvec.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 573, __pyx_L1_error)
+      __PYX_ERR(0, 922, __pyx_L1_error)
     } else {__pyx_pybuffernd_tvec.diminfo[0].strides = __pyx_pybuffernd_tvec.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_tvec.diminfo[0].shape = __pyx_pybuffernd_tvec.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -7274,7 +10105,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
   __pyx_v_tvec = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":574
+  /* "SeqSeg/SeqSeg.pyx":923
  *         cdef double maxp, posterior, sstart, send, st, st1
  *         cdef np.ndarray[DTYPE_t, ndim = 1] tvec = np.repeat(-np.inf, self.N)
  *         cdef np.ndarray[DTYPE_t, ndim = 1] esumw2 = self.sumw2             # <<<<<<<<<<<<<<
@@ -7287,14 +10118,14 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_esumw2.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_2), &__Pyx_TypeInfo_nn___pyx_t_6SeqSeg_6SeqSeg_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_esumw2 = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 574, __pyx_L1_error)
+      __PYX_ERR(0, 923, __pyx_L1_error)
     } else {__pyx_pybuffernd_esumw2.diminfo[0].strides = __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_esumw2.diminfo[0].shape = __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.shape[0];
     }
   }
   __pyx_v_esumw2 = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":578
+  /* "SeqSeg/SeqSeg.pyx":927
  * 
  * 
  *         self.tstart = 0             # <<<<<<<<<<<<<<
@@ -7303,7 +10134,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  */
   __pyx_v_self->tstart = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":579
+  /* "SeqSeg/SeqSeg.pyx":928
  * 
  *         self.tstart = 0
  *         self.tend = len(self.wave) - 1             # <<<<<<<<<<<<<<
@@ -7312,11 +10143,11 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  */
   __pyx_t_2 = ((PyObject *)__pyx_v_self->wave);
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_11 = PyObject_Length(__pyx_t_2); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 579, __pyx_L1_error)
+  __pyx_t_11 = PyObject_Length(__pyx_t_2); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 928, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_self->tend = (__pyx_t_11 - 1);
 
-  /* "SeqSeg/SeqSeg.pyx":580
+  /* "SeqSeg/SeqSeg.pyx":929
  *         self.tstart = 0
  *         self.tend = len(self.wave) - 1
  *         self.N = len(self.wave)             # <<<<<<<<<<<<<<
@@ -7325,53 +10156,53 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  */
   __pyx_t_2 = ((PyObject *)__pyx_v_self->wave);
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_11 = PyObject_Length(__pyx_t_2); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 580, __pyx_L1_error)
+  __pyx_t_11 = PyObject_Length(__pyx_t_2); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 929, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_self->N = __pyx_t_11;
 
-  /* "SeqSeg/SeqSeg.pyx":582
+  /* "SeqSeg/SeqSeg.pyx":931
  *         self.N = len(self.wave)
  * 
  *         tstep = res             # <<<<<<<<<<<<<<
  * 
  *         if verbose:
  */
-  __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_v_res); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 582, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_v_res); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 931, __pyx_L1_error)
   __pyx_v_tstep = __pyx_t_5;
 
-  /* "SeqSeg/SeqSeg.pyx":584
+  /* "SeqSeg/SeqSeg.pyx":933
  *         tstep = res
  * 
  *         if verbose:             # <<<<<<<<<<<<<<
  *             if iprior == 0:
  *                 print('Using Laplace prior.')
  */
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_verbose); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 584, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_verbose); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 933, __pyx_L1_error)
   if (__pyx_t_1) {
 
-    /* "SeqSeg/SeqSeg.pyx":585
+    /* "SeqSeg/SeqSeg.pyx":934
  * 
  *         if verbose:
  *             if iprior == 0:             # <<<<<<<<<<<<<<
  *                 print('Using Laplace prior.')
  *             elif iprior == 1:
  */
-    __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_iprior, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 585, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_iprior, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 934, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 585, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 934, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (__pyx_t_1) {
 
-      /* "SeqSeg/SeqSeg.pyx":586
+      /* "SeqSeg/SeqSeg.pyx":935
  *         if verbose:
  *             if iprior == 0:
  *                 print('Using Laplace prior.')             # <<<<<<<<<<<<<<
  *             elif iprior == 1:
  *                 print('Using Gaussian prior.')
  */
-      if (__Pyx_PrintOne(0, __pyx_kp_s_Using_Laplace_prior) < 0) __PYX_ERR(0, 586, __pyx_L1_error)
+      if (__Pyx_PrintOne(0, __pyx_kp_s_Using_Laplace_prior) < 0) __PYX_ERR(0, 935, __pyx_L1_error)
 
-      /* "SeqSeg/SeqSeg.pyx":585
+      /* "SeqSeg/SeqSeg.pyx":934
  * 
  *         if verbose:
  *             if iprior == 0:             # <<<<<<<<<<<<<<
@@ -7381,29 +10212,29 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
       goto __pyx_L5;
     }
 
-    /* "SeqSeg/SeqSeg.pyx":587
+    /* "SeqSeg/SeqSeg.pyx":936
  *             if iprior == 0:
  *                 print('Using Laplace prior.')
  *             elif iprior == 1:             # <<<<<<<<<<<<<<
  *                 print('Using Gaussian prior.')
  *             else:
  */
-    __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_iprior, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 587, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_iprior, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 936, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 587, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 936, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (__pyx_t_1) {
 
-      /* "SeqSeg/SeqSeg.pyx":588
+      /* "SeqSeg/SeqSeg.pyx":937
  *                 print('Using Laplace prior.')
  *             elif iprior == 1:
  *                 print('Using Gaussian prior.')             # <<<<<<<<<<<<<<
  *             else:
  *                 print('Using uniform prior.')
  */
-      if (__Pyx_PrintOne(0, __pyx_kp_s_Using_Gaussian_prior) < 0) __PYX_ERR(0, 588, __pyx_L1_error)
+      if (__Pyx_PrintOne(0, __pyx_kp_s_Using_Gaussian_prior) < 0) __PYX_ERR(0, 937, __pyx_L1_error)
 
-      /* "SeqSeg/SeqSeg.pyx":587
+      /* "SeqSeg/SeqSeg.pyx":936
  *             if iprior == 0:
  *                 print('Using Laplace prior.')
  *             elif iprior == 1:             # <<<<<<<<<<<<<<
@@ -7413,7 +10244,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
       goto __pyx_L5;
     }
 
-    /* "SeqSeg/SeqSeg.pyx":590
+    /* "SeqSeg/SeqSeg.pyx":939
  *                 print('Using Gaussian prior.')
  *             else:
  *                 print('Using uniform prior.')             # <<<<<<<<<<<<<<
@@ -7421,11 +10252,11 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  *         tseg = []
  */
     /*else*/ {
-      if (__Pyx_PrintOne(0, __pyx_kp_s_Using_uniform_prior) < 0) __PYX_ERR(0, 590, __pyx_L1_error)
+      if (__Pyx_PrintOne(0, __pyx_kp_s_Using_uniform_prior) < 0) __PYX_ERR(0, 939, __pyx_L1_error)
     }
     __pyx_L5:;
 
-    /* "SeqSeg/SeqSeg.pyx":584
+    /* "SeqSeg/SeqSeg.pyx":933
  *         tstep = res
  * 
  *         if verbose:             # <<<<<<<<<<<<<<
@@ -7434,32 +10265,32 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  */
   }
 
-  /* "SeqSeg/SeqSeg.pyx":592
+  /* "SeqSeg/SeqSeg.pyx":941
  *                 print('Using uniform prior.')
  * 
  *         tseg = []             # <<<<<<<<<<<<<<
  *         # Creates index to keep track of tested segments
  *         # True, if the segment must be tested, False otherwise
  */
-  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 592, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 941, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_tseg = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":595
+  /* "SeqSeg/SeqSeg.pyx":944
  *         # Creates index to keep track of tested segments
  *         # True, if the segment must be tested, False otherwise
  *         iseg = {(self.tstart, self.tend) : True}             # <<<<<<<<<<<<<<
  * 
- *         # Main loop: while there are untested segments
+ *         mlen = minlen
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 595, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 944, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __Pyx_PyInt_From_long(__pyx_v_self->tstart); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 595, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_From_long(__pyx_v_self->tstart); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 944, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_9 = __Pyx_PyInt_From_long(__pyx_v_self->tend); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 595, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyInt_From_long(__pyx_v_self->tend); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 944, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 595, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 944, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_6);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_6);
@@ -7467,46 +10298,56 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_9);
   __pyx_t_6 = 0;
   __pyx_t_9 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_t_3, Py_True) < 0) __PYX_ERR(0, 595, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_t_3, Py_True) < 0) __PYX_ERR(0, 944, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_iseg = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":598
+  /* "SeqSeg/SeqSeg.pyx":946
+ *         iseg = {(self.tstart, self.tend) : True}
  * 
+ *         mlen = minlen             # <<<<<<<<<<<<<<
+ *         # Main loop: while there are untested segments
+ *         while sum(iseg.values()) > 0:
+ */
+  __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_v_minlen); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 946, __pyx_L1_error)
+  __pyx_v_mlen = __pyx_t_5;
+
+  /* "SeqSeg/SeqSeg.pyx":948
+ *         mlen = minlen
  *         # Main loop: while there are untested segments
  *         while sum(iseg.values()) > 0:             # <<<<<<<<<<<<<<
  *             # Iterates through segments to be tested
  *             isegold = [i for i in iseg if iseg[i] == True]
  */
   while (1) {
-    __pyx_t_2 = __Pyx_PyDict_Values(__pyx_v_iseg); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 598, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyDict_Values(__pyx_v_iseg); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 948, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 598, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 948, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_sum, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 598, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_sum, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 948, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyObject_RichCompare(__pyx_t_2, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 598, __pyx_L1_error)
+    __pyx_t_3 = PyObject_RichCompare(__pyx_t_2, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 948, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 598, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 948, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (!__pyx_t_1) break;
 
-    /* "SeqSeg/SeqSeg.pyx":600
+    /* "SeqSeg/SeqSeg.pyx":950
  *         while sum(iseg.values()) > 0:
  *             # Iterates through segments to be tested
  *             isegold = [i for i in iseg if iseg[i] == True]             # <<<<<<<<<<<<<<
  *             for seg in isegold:
  *                 # Sets start and end
  */
-    __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 600, __pyx_L1_error)
+    __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 950, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_11 = 0;
-    __pyx_t_9 = __Pyx_dict_iterator(__pyx_v_iseg, 1, ((PyObject *)NULL), (&__pyx_t_12), (&__pyx_t_8)); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 600, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_dict_iterator(__pyx_v_iseg, 1, ((PyObject *)NULL), (&__pyx_t_12), (&__pyx_t_8)); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 950, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_XDECREF(__pyx_t_2);
     __pyx_t_2 = __pyx_t_9;
@@ -7514,25 +10355,25 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
     while (1) {
       __pyx_t_13 = __Pyx_dict_iter_next(__pyx_t_2, __pyx_t_12, &__pyx_t_11, &__pyx_t_9, NULL, NULL, __pyx_t_8);
       if (unlikely(__pyx_t_13 == 0)) break;
-      if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 600, __pyx_L1_error)
+      if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 950, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_9);
       __pyx_t_9 = 0;
-      __pyx_t_9 = __Pyx_PyDict_GetItem(__pyx_v_iseg, __pyx_v_i); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 600, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyDict_GetItem(__pyx_v_iseg, __pyx_v_i); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 950, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_6 = PyObject_RichCompare(__pyx_t_9, Py_True, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 600, __pyx_L1_error)
+      __pyx_t_6 = PyObject_RichCompare(__pyx_t_9, Py_True, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 950, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 600, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 950, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       if (__pyx_t_1) {
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_v_i))) __PYX_ERR(0, 600, __pyx_L1_error)
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_v_i))) __PYX_ERR(0, 950, __pyx_L1_error)
       }
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_XDECREF_SET(__pyx_v_isegold, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "SeqSeg/SeqSeg.pyx":601
+    /* "SeqSeg/SeqSeg.pyx":951
  *             # Iterates through segments to be tested
  *             isegold = [i for i in iseg if iseg[i] == True]
  *             for seg in isegold:             # <<<<<<<<<<<<<<
@@ -7543,41 +10384,41 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
     for (;;) {
       if (__pyx_t_12 >= PyList_GET_SIZE(__pyx_t_3)) break;
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_12); __Pyx_INCREF(__pyx_t_2); __pyx_t_12++; if (unlikely(0 < 0)) __PYX_ERR(0, 601, __pyx_L1_error)
+      __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_12); __Pyx_INCREF(__pyx_t_2); __pyx_t_12++; if (unlikely(0 < 0)) __PYX_ERR(0, 951, __pyx_L1_error)
       #else
-      __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_12); __pyx_t_12++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 601, __pyx_L1_error)
+      __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_12); __pyx_t_12++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 951, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       #endif
       __Pyx_XDECREF_SET(__pyx_v_seg, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "SeqSeg/SeqSeg.pyx":603
+      /* "SeqSeg/SeqSeg.pyx":953
  *             for seg in isegold:
  *                 # Sets start and end
  *                 self.tstart = seg[0]             # <<<<<<<<<<<<<<
  *                 self.tend = seg[1]
  *                 self.N = self.tend - self.tstart + 1
  */
-      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_seg, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 603, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_seg, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 953, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_t_2); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 603, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_t_2); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 953, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_v_self->tstart = __pyx_t_5;
 
-      /* "SeqSeg/SeqSeg.pyx":604
+      /* "SeqSeg/SeqSeg.pyx":954
  *                 # Sets start and end
  *                 self.tstart = seg[0]
  *                 self.tend = seg[1]             # <<<<<<<<<<<<<<
  *                 self.N = self.tend - self.tstart + 1
  * 
  */
-      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_seg, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 604, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_seg, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 954, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_t_2); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 604, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyInt_As_long(__pyx_t_2); if (unlikely((__pyx_t_5 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 954, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_v_self->tend = __pyx_t_5;
 
-      /* "SeqSeg/SeqSeg.pyx":605
+      /* "SeqSeg/SeqSeg.pyx":955
  *                 self.tstart = seg[0]
  *                 self.tend = seg[1]
  *                 self.N = self.tend - self.tstart + 1             # <<<<<<<<<<<<<<
@@ -7586,7 +10427,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  */
       __pyx_v_self->N = ((__pyx_v_self->tend - __pyx_v_self->tstart) + 1);
 
-      /* "SeqSeg/SeqSeg.pyx":609
+      /* "SeqSeg/SeqSeg.pyx":959
  *                 # Obtains MAP estimate of the cut point
  *                 # Parallelized
  *                 tstart = self.tstart             # <<<<<<<<<<<<<<
@@ -7596,7 +10437,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
       __pyx_t_5 = __pyx_v_self->tstart;
       __pyx_v_tstart = __pyx_t_5;
 
-      /* "SeqSeg/SeqSeg.pyx":610
+      /* "SeqSeg/SeqSeg.pyx":960
  *                 # Parallelized
  *                 tstart = self.tstart
  *                 tend = self.tend             # <<<<<<<<<<<<<<
@@ -7606,7 +10447,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
       __pyx_t_5 = __pyx_v_self->tend;
       __pyx_v_tend = __pyx_t_5;
 
-      /* "SeqSeg/SeqSeg.pyx":613
+      /* "SeqSeg/SeqSeg.pyx":963
  * 
  *                 # Bounds for start and end
  *                 istart = tstart + 3             # <<<<<<<<<<<<<<
@@ -7615,7 +10456,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  */
       __pyx_v_istart = (__pyx_v_tstart + 3);
 
-      /* "SeqSeg/SeqSeg.pyx":614
+      /* "SeqSeg/SeqSeg.pyx":964
  *                 # Bounds for start and end
  *                 istart = tstart + 3
  *                 iend = tend - 3             # <<<<<<<<<<<<<<
@@ -7624,7 +10465,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  */
       __pyx_v_iend = (__pyx_v_tend - 3);
 
-      /* "SeqSeg/SeqSeg.pyx":615
+      /* "SeqSeg/SeqSeg.pyx":965
  *                 istart = tstart + 3
  *                 iend = tend - 3
  *                 n = int((iend-istart)/tstep)             # <<<<<<<<<<<<<<
@@ -7634,61 +10475,61 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
       __pyx_t_5 = (__pyx_v_iend - __pyx_v_istart);
       if (unlikely(__pyx_v_tstep == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-        __PYX_ERR(0, 615, __pyx_L1_error)
+        __PYX_ERR(0, 965, __pyx_L1_error)
       }
       else if (sizeof(long) == sizeof(long) && (!(((long)-1) > 0)) && unlikely(__pyx_v_tstep == (long)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_t_5))) {
         PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
-        __PYX_ERR(0, 615, __pyx_L1_error)
+        __PYX_ERR(0, 965, __pyx_L1_error)
       }
       __pyx_v_n = __Pyx_div_long(__pyx_t_5, __pyx_v_tstep);
 
-      /* "SeqSeg/SeqSeg.pyx":617
+      /* "SeqSeg/SeqSeg.pyx":967
  *                 n = int((iend-istart)/tstep)
  * 
  *                 sstart = self.sumw2[self.tstart]             # <<<<<<<<<<<<<<
  *                 send = self.sumw2[self.tend]
  * 
  */
-      __pyx_t_2 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tstart, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 617, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tstart, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 967, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 617, __pyx_L1_error)
+      __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 967, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_v_sstart = __pyx_t_14;
 
-      /* "SeqSeg/SeqSeg.pyx":618
+      /* "SeqSeg/SeqSeg.pyx":968
  * 
  *                 sstart = self.sumw2[self.tstart]
  *                 send = self.sumw2[self.tend]             # <<<<<<<<<<<<<<
  * 
  *                 tvec = np.repeat(-np.inf, n + 1)
  */
-      __pyx_t_2 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tend, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 618, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->sumw2), __pyx_v_self->tend, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 968, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 618, __pyx_L1_error)
+      __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 968, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_v_send = __pyx_t_14;
 
-      /* "SeqSeg/SeqSeg.pyx":620
+      /* "SeqSeg/SeqSeg.pyx":970
  *                 send = self.sumw2[self.tend]
  * 
  *                 tvec = np.repeat(-np.inf, n + 1)             # <<<<<<<<<<<<<<
  *                 with nogil, parallel():
  *                     for t in prange(n + 1, schedule = 'static'):
  */
-      __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 620, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 970, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_repeat); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 620, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_repeat); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 970, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 620, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 970, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_inf); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 620, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_inf); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 970, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = PyNumber_Negative(__pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 620, __pyx_L1_error)
+      __pyx_t_6 = PyNumber_Negative(__pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 970, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyInt_From_long((__pyx_v_n + 1)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 620, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_From_long((__pyx_v_n + 1)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 970, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_t_7 = NULL;
       __pyx_t_8 = 0;
@@ -7705,7 +10546,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_9)) {
         PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_6, __pyx_t_4};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 620, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 970, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -7715,7 +10556,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_9)) {
         PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_6, __pyx_t_4};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 620, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_9, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 970, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -7723,7 +10564,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
       } else
       #endif
       {
-        __pyx_t_15 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 620, __pyx_L1_error)
+        __pyx_t_15 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 970, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_15);
         if (__pyx_t_7) {
           __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -7734,12 +10575,12 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
         PyTuple_SET_ITEM(__pyx_t_15, 1+__pyx_t_8, __pyx_t_4);
         __pyx_t_6 = 0;
         __pyx_t_4 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_15, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 620, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_15, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 970, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
       }
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 620, __pyx_L1_error)
+      if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 970, __pyx_L1_error)
       __pyx_t_10 = ((PyArrayObject *)__pyx_t_2);
       {
         __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -7756,13 +10597,13 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
           __pyx_t_16 = __pyx_t_17 = __pyx_t_18 = 0;
         }
         __pyx_pybuffernd_tvec.diminfo[0].strides = __pyx_pybuffernd_tvec.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_tvec.diminfo[0].shape = __pyx_pybuffernd_tvec.rcbuffer->pybuffer.shape[0];
-        if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 620, __pyx_L1_error)
+        if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 970, __pyx_L1_error)
       }
       __pyx_t_10 = 0;
       __Pyx_DECREF_SET(__pyx_v_tvec, ((PyArrayObject *)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "SeqSeg/SeqSeg.pyx":621
+      /* "SeqSeg/SeqSeg.pyx":971
  * 
  *                 tvec = np.repeat(-np.inf, n + 1)
  *                 with nogil, parallel():             # <<<<<<<<<<<<<<
@@ -7784,11 +10625,11 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
                     #define unlikely(x) (x)
                 #endif
                 #ifdef _OPENMP
-                #pragma omp parallel  private(__pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_5)
+                #pragma omp parallel  private(__pyx_t_14, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_5)
                 #endif /* _OPENMP */
                 {
 
-                    /* "SeqSeg/SeqSeg.pyx":622
+                    /* "SeqSeg/SeqSeg.pyx":972
  *                 tvec = np.repeat(-np.inf, n + 1)
  *                 with nogil, parallel():
  *                     for t in prange(n + 1, schedule = 'static'):             # <<<<<<<<<<<<<<
@@ -7811,7 +10652,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
                                     __pyx_v_st = ((double)__PYX_NAN());
                                     __pyx_v_st1 = ((double)__PYX_NAN());
 
-                                    /* "SeqSeg/SeqSeg.pyx":623
+                                    /* "SeqSeg/SeqSeg.pyx":973
  *                 with nogil, parallel():
  *                     for t in prange(n + 1, schedule = 'static'):
  *                         st = esumw2[istart + t*tstep]             # <<<<<<<<<<<<<<
@@ -7821,25 +10662,28 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
                                     __pyx_t_21 = (__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep));
                                     __pyx_v_st = (*__Pyx_BufPtrStrided1d(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t *, __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_esumw2.diminfo[0].strides));
 
-                                    /* "SeqSeg/SeqSeg.pyx":625
+                                    /* "SeqSeg/SeqSeg.pyx":975
  *                         st = esumw2[istart + t*tstep]
  *                         #st1 = esumw2[istart + t*tstep + 1]
  *                         st1 = esumw2[istart + t*tstep + 1]             # <<<<<<<<<<<<<<
- *                         tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend), send, sstart, st, st1)
+ *                         tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend, mlen), send, sstart, st, st1)
  * 
  */
                                     __pyx_t_22 = ((__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep)) + 1);
                                     __pyx_v_st1 = (*__Pyx_BufPtrStrided1d(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t *, __pyx_pybuffernd_esumw2.rcbuffer->pybuffer.buf, __pyx_t_22, __pyx_pybuffernd_esumw2.diminfo[0].strides));
 
-                                    /* "SeqSeg/SeqSeg.pyx":626
+                                    /* "SeqSeg/SeqSeg.pyx":976
  *                         #st1 = esumw2[istart + t*tstep + 1]
  *                         st1 = esumw2[istart + t*tstep + 1]
- *                         tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend), send, sstart, st, st1)             # <<<<<<<<<<<<<<
+ *                         tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend, mlen), send, sstart, st, st1)             # <<<<<<<<<<<<<<
  * 
  *                 tmax, maxp = max(enumerate(tvec), key=operator.itemgetter(1))
  */
-                                    __pyx_t_23 = __pyx_v_t;
-                                    *__Pyx_BufPtrStrided1d(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t *, __pyx_pybuffernd_tvec.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_tvec.diminfo[0].strides) = __pyx_f_6SeqSeg_6SeqSeg_cposterior_t((__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep)), __pyx_v_tstart, __pyx_v_tend, __pyx_f_6SeqSeg_6SeqSeg_cprior_t((__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep)), __pyx_v_tstart, __pyx_v_tend, NULL), __pyx_v_send, __pyx_v_sstart, __pyx_v_st, __pyx_v_st1);
+                                    __pyx_t_23.__pyx_n = 1;
+                                    __pyx_t_23.minlen = __pyx_v_mlen;
+                                    __pyx_t_14 = __pyx_f_6SeqSeg_6SeqSeg_cprior_t((__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep)), __pyx_v_tstart, __pyx_v_tend, &__pyx_t_23); 
+                                    __pyx_t_24 = __pyx_v_t;
+                                    *__Pyx_BufPtrStrided1d(__pyx_t_6SeqSeg_6SeqSeg_DTYPE_t *, __pyx_pybuffernd_tvec.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_tvec.diminfo[0].strides) = __pyx_f_6SeqSeg_6SeqSeg_cposterior_t((__pyx_v_istart + (__pyx_v_t * __pyx_v_tstep)), __pyx_v_tstart, __pyx_v_tend, __pyx_t_14, __pyx_v_send, __pyx_v_sstart, __pyx_v_st, __pyx_v_st1);
                                 }
                             }
                         }
@@ -7854,7 +10698,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
             #endif
           }
 
-          /* "SeqSeg/SeqSeg.pyx":621
+          /* "SeqSeg/SeqSeg.pyx":971
  * 
  *                 tvec = np.repeat(-np.inf, n + 1)
  *                 with nogil, parallel():             # <<<<<<<<<<<<<<
@@ -7873,39 +10717,39 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
           }
       }
 
-      /* "SeqSeg/SeqSeg.pyx":628
- *                         tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend), send, sstart, st, st1)
+      /* "SeqSeg/SeqSeg.pyx":978
+ *                         tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend, mlen), send, sstart, st, st1)
  * 
  *                 tmax, maxp = max(enumerate(tvec), key=operator.itemgetter(1))             # <<<<<<<<<<<<<<
  * 
  *                 # tmax is the optimum position in range(tstart+2, tend-3)
  */
-      __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 628, __pyx_L1_error)
+      __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 978, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_INCREF(((PyObject *)__pyx_v_tvec));
       __Pyx_GIVEREF(((PyObject *)__pyx_v_tvec));
       PyTuple_SET_ITEM(__pyx_t_2, 0, ((PyObject *)__pyx_v_tvec));
-      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_builtin_enumerate, __pyx_t_2, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 628, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_builtin_enumerate, __pyx_t_2, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 978, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 628, __pyx_L1_error)
+      __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 978, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_GIVEREF(__pyx_t_9);
       PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_9);
       __pyx_t_9 = 0;
-      __pyx_t_9 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 628, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 978, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_15 = __Pyx_GetModuleGlobalName(__pyx_n_s_operator); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 628, __pyx_L1_error)
+      __pyx_t_15 = __Pyx_GetModuleGlobalName(__pyx_n_s_operator); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 978, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_15);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_15, __pyx_n_s_itemgetter); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 628, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_15, __pyx_n_s_itemgetter); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 978, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-      __pyx_t_15 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 628, __pyx_L1_error)
+      __pyx_t_15 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 978, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_15);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_key, __pyx_t_15) < 0) __PYX_ERR(0, 628, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_key, __pyx_t_15) < 0) __PYX_ERR(0, 978, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-      __pyx_t_15 = __Pyx_PyObject_Call(__pyx_builtin_max, __pyx_t_2, __pyx_t_9); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 628, __pyx_L1_error)
+      __pyx_t_15 = __Pyx_PyObject_Call(__pyx_builtin_max, __pyx_t_2, __pyx_t_9); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 978, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_15);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
@@ -7919,7 +10763,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
         if (unlikely(size != 2)) {
           if (size > 2) __Pyx_RaiseTooManyValuesError(2);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          __PYX_ERR(0, 628, __pyx_L1_error)
+          __PYX_ERR(0, 978, __pyx_L1_error)
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
         if (likely(PyTuple_CheckExact(sequence))) {
@@ -7932,41 +10776,41 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
         __Pyx_INCREF(__pyx_t_9);
         __Pyx_INCREF(__pyx_t_2);
         #else
-        __pyx_t_9 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 628, __pyx_L1_error)
+        __pyx_t_9 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 978, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
-        __pyx_t_2 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 628, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 978, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
         __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
       } else {
         Py_ssize_t index = -1;
-        __pyx_t_4 = PyObject_GetIter(__pyx_t_15); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 628, __pyx_L1_error)
+        __pyx_t_4 = PyObject_GetIter(__pyx_t_15); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 978, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-        __pyx_t_24 = Py_TYPE(__pyx_t_4)->tp_iternext;
-        index = 0; __pyx_t_9 = __pyx_t_24(__pyx_t_4); if (unlikely(!__pyx_t_9)) goto __pyx_L30_unpacking_failed;
+        __pyx_t_25 = Py_TYPE(__pyx_t_4)->tp_iternext;
+        index = 0; __pyx_t_9 = __pyx_t_25(__pyx_t_4); if (unlikely(!__pyx_t_9)) goto __pyx_L30_unpacking_failed;
         __Pyx_GOTREF(__pyx_t_9);
-        index = 1; __pyx_t_2 = __pyx_t_24(__pyx_t_4); if (unlikely(!__pyx_t_2)) goto __pyx_L30_unpacking_failed;
+        index = 1; __pyx_t_2 = __pyx_t_25(__pyx_t_4); if (unlikely(!__pyx_t_2)) goto __pyx_L30_unpacking_failed;
         __Pyx_GOTREF(__pyx_t_2);
-        if (__Pyx_IternextUnpackEndCheck(__pyx_t_24(__pyx_t_4), 2) < 0) __PYX_ERR(0, 628, __pyx_L1_error)
-        __pyx_t_24 = NULL;
+        if (__Pyx_IternextUnpackEndCheck(__pyx_t_25(__pyx_t_4), 2) < 0) __PYX_ERR(0, 978, __pyx_L1_error)
+        __pyx_t_25 = NULL;
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         goto __pyx_L31_unpacking_done;
         __pyx_L30_unpacking_failed:;
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __pyx_t_24 = NULL;
+        __pyx_t_25 = NULL;
         if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-        __PYX_ERR(0, 628, __pyx_L1_error)
+        __PYX_ERR(0, 978, __pyx_L1_error)
         __pyx_L31_unpacking_done:;
       }
-      __pyx_t_20 = __Pyx_PyInt_As_long(__pyx_t_9); if (unlikely((__pyx_t_20 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 628, __pyx_L1_error)
+      __pyx_t_20 = __Pyx_PyInt_As_long(__pyx_t_9); if (unlikely((__pyx_t_20 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 978, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 628, __pyx_L1_error)
+      __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 978, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_v_tmax = __pyx_t_20;
       __pyx_v_maxp = __pyx_t_14;
 
-      /* "SeqSeg/SeqSeg.pyx":632
+      /* "SeqSeg/SeqSeg.pyx":982
  *                 # tmax is the optimum position in range(tstart+2, tend-3)
  *                 # but WITH STEP SIZE = TSTEP
  *                 tmax = istart + tmax*tstep             # <<<<<<<<<<<<<<
@@ -7975,97 +10819,98 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  */
       __pyx_v_tmax = (__pyx_v_istart + (__pyx_v_tmax * __pyx_v_tstep));
 
-      /* "SeqSeg/SeqSeg.pyx":634
+      /* "SeqSeg/SeqSeg.pyx":984
  *                 tmax = istart + tmax*tstep
  * 
  *                 if tmax - tstart > minlen and tend - tmax > minlen:             # <<<<<<<<<<<<<<
  * 
  *                     # Test the segments
  */
-      __pyx_t_15 = __Pyx_PyInt_From_long((__pyx_v_tmax - __pyx_v_tstart)); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 634, __pyx_L1_error)
+      __pyx_t_15 = __Pyx_PyInt_From_long((__pyx_v_tmax - __pyx_v_tstart)); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 984, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_15);
-      __pyx_t_2 = PyObject_RichCompare(__pyx_t_15, __pyx_v_minlen, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 634, __pyx_L1_error)
+      __pyx_t_2 = PyObject_RichCompare(__pyx_t_15, __pyx_v_minlen, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 984, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-      __pyx_t_25 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_25 < 0)) __PYX_ERR(0, 634, __pyx_L1_error)
+      __pyx_t_26 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_26 < 0)) __PYX_ERR(0, 984, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (__pyx_t_25) {
+      if (__pyx_t_26) {
       } else {
-        __pyx_t_1 = __pyx_t_25;
+        __pyx_t_1 = __pyx_t_26;
         goto __pyx_L33_bool_binop_done;
       }
-      __pyx_t_2 = __Pyx_PyInt_From_long((__pyx_v_tend - __pyx_v_tmax)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 634, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyInt_From_long((__pyx_v_tend - __pyx_v_tmax)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 984, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_15 = PyObject_RichCompare(__pyx_t_2, __pyx_v_minlen, Py_GT); __Pyx_XGOTREF(__pyx_t_15); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 634, __pyx_L1_error)
+      __pyx_t_15 = PyObject_RichCompare(__pyx_t_2, __pyx_v_minlen, Py_GT); __Pyx_XGOTREF(__pyx_t_15); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 984, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_25 = __Pyx_PyObject_IsTrue(__pyx_t_15); if (unlikely(__pyx_t_25 < 0)) __PYX_ERR(0, 634, __pyx_L1_error)
+      __pyx_t_26 = __Pyx_PyObject_IsTrue(__pyx_t_15); if (unlikely(__pyx_t_26 < 0)) __PYX_ERR(0, 984, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-      __pyx_t_1 = __pyx_t_25;
+      __pyx_t_1 = __pyx_t_26;
       __pyx_L33_bool_binop_done:;
       if (__pyx_t_1) {
 
-        /* "SeqSeg/SeqSeg.pyx":637
+        /* "SeqSeg/SeqSeg.pyx":987
  * 
  *                     # Test the segments
  *                     evidence = self.tester(tmax, iprior, normalize)             # <<<<<<<<<<<<<<
  * 
  *                     # Regularizing
  */
-        __pyx_t_20 = __Pyx_PyInt_As_long(__pyx_v_iprior); if (unlikely((__pyx_t_20 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 637, __pyx_L1_error)
-        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_normalize); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 637, __pyx_L1_error)
-        __pyx_t_26.__pyx_n = 1;
-        __pyx_t_26.normalize = __pyx_t_1;
-        __pyx_t_14 = ((struct __pyx_vtabstruct_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self->__pyx_vtab)->tester(__pyx_v_self, __pyx_v_tmax, __pyx_t_20, 0, &__pyx_t_26); 
-        __pyx_t_15 = PyFloat_FromDouble(__pyx_t_14); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 637, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_iprior); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 987, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_normalize); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 987, __pyx_L1_error)
+        __pyx_t_27.__pyx_n = 2;
+        __pyx_t_27.iprior = __pyx_t_8;
+        __pyx_t_27.normalize = __pyx_t_1;
+        __pyx_t_14 = ((struct __pyx_vtabstruct_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self->__pyx_vtab)->tester(__pyx_v_self, __pyx_v_tmax, 0, &__pyx_t_27); 
+        __pyx_t_15 = PyFloat_FromDouble(__pyx_t_14); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 987, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_15);
         __Pyx_XDECREF_SET(__pyx_v_evidence, __pyx_t_15);
         __pyx_t_15 = 0;
 
-        /* "SeqSeg/SeqSeg.pyx":640
+        /* "SeqSeg/SeqSeg.pyx":990
  * 
  *                     # Regularizing
  *                     if regularize == True:             # <<<<<<<<<<<<<<
- *                         evidence = 1-stats.chi2.cdf(stats.chi2.pdf(1-evidence, df = 2), 1)
+ *                         evidence = 1-stats.chi2.cdf(stats.chi2.ppf(1-evidence, df = 2), 1)
  * 
  */
-        __pyx_t_15 = PyObject_RichCompare(__pyx_v_regularize, Py_True, Py_EQ); __Pyx_XGOTREF(__pyx_t_15); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 640, __pyx_L1_error)
-        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_15); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 640, __pyx_L1_error)
+        __pyx_t_15 = PyObject_RichCompare(__pyx_v_regularize, Py_True, Py_EQ); __Pyx_XGOTREF(__pyx_t_15); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 990, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_15); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 990, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
         if (__pyx_t_1) {
 
-          /* "SeqSeg/SeqSeg.pyx":641
+          /* "SeqSeg/SeqSeg.pyx":991
  *                     # Regularizing
  *                     if regularize == True:
- *                         evidence = 1-stats.chi2.cdf(stats.chi2.pdf(1-evidence, df = 2), 1)             # <<<<<<<<<<<<<<
+ *                         evidence = 1-stats.chi2.cdf(stats.chi2.ppf(1-evidence, df = 2), 1)             # <<<<<<<<<<<<<<
  * 
  *                     if evidence < self.alpha:
  */
-          __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_stats); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 641, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_stats); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 991, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
-          __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_chi2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 641, __pyx_L1_error)
+          __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_chi2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 991, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_9);
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-          __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_cdf); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 641, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_cdf); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 991, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-          __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_stats); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 641, __pyx_L1_error)
+          __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_stats); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 991, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_9);
-          __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_chi2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 641, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_chi2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 991, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-          __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_pdf); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 641, __pyx_L1_error)
+          __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_ppf); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 991, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_9);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyInt_SubtractCObj(__pyx_int_1, __pyx_v_evidence, 1, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 641, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyInt_SubtractCObj(__pyx_int_1, __pyx_v_evidence, 1, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 991, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 641, __pyx_L1_error)
+          __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 991, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_GIVEREF(__pyx_t_4);
           PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4);
           __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 641, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 991, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
-          if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_df, __pyx_int_2) < 0) __PYX_ERR(0, 641, __pyx_L1_error)
-          __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_6, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 641, __pyx_L1_error)
+          if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_df, __pyx_int_2) < 0) __PYX_ERR(0, 991, __pyx_L1_error)
+          __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_6, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 991, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
           __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -8085,7 +10930,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
           #if CYTHON_FAST_PYCALL
           if (PyFunction_Check(__pyx_t_2)) {
             PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_t_7, __pyx_int_1};
-            __pyx_t_15 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 641, __pyx_L1_error)
+            __pyx_t_15 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 991, __pyx_L1_error)
             __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -8094,14 +10939,14 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
           #if CYTHON_FAST_PYCCALL
           if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
             PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_t_7, __pyx_int_1};
-            __pyx_t_15 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 641, __pyx_L1_error)
+            __pyx_t_15 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_8, 2+__pyx_t_8); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 991, __pyx_L1_error)
             __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
           } else
           #endif
           {
-            __pyx_t_6 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 641, __pyx_L1_error)
+            __pyx_t_6 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 991, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             if (__pyx_t_4) {
               __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -8112,141 +10957,141 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
             __Pyx_GIVEREF(__pyx_int_1);
             PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_8, __pyx_int_1);
             __pyx_t_7 = 0;
-            __pyx_t_15 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 641, __pyx_L1_error)
+            __pyx_t_15 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 991, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           }
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-          __pyx_t_2 = __Pyx_PyInt_SubtractCObj(__pyx_int_1, __pyx_t_15, 1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 641, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyInt_SubtractCObj(__pyx_int_1, __pyx_t_15, 1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 991, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
           __Pyx_DECREF_SET(__pyx_v_evidence, __pyx_t_2);
           __pyx_t_2 = 0;
 
-          /* "SeqSeg/SeqSeg.pyx":640
+          /* "SeqSeg/SeqSeg.pyx":990
  * 
  *                     # Regularizing
  *                     if regularize == True:             # <<<<<<<<<<<<<<
- *                         evidence = 1-stats.chi2.cdf(stats.chi2.pdf(1-evidence, df = 2), 1)
+ *                         evidence = 1-stats.chi2.cdf(stats.chi2.ppf(1-evidence, df = 2), 1)
  * 
  */
         }
 
-        /* "SeqSeg/SeqSeg.pyx":643
- *                         evidence = 1-stats.chi2.cdf(stats.chi2.pdf(1-evidence, df = 2), 1)
+        /* "SeqSeg/SeqSeg.pyx":993
+ *                         evidence = 1-stats.chi2.cdf(stats.chi2.ppf(1-evidence, df = 2), 1)
  * 
  *                     if evidence < self.alpha:             # <<<<<<<<<<<<<<
  *                         if verbose:
  *                             print("Tcut = " + str(tmax) + ", start = " + str(self.tstart) + ", tend = " + str(self.tend) + ", N = " + str(self.N) + ", accepted: evidence = " + str(evidence))
  */
-        __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->alpha); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 643, __pyx_L1_error)
+        __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->alpha); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 993, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_15 = PyObject_RichCompare(__pyx_v_evidence, __pyx_t_2, Py_LT); __Pyx_XGOTREF(__pyx_t_15); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 643, __pyx_L1_error)
+        __pyx_t_15 = PyObject_RichCompare(__pyx_v_evidence, __pyx_t_2, Py_LT); __Pyx_XGOTREF(__pyx_t_15); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 993, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_15); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 643, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_15); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 993, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
         if (__pyx_t_1) {
 
-          /* "SeqSeg/SeqSeg.pyx":644
+          /* "SeqSeg/SeqSeg.pyx":994
  * 
  *                     if evidence < self.alpha:
  *                         if verbose:             # <<<<<<<<<<<<<<
  *                             print("Tcut = " + str(tmax) + ", start = " + str(self.tstart) + ", tend = " + str(self.tend) + ", N = " + str(self.N) + ", accepted: evidence = " + str(evidence))
  *                         #endif
  */
-          __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_verbose); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 644, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_verbose); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 994, __pyx_L1_error)
           if (__pyx_t_1) {
 
-            /* "SeqSeg/SeqSeg.pyx":645
+            /* "SeqSeg/SeqSeg.pyx":995
  *                     if evidence < self.alpha:
  *                         if verbose:
  *                             print("Tcut = " + str(tmax) + ", start = " + str(self.tstart) + ", tend = " + str(self.tend) + ", N = " + str(self.N) + ", accepted: evidence = " + str(evidence))             # <<<<<<<<<<<<<<
  *                         #endif
  * 
  */
-            __pyx_t_15 = __Pyx_PyInt_From_long(__pyx_v_tmax); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_15 = __Pyx_PyInt_From_long(__pyx_v_tmax); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
-            __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_GIVEREF(__pyx_t_15);
             PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_15);
             __pyx_t_15 = 0;
-            __pyx_t_15 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_15 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __pyx_t_2 = PyNumber_Add(__pyx_kp_s_Tcut, __pyx_t_15); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_2 = PyNumber_Add(__pyx_kp_s_Tcut, __pyx_t_15); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            __pyx_t_15 = PyNumber_Add(__pyx_t_2, __pyx_kp_s_start_2); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_15 = PyNumber_Add(__pyx_t_2, __pyx_kp_s_start_2); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_self->tstart); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_self->tstart); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
-            __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_GIVEREF(__pyx_t_2);
             PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2);
             __pyx_t_2 = 0;
-            __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-            __pyx_t_6 = PyNumber_Add(__pyx_t_15, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_6 = PyNumber_Add(__pyx_t_15, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __pyx_t_2 = PyNumber_Add(__pyx_t_6, __pyx_kp_s_tend); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_2 = PyNumber_Add(__pyx_t_6, __pyx_kp_s_tend); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-            __pyx_t_6 = __Pyx_PyInt_From_long(__pyx_v_self->tend); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_6 = __Pyx_PyInt_From_long(__pyx_v_self->tend); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
-            __pyx_t_15 = PyTuple_New(1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_15 = PyTuple_New(1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_GIVEREF(__pyx_t_6);
             PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_6);
             __pyx_t_6 = 0;
-            __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_15, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_15, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            __pyx_t_15 = PyNumber_Add(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_15 = PyNumber_Add(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-            __pyx_t_6 = PyNumber_Add(__pyx_t_15, __pyx_kp_s_N); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_6 = PyNumber_Add(__pyx_t_15, __pyx_kp_s_N); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            __pyx_t_15 = __Pyx_PyInt_From_long(__pyx_v_self->N); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_15 = __Pyx_PyInt_From_long(__pyx_v_self->N); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
-            __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_GIVEREF(__pyx_t_15);
             PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_15);
             __pyx_t_15 = 0;
-            __pyx_t_15 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_15 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __pyx_t_2 = PyNumber_Add(__pyx_t_6, __pyx_t_15); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_2 = PyNumber_Add(__pyx_t_6, __pyx_t_15); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            __pyx_t_15 = PyNumber_Add(__pyx_t_2, __pyx_kp_s_accepted_evidence); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_15 = PyNumber_Add(__pyx_t_2, __pyx_kp_s_accepted_evidence); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_INCREF(__pyx_v_evidence);
             __Pyx_GIVEREF(__pyx_v_evidence);
             PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_evidence);
-            __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __pyx_t_2 = PyNumber_Add(__pyx_t_15, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 645, __pyx_L1_error)
+            __pyx_t_2 = PyNumber_Add(__pyx_t_15, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-            if (__Pyx_PrintOne(0, __pyx_t_2) < 0) __PYX_ERR(0, 645, __pyx_L1_error)
+            if (__Pyx_PrintOne(0, __pyx_t_2) < 0) __PYX_ERR(0, 995, __pyx_L1_error)
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-            /* "SeqSeg/SeqSeg.pyx":644
+            /* "SeqSeg/SeqSeg.pyx":994
  * 
  *                     if evidence < self.alpha:
  *                         if verbose:             # <<<<<<<<<<<<<<
@@ -8255,30 +11100,30 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  */
           }
 
-          /* "SeqSeg/SeqSeg.pyx":650
+          /* "SeqSeg/SeqSeg.pyx":1000
  *                         # Different variances
  *                         # Update list of segments
  *                         tseg.append(tmax)             # <<<<<<<<<<<<<<
  * 
  *                         # Update dict
  */
-          __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_tmax); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 650, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_tmax); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1000, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
-          __pyx_t_27 = __Pyx_PyList_Append(__pyx_v_tseg, __pyx_t_2); if (unlikely(__pyx_t_27 == ((int)-1))) __PYX_ERR(0, 650, __pyx_L1_error)
+          __pyx_t_28 = __Pyx_PyList_Append(__pyx_v_tseg, __pyx_t_2); if (unlikely(__pyx_t_28 == ((int)-1))) __PYX_ERR(0, 1000, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-          /* "SeqSeg/SeqSeg.pyx":653
+          /* "SeqSeg/SeqSeg.pyx":1003
  * 
  *                         # Update dict
  *                         iseg[(tstart, tmax)] = True             # <<<<<<<<<<<<<<
  *                         iseg[(tmax + 1, self.tend)] = True
  *                         del iseg[seg]
  */
-          __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_tstart); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 653, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_tstart); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1003, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
-          __pyx_t_6 = __Pyx_PyInt_From_long(__pyx_v_tmax); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 653, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyInt_From_long(__pyx_v_tmax); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1003, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
-          __pyx_t_15 = PyTuple_New(2); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 653, __pyx_L1_error)
+          __pyx_t_15 = PyTuple_New(2); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 1003, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_15);
           __Pyx_GIVEREF(__pyx_t_2);
           PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_2);
@@ -8286,21 +11131,21 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
           PyTuple_SET_ITEM(__pyx_t_15, 1, __pyx_t_6);
           __pyx_t_2 = 0;
           __pyx_t_6 = 0;
-          if (unlikely(PyDict_SetItem(__pyx_v_iseg, __pyx_t_15, Py_True) < 0)) __PYX_ERR(0, 653, __pyx_L1_error)
+          if (unlikely(PyDict_SetItem(__pyx_v_iseg, __pyx_t_15, Py_True) < 0)) __PYX_ERR(0, 1003, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
 
-          /* "SeqSeg/SeqSeg.pyx":654
+          /* "SeqSeg/SeqSeg.pyx":1004
  *                         # Update dict
  *                         iseg[(tstart, tmax)] = True
  *                         iseg[(tmax + 1, self.tend)] = True             # <<<<<<<<<<<<<<
  *                         del iseg[seg]
  * 
  */
-          __pyx_t_15 = __Pyx_PyInt_From_long((__pyx_v_tmax + 1)); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 654, __pyx_L1_error)
+          __pyx_t_15 = __Pyx_PyInt_From_long((__pyx_v_tmax + 1)); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 1004, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_15);
-          __pyx_t_6 = __Pyx_PyInt_From_long(__pyx_v_self->tend); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 654, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyInt_From_long(__pyx_v_self->tend); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1004, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
-          __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 654, __pyx_L1_error)
+          __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1004, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_GIVEREF(__pyx_t_15);
           PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_15);
@@ -8308,20 +11153,20 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
           PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_6);
           __pyx_t_15 = 0;
           __pyx_t_6 = 0;
-          if (unlikely(PyDict_SetItem(__pyx_v_iseg, __pyx_t_2, Py_True) < 0)) __PYX_ERR(0, 654, __pyx_L1_error)
+          if (unlikely(PyDict_SetItem(__pyx_v_iseg, __pyx_t_2, Py_True) < 0)) __PYX_ERR(0, 1004, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-          /* "SeqSeg/SeqSeg.pyx":655
+          /* "SeqSeg/SeqSeg.pyx":1005
  *                         iseg[(tstart, tmax)] = True
  *                         iseg[(tmax + 1, self.tend)] = True
  *                         del iseg[seg]             # <<<<<<<<<<<<<<
  * 
  *                     else:
  */
-          if (unlikely(PyDict_DelItem(__pyx_v_iseg, __pyx_v_seg) < 0)) __PYX_ERR(0, 655, __pyx_L1_error)
+          if (unlikely(PyDict_DelItem(__pyx_v_iseg, __pyx_v_seg) < 0)) __PYX_ERR(0, 1005, __pyx_L1_error)
 
-          /* "SeqSeg/SeqSeg.pyx":643
- *                         evidence = 1-stats.chi2.cdf(stats.chi2.pdf(1-evidence, df = 2), 1)
+          /* "SeqSeg/SeqSeg.pyx":993
+ *                         evidence = 1-stats.chi2.cdf(stats.chi2.ppf(1-evidence, df = 2), 1)
  * 
  *                     if evidence < self.alpha:             # <<<<<<<<<<<<<<
  *                         if verbose:
@@ -8330,7 +11175,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
           goto __pyx_L36;
         }
 
-        /* "SeqSeg/SeqSeg.pyx":659
+        /* "SeqSeg/SeqSeg.pyx":1009
  *                     else:
  * 
  *                         iseg[seg] = False             # <<<<<<<<<<<<<<
@@ -8338,108 +11183,108 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  *                             print("Tcut = " + str(tmax) + ", start = " + str(self.tstart) + ", tend = " + str(self.tend) + ", N = " + str(self.N) + ", rejected: evidence = " + str(evidence))
  */
         /*else*/ {
-          if (unlikely(PyDict_SetItem(__pyx_v_iseg, __pyx_v_seg, Py_False) < 0)) __PYX_ERR(0, 659, __pyx_L1_error)
+          if (unlikely(PyDict_SetItem(__pyx_v_iseg, __pyx_v_seg, Py_False) < 0)) __PYX_ERR(0, 1009, __pyx_L1_error)
 
-          /* "SeqSeg/SeqSeg.pyx":660
+          /* "SeqSeg/SeqSeg.pyx":1010
  * 
  *                         iseg[seg] = False
  *                         if verbose:             # <<<<<<<<<<<<<<
  *                             print("Tcut = " + str(tmax) + ", start = " + str(self.tstart) + ", tend = " + str(self.tend) + ", N = " + str(self.N) + ", rejected: evidence = " + str(evidence))
  *                         #endif
  */
-          __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_verbose); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 660, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_verbose); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1010, __pyx_L1_error)
           if (__pyx_t_1) {
 
-            /* "SeqSeg/SeqSeg.pyx":661
+            /* "SeqSeg/SeqSeg.pyx":1011
  *                         iseg[seg] = False
  *                         if verbose:
  *                             print("Tcut = " + str(tmax) + ", start = " + str(self.tstart) + ", tend = " + str(self.tend) + ", N = " + str(self.N) + ", rejected: evidence = " + str(evidence))             # <<<<<<<<<<<<<<
  *                         #endif
  *                     #endif
  */
-            __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_tmax); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_tmax); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
-            __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_GIVEREF(__pyx_t_2);
             PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2);
             __pyx_t_2 = 0;
-            __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-            __pyx_t_6 = PyNumber_Add(__pyx_kp_s_Tcut, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_6 = PyNumber_Add(__pyx_kp_s_Tcut, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __pyx_t_2 = PyNumber_Add(__pyx_t_6, __pyx_kp_s_start_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_2 = PyNumber_Add(__pyx_t_6, __pyx_kp_s_start_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-            __pyx_t_6 = __Pyx_PyInt_From_long(__pyx_v_self->tstart); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_6 = __Pyx_PyInt_From_long(__pyx_v_self->tstart); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
-            __pyx_t_15 = PyTuple_New(1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_15 = PyTuple_New(1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_GIVEREF(__pyx_t_6);
             PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_6);
             __pyx_t_6 = 0;
-            __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_15, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_15, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            __pyx_t_15 = PyNumber_Add(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_15 = PyNumber_Add(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-            __pyx_t_6 = PyNumber_Add(__pyx_t_15, __pyx_kp_s_tend); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_6 = PyNumber_Add(__pyx_t_15, __pyx_kp_s_tend); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            __pyx_t_15 = __Pyx_PyInt_From_long(__pyx_v_self->tend); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_15 = __Pyx_PyInt_From_long(__pyx_v_self->tend); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
-            __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_GIVEREF(__pyx_t_15);
             PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_15);
             __pyx_t_15 = 0;
-            __pyx_t_15 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_15 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __pyx_t_2 = PyNumber_Add(__pyx_t_6, __pyx_t_15); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_2 = PyNumber_Add(__pyx_t_6, __pyx_t_15); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            __pyx_t_15 = PyNumber_Add(__pyx_t_2, __pyx_kp_s_N); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_15 = PyNumber_Add(__pyx_t_2, __pyx_kp_s_N); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_self->N); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_self->N); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
-            __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_GIVEREF(__pyx_t_2);
             PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2);
             __pyx_t_2 = 0;
-            __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-            __pyx_t_6 = PyNumber_Add(__pyx_t_15, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_6 = PyNumber_Add(__pyx_t_15, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __pyx_t_2 = PyNumber_Add(__pyx_t_6, __pyx_kp_s_rejected_evidence); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_2 = PyNumber_Add(__pyx_t_6, __pyx_kp_s_rejected_evidence); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-            __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_INCREF(__pyx_v_evidence);
             __Pyx_GIVEREF(__pyx_v_evidence);
             PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_v_evidence);
-            __pyx_t_15 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_6, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_15 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_6, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-            __pyx_t_6 = PyNumber_Add(__pyx_t_2, __pyx_t_15); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 661, __pyx_L1_error)
+            __pyx_t_6 = PyNumber_Add(__pyx_t_2, __pyx_t_15); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            if (__Pyx_PrintOne(0, __pyx_t_6) < 0) __PYX_ERR(0, 661, __pyx_L1_error)
+            if (__Pyx_PrintOne(0, __pyx_t_6) < 0) __PYX_ERR(0, 1011, __pyx_L1_error)
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-            /* "SeqSeg/SeqSeg.pyx":660
+            /* "SeqSeg/SeqSeg.pyx":1010
  * 
  *                         iseg[seg] = False
  *                         if verbose:             # <<<<<<<<<<<<<<
@@ -8450,7 +11295,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
         }
         __pyx_L36:;
 
-        /* "SeqSeg/SeqSeg.pyx":634
+        /* "SeqSeg/SeqSeg.pyx":984
  *                 tmax = istart + tmax*tstep
  * 
  *                 if tmax - tstart > minlen and tend - tmax > minlen:             # <<<<<<<<<<<<<<
@@ -8460,7 +11305,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
         goto __pyx_L32;
       }
 
-      /* "SeqSeg/SeqSeg.pyx":667
+      /* "SeqSeg/SeqSeg.pyx":1017
  *                 else:
  *                     # Segment has been tested, no significant cut point found
  *                     iseg[seg] = False             # <<<<<<<<<<<<<<
@@ -8468,11 +11313,11 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  *             #end for
  */
       /*else*/ {
-        if (unlikely(PyDict_SetItem(__pyx_v_iseg, __pyx_v_seg, Py_False) < 0)) __PYX_ERR(0, 667, __pyx_L1_error)
+        if (unlikely(PyDict_SetItem(__pyx_v_iseg, __pyx_v_seg, Py_False) < 0)) __PYX_ERR(0, 1017, __pyx_L1_error)
       }
       __pyx_L32:;
 
-      /* "SeqSeg/SeqSeg.pyx":601
+      /* "SeqSeg/SeqSeg.pyx":951
  *             # Iterates through segments to be tested
  *             isegold = [i for i in iseg if iseg[i] == True]
  *             for seg in isegold:             # <<<<<<<<<<<<<<
@@ -8483,16 +11328,16 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
 
-  /* "SeqSeg/SeqSeg.pyx":671
+  /* "SeqSeg/SeqSeg.pyx":1021
  *             #end for
  *         #endwhile
  *         end = time.time()             # <<<<<<<<<<<<<<
  *         elapsed = end - begin
  *         if verbose:
  */
-  __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 671, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1021, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_time); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 671, __pyx_L1_error)
+  __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_time); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 1021, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_15);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -8506,81 +11351,81 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
     }
   }
   if (__pyx_t_6) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 671, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1021, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   } else {
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_15); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 671, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_15); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1021, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
   __pyx_v_end = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":672
+  /* "SeqSeg/SeqSeg.pyx":1022
  *         #endwhile
  *         end = time.time()
  *         elapsed = end - begin             # <<<<<<<<<<<<<<
  *         if verbose:
  *             print("End of execution: " + str(len(tseg) + 1) + " segments found in " + str(elapsed) + " seconds.")
  */
-  __pyx_t_3 = PyNumber_Subtract(__pyx_v_end, __pyx_v_begin); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 672, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Subtract(__pyx_v_end, __pyx_v_begin); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1022, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_elapsed = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":673
+  /* "SeqSeg/SeqSeg.pyx":1023
  *         end = time.time()
  *         elapsed = end - begin
  *         if verbose:             # <<<<<<<<<<<<<<
  *             print("End of execution: " + str(len(tseg) + 1) + " segments found in " + str(elapsed) + " seconds.")
  *         #endif
  */
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_verbose); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 673, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_verbose); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1023, __pyx_L1_error)
   if (__pyx_t_1) {
 
-    /* "SeqSeg/SeqSeg.pyx":674
+    /* "SeqSeg/SeqSeg.pyx":1024
  *         elapsed = end - begin
  *         if verbose:
  *             print("End of execution: " + str(len(tseg) + 1) + " segments found in " + str(elapsed) + " seconds.")             # <<<<<<<<<<<<<<
  *         #endif
  * 
  */
-    __pyx_t_12 = PyList_GET_SIZE(__pyx_v_tseg); if (unlikely(__pyx_t_12 == ((Py_ssize_t)-1))) __PYX_ERR(0, 674, __pyx_L1_error)
-    __pyx_t_3 = PyInt_FromSsize_t((__pyx_t_12 + 1)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 674, __pyx_L1_error)
+    __pyx_t_12 = PyList_GET_SIZE(__pyx_v_tseg); if (unlikely(__pyx_t_12 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1024, __pyx_L1_error)
+    __pyx_t_3 = PyInt_FromSsize_t((__pyx_t_12 + 1)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_15 = PyTuple_New(1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 674, __pyx_L1_error)
+    __pyx_t_15 = PyTuple_New(1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_15);
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_15, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 674, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_15, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-    __pyx_t_15 = PyNumber_Add(__pyx_kp_s_End_of_execution, __pyx_t_3); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 674, __pyx_L1_error)
+    __pyx_t_15 = PyNumber_Add(__pyx_kp_s_End_of_execution, __pyx_t_3); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_15);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyNumber_Add(__pyx_t_15, __pyx_kp_s_segments_found_in); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 674, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Add(__pyx_t_15, __pyx_kp_s_segments_found_in); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-    __pyx_t_15 = PyTuple_New(1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 674, __pyx_L1_error)
+    __pyx_t_15 = PyTuple_New(1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_15);
     __Pyx_INCREF(__pyx_v_elapsed);
     __Pyx_GIVEREF(__pyx_v_elapsed);
     PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_v_elapsed);
-    __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_15, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 674, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_15, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-    __pyx_t_15 = PyNumber_Add(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 674, __pyx_L1_error)
+    __pyx_t_15 = PyNumber_Add(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_15);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = PyNumber_Add(__pyx_t_15, __pyx_kp_s_seconds); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 674, __pyx_L1_error)
+    __pyx_t_6 = PyNumber_Add(__pyx_t_15, __pyx_kp_s_seconds); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-    if (__Pyx_PrintOne(0, __pyx_t_6) < 0) __PYX_ERR(0, 674, __pyx_L1_error)
+    if (__Pyx_PrintOne(0, __pyx_t_6) < 0) __PYX_ERR(0, 1024, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "SeqSeg/SeqSeg.pyx":673
+    /* "SeqSeg/SeqSeg.pyx":1023
  *         end = time.time()
  *         elapsed = end - begin
  *         if verbose:             # <<<<<<<<<<<<<<
@@ -8589,13 +11434,13 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  */
   }
 
-  /* "SeqSeg/SeqSeg.pyx":677
+  /* "SeqSeg/SeqSeg.pyx":1027
  *         #endif
  * 
  *         return tseg, elapsed             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 677, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1027, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_INCREF(__pyx_v_tseg);
   __Pyx_GIVEREF(__pyx_v_tseg);
@@ -8607,7 +11452,7 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
   __pyx_t_6 = 0;
   goto __pyx_L0;
 
-  /* "SeqSeg/SeqSeg.pyx":556
+  /* "SeqSeg/SeqSeg.pyx":905
  * 
  * 
  *     def segments(self, minlen, res, iprior, regularize = False, normalize = False, verbose = False):             # <<<<<<<<<<<<<<
@@ -8662,19 +11507,19 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_10segments(struct __pyx_obj_6S
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_15__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_15__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_12__reduce_cython__(((struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_14__reduce_cython__(((struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_12__reduce_cython__(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self) {
+static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_14__reduce_cython__(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self) {
   int __pyx_v_use_setstate;
   PyObject *__pyx_v_state = NULL;
   PyObject *__pyx_v__dict = NULL;
@@ -8995,19 +11840,19 @@ static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_12__reduce_cython__(struct __p
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_17__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_17__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_14__setstate_cython__(((struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_16__setstate_cython__(((struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_14__setstate_cython__(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_6SeqSeg_6SeqSeg_6SeqSeg_16__setstate_cython__(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -9777,7 +12622,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 235, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 235, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -9833,7 +12678,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             info.buf = PyArray_DATA(self)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 239, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -10142,7 +12987,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 276, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 276, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -11031,7 +13876,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 823, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 823, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -11099,7 +13944,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  *             # One could encode it in the format string and have Cython
  *             # complain instead, BUT: < and > in format strings also imply
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 827, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 827, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -11208,7 +14053,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 847, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 847, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_Raise(__pyx_t_4, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -11888,7 +14733,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1013, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1013, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -12017,7 +14862,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1019, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1019, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -12143,7 +14988,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1025, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__14, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1025, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -12249,9 +15094,10 @@ static PyMethodDef __pyx_methods_6SeqSeg_6SeqSeg_SeqSeg[] = {
   {"feed_data", (PyCFunction)__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_5feed_data, METH_O, __pyx_doc_6SeqSeg_6SeqSeg_6SeqSeg_4feed_data},
   {"tester", (PyCFunction)__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_7tester, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6SeqSeg_6SeqSeg_6SeqSeg_6tester},
   {"get_posterior", (PyCFunction)__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_9get_posterior, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6SeqSeg_6SeqSeg_6SeqSeg_8get_posterior},
-  {"segments", (PyCFunction)__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_11segments, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6SeqSeg_6SeqSeg_6SeqSeg_10segments},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_13__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_15__setstate_cython__, METH_O, 0},
+  {"get_posterior_var", (PyCFunction)__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_11get_posterior_var, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6SeqSeg_6SeqSeg_6SeqSeg_10get_posterior_var},
+  {"segments", (PyCFunction)__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_13segments, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6SeqSeg_6SeqSeg_6SeqSeg_12segments},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_15__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_6SeqSeg_6SeqSeg_6SeqSeg_17__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -12336,14 +15182,16 @@ static int __pyx_import_star_set(PyObject *o, PyObject* py_name, char *name) {
     "SeqSeg",
     "__pyx_ctuple_Py_ssize_t",
     "__pyx_ctuple_Py_ssize_t_struct",
+    "__pyx_ctuple_double",
     "__pyx_ctuple_double__and_int",
     "__pyx_ctuple_double__and_int_struct",
+    "__pyx_ctuple_double_struct",
     "__pyx_ctuple_int",
     "__pyx_ctuple_int_struct",
     "__pyx_ctuple_long",
+    "__pyx_ctuple_long__and_int__and_int__and_int",
+    "__pyx_ctuple_long__and_int__and_int__and_int_struct",
     "__pyx_ctuple_long__and_long",
-    "__pyx_ctuple_long__and_long__and_int",
-    "__pyx_ctuple_long__and_long__and_int_struct",
     "__pyx_ctuple_long__and_long_struct",
     "__pyx_ctuple_long_struct",
     "__pyx_opt_args_6SeqSeg_6SeqSeg_6SeqSeg_tester",
@@ -12455,7 +15303,7 @@ static int __pyx_import_star_set(PyObject *o, PyObject* py_name, char *name) {
   }
   else if (__Pyx_StrEq(name, "r")) {
     PyErr_Format(PyExc_TypeError, "Cannot convert Python object r to gsl_rng *");
-    __PYX_ERR(0, 74, __pyx_L2_error)
+    __PYX_ERR(0, 73, __pyx_L2_error)
   }
   else {
     if (PyObject_SetAttr(__pyx_m, py_name, o) < 0) goto bad;
@@ -12747,7 +15595,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Using_Laplace_prior, __pyx_k_Using_Laplace_prior, sizeof(__pyx_k_Using_Laplace_prior), 0, 0, 1, 0},
   {&__pyx_kp_s_Using_uniform_prior, __pyx_k_Using_uniform_prior, sizeof(__pyx_k_Using_uniform_prior), 0, 0, 1, 0},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
-  {&__pyx_n_s__13, __pyx_k__13, sizeof(__pyx_k__13), 0, 0, 1, 1},
+  {&__pyx_n_s__15, __pyx_k__15, sizeof(__pyx_k__15), 0, 0, 1, 1},
   {&__pyx_kp_s_accepted_evidence, __pyx_k_accepted_evidence, sizeof(__pyx_k_accepted_evidence), 0, 0, 1, 0},
   {&__pyx_n_s_alpha, __pyx_k_alpha, sizeof(__pyx_k_alpha), 0, 0, 1, 1},
   {&__pyx_n_s_beta, __pyx_k_beta, sizeof(__pyx_k_beta), 0, 0, 1, 1},
@@ -12789,8 +15637,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_operator, __pyx_k_operator, sizeof(__pyx_k_operator), 0, 0, 1, 1},
   {&__pyx_n_s_os, __pyx_k_os, sizeof(__pyx_k_os), 0, 0, 1, 1},
   {&__pyx_n_s_over, __pyx_k_over, sizeof(__pyx_k_over), 0, 0, 1, 1},
-  {&__pyx_n_s_pdf, __pyx_k_pdf, sizeof(__pyx_k_pdf), 0, 0, 1, 1},
   {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
+  {&__pyx_n_s_ppf, __pyx_k_ppf, sizeof(__pyx_k_ppf), 0, 0, 1, 1},
   {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_PickleError, __pyx_k_pyx_PickleError, sizeof(__pyx_k_pyx_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_checksum, __pyx_k_pyx_checksum, sizeof(__pyx_k_pyx_checksum), 0, 0, 1, 1},
@@ -12834,11 +15682,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 204, __pyx_L1_error)
-  __pyx_builtin_sum = __Pyx_GetBuiltinName(__pyx_n_s_sum); if (!__pyx_builtin_sum) __PYX_ERR(0, 481, __pyx_L1_error)
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 513, __pyx_L1_error)
-  __pyx_builtin_max = __Pyx_GetBuiltinName(__pyx_n_s_max); if (!__pyx_builtin_max) __PYX_ERR(0, 628, __pyx_L1_error)
-  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 628, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_builtin_sum = __Pyx_GetBuiltinName(__pyx_n_s_sum); if (!__pyx_builtin_sum) __PYX_ERR(0, 753, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 790, __pyx_L1_error)
+  __pyx_builtin_max = __Pyx_GetBuiltinName(__pyx_n_s_max); if (!__pyx_builtin_max) __PYX_ERR(0, 978, __pyx_L1_error)
+  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 978, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(2, 823, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(2, 1013, __pyx_L1_error)
   return 0;
@@ -12850,38 +15698,60 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "SeqSeg/SeqSeg.pyx":513
+  /* "SeqSeg/SeqSeg.pyx":790
  * 
  *         if end > self.N:
  *             raise ValueError("Invalid value for tend.")             # <<<<<<<<<<<<<<
  * 
  *         if start < 0:
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_Invalid_value_for_tend); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 513, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_Invalid_value_for_tend); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 790, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "SeqSeg/SeqSeg.pyx":516
+  /* "SeqSeg/SeqSeg.pyx":793
  * 
  *         if start < 0:
  *             raise ValueError("Invalid value for start.")             # <<<<<<<<<<<<<<
  * 
  *         tstep = res
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_Invalid_value_for_start); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 516, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_Invalid_value_for_start); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 793, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "SeqSeg/SeqSeg.pyx":628
- *                         tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend), send, sstart, st, st1)
+  /* "SeqSeg/SeqSeg.pyx":861
+ * 
+ *         if end > self.N:
+ *             raise ValueError("Invalid value for tend.")             # <<<<<<<<<<<<<<
+ * 
+ *         if start < 0:
+ */
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_Invalid_value_for_tend); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 861, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__3);
+  __Pyx_GIVEREF(__pyx_tuple__3);
+
+  /* "SeqSeg/SeqSeg.pyx":864
+ * 
+ *         if start < 0:
+ *             raise ValueError("Invalid value for start.")             # <<<<<<<<<<<<<<
+ * 
+ *         tstep = res
+ */
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_Invalid_value_for_start); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 864, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__4);
+  __Pyx_GIVEREF(__pyx_tuple__4);
+
+  /* "SeqSeg/SeqSeg.pyx":978
+ *                         tvec[t] = cposterior_t(istart + t*tstep, tstart, tend, cprior_t(istart + t*tstep, tstart, tend, mlen), send, sstart, st, st1)
  * 
  *                 tmax, maxp = max(enumerate(tvec), key=operator.itemgetter(1))             # <<<<<<<<<<<<<<
  * 
  *                 # tmax is the optimum position in range(tstart+2, tend-3)
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_int_1); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 628, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__3);
-  __Pyx_GIVEREF(__pyx_tuple__3);
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_int_1); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 978, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__5);
+  __Pyx_GIVEREF(__pyx_tuple__5);
 
   /* "../../../../../usr/local/lib/python3.5/dist-packages/Cython/Includes/numpy/__init__.pxd":235
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
@@ -12890,9 +15760,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(2, 235, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__4);
-  __Pyx_GIVEREF(__pyx_tuple__4);
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(2, 235, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__6);
+  __Pyx_GIVEREF(__pyx_tuple__6);
 
   /* "../../../../../usr/local/lib/python3.5/dist-packages/Cython/Includes/numpy/__init__.pxd":239
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
@@ -12901,9 +15771,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             info.buf = PyArray_DATA(self)
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(2, 239, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__5);
-  __Pyx_GIVEREF(__pyx_tuple__5);
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(2, 239, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__7);
+  __Pyx_GIVEREF(__pyx_tuple__7);
 
   /* "../../../../../usr/local/lib/python3.5/dist-packages/Cython/Includes/numpy/__init__.pxd":276
  *                 if ((descr.byteorder == c'>' and little_endian) or
@@ -12912,9 +15782,9 @@ static int __Pyx_InitCachedConstants(void) {
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(2, 276, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__6);
-  __Pyx_GIVEREF(__pyx_tuple__6);
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(2, 276, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__8);
+  __Pyx_GIVEREF(__pyx_tuple__8);
 
   /* "../../../../../usr/local/lib/python3.5/dist-packages/Cython/Includes/numpy/__init__.pxd":823
  * 
@@ -12923,9 +15793,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(2, 823, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__7);
-  __Pyx_GIVEREF(__pyx_tuple__7);
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(2, 823, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__9);
+  __Pyx_GIVEREF(__pyx_tuple__9);
 
   /* "../../../../../usr/local/lib/python3.5/dist-packages/Cython/Includes/numpy/__init__.pxd":827
  *         if ((child.byteorder == c'>' and little_endian) or
@@ -12934,9 +15804,9 @@ static int __Pyx_InitCachedConstants(void) {
  *             # One could encode it in the format string and have Cython
  *             # complain instead, BUT: < and > in format strings also imply
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(2, 827, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__8);
-  __Pyx_GIVEREF(__pyx_tuple__8);
+  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(2, 827, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__10);
+  __Pyx_GIVEREF(__pyx_tuple__10);
 
   /* "../../../../../usr/local/lib/python3.5/dist-packages/Cython/Includes/numpy/__init__.pxd":847
  *             t = child.type_num
@@ -12945,9 +15815,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(2, 847, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__9);
-  __Pyx_GIVEREF(__pyx_tuple__9);
+  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(2, 847, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__11);
+  __Pyx_GIVEREF(__pyx_tuple__11);
 
   /* "../../../../../usr/local/lib/python3.5/dist-packages/Cython/Includes/numpy/__init__.pxd":1013
  *         _import_array()
@@ -12956,9 +15826,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(2, 1013, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__10);
-  __Pyx_GIVEREF(__pyx_tuple__10);
+  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(2, 1013, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__12);
+  __Pyx_GIVEREF(__pyx_tuple__12);
 
   /* "../../../../../usr/local/lib/python3.5/dist-packages/Cython/Includes/numpy/__init__.pxd":1019
  *         _import_umath()
@@ -12967,28 +15837,28 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(2, 1019, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__11);
-  __Pyx_GIVEREF(__pyx_tuple__11);
+  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(2, 1019, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__13);
+  __Pyx_GIVEREF(__pyx_tuple__13);
 
   /* "../../../../../usr/local/lib/python3.5/dist-packages/Cython/Includes/numpy/__init__.pxd":1025
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(2, 1025, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__12);
-  __Pyx_GIVEREF(__pyx_tuple__12);
+  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(2, 1025, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__14);
+  __Pyx_GIVEREF(__pyx_tuple__14);
 
   /* "(tree fragment)":1
  * def __pyx_unpickle_SeqSeg(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     if __pyx_checksum != 0xdac33d2:
  *         from pickle import PickleError as __pyx_PickleError
  */
-  __pyx_tuple__14 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__14);
-  __Pyx_GIVEREF(__pyx_tuple__14);
-  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_SeqSeg, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_tuple__16 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__16);
+  __Pyx_GIVEREF(__pyx_tuple__16);
+  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_SeqSeg, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -13157,12 +16027,12 @@ static int __pyx_pymod_exec_SeqSeg(PyObject *__pyx_pyinit_module)
   /*--- Function export code ---*/
   /*--- Type init code ---*/
   __pyx_vtabptr_6SeqSeg_6SeqSeg_SeqSeg = &__pyx_vtable_6SeqSeg_6SeqSeg_SeqSeg;
-  __pyx_vtable_6SeqSeg_6SeqSeg_SeqSeg.tester = (double (*)(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *, long, long, int __pyx_skip_dispatch, struct __pyx_opt_args_6SeqSeg_6SeqSeg_6SeqSeg_tester *__pyx_optional_args))__pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester;
-  if (PyType_Ready(&__pyx_type_6SeqSeg_6SeqSeg_SeqSeg) < 0) __PYX_ERR(0, 352, __pyx_L1_error)
+  __pyx_vtable_6SeqSeg_6SeqSeg_SeqSeg.tester = (double (*)(struct __pyx_obj_6SeqSeg_6SeqSeg_SeqSeg *, long, int __pyx_skip_dispatch, struct __pyx_opt_args_6SeqSeg_6SeqSeg_6SeqSeg_tester *__pyx_optional_args))__pyx_f_6SeqSeg_6SeqSeg_6SeqSeg_tester;
+  if (PyType_Ready(&__pyx_type_6SeqSeg_6SeqSeg_SeqSeg) < 0) __PYX_ERR(0, 624, __pyx_L1_error)
   __pyx_type_6SeqSeg_6SeqSeg_SeqSeg.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_6SeqSeg_6SeqSeg_SeqSeg.tp_dict, __pyx_vtabptr_6SeqSeg_6SeqSeg_SeqSeg) < 0) __PYX_ERR(0, 352, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "SeqSeg", (PyObject *)&__pyx_type_6SeqSeg_6SeqSeg_SeqSeg) < 0) __PYX_ERR(0, 352, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6SeqSeg_6SeqSeg_SeqSeg) < 0) __PYX_ERR(0, 352, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_6SeqSeg_6SeqSeg_SeqSeg.tp_dict, __pyx_vtabptr_6SeqSeg_6SeqSeg_SeqSeg) < 0) __PYX_ERR(0, 624, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "SeqSeg", (PyObject *)&__pyx_type_6SeqSeg_6SeqSeg_SeqSeg) < 0) __PYX_ERR(0, 624, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6SeqSeg_6SeqSeg_SeqSeg) < 0) __PYX_ERR(0, 624, __pyx_L1_error)
   __pyx_ptype_6SeqSeg_6SeqSeg_SeqSeg = &__pyx_type_6SeqSeg_6SeqSeg_SeqSeg;
   /*--- Type import code ---*/
   __pyx_ptype_7cpython_4type_type = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "type", 
@@ -13184,118 +16054,118 @@ static int __pyx_pymod_exec_SeqSeg(PyObject *__pyx_pyinit_module)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "SeqSeg/SeqSeg.pyx":28
+  /* "SeqSeg/SeqSeg.pyx":27
  * """
  * 
  * import os             # <<<<<<<<<<<<<<
  * import time
  * 
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_os, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_os, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_os, __pyx_t_1) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_os, __pyx_t_1) < 0) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":29
+  /* "SeqSeg/SeqSeg.pyx":28
  * 
  * import os
  * import time             # <<<<<<<<<<<<<<
  * 
  * import numpy as np
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_time, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_time, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_time, __pyx_t_1) < 0) __PYX_ERR(0, 29, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_time, __pyx_t_1) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":31
+  /* "SeqSeg/SeqSeg.pyx":30
  * import time
  * 
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
  * import operator
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":33
+  /* "SeqSeg/SeqSeg.pyx":32
  * import numpy as np
  * cimport numpy as np
  * import operator             # <<<<<<<<<<<<<<
  * import re
  * 
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_operator, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_operator, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_operator, __pyx_t_1) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_operator, __pyx_t_1) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":34
+  /* "SeqSeg/SeqSeg.pyx":33
  * cimport numpy as np
  * import operator
  * import re             # <<<<<<<<<<<<<<
  * 
  * import scipy.stats as stats
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_re, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_re, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_re, __pyx_t_1) < 0) __PYX_ERR(0, 34, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_re, __pyx_t_1) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":36
+  /* "SeqSeg/SeqSeg.pyx":35
  * import re
  * 
  * import scipy.stats as stats             # <<<<<<<<<<<<<<
  * 
  * cimport cython
  */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_n_s__13);
-  __Pyx_GIVEREF(__pyx_n_s__13);
-  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s__13);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_scipy_stats, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __Pyx_INCREF(__pyx_n_s__15);
+  __Pyx_GIVEREF(__pyx_n_s__15);
+  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s__15);
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_scipy_stats, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_stats, __pyx_t_2) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_stats, __pyx_t_2) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":40
+  /* "SeqSeg/SeqSeg.pyx":39
  * cimport cython
  * from cython_gsl cimport *
  * from cython_gsl import *             # <<<<<<<<<<<<<<
  * from cython.parallel cimport prange, parallel
  * from cython.parallel import prange, parallel
  */
-  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_INCREF(__pyx_n_s__13);
-  __Pyx_GIVEREF(__pyx_n_s__13);
-  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s__13);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_cython_gsl, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __Pyx_INCREF(__pyx_n_s__15);
+  __Pyx_GIVEREF(__pyx_n_s__15);
+  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s__15);
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_cython_gsl, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__pyx_import_star(__pyx_t_1) < 0) __PYX_ERR(0, 40, __pyx_L1_error);
+  if (__pyx_import_star(__pyx_t_1) < 0) __PYX_ERR(0, 39, __pyx_L1_error);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":45
+  /* "SeqSeg/SeqSeg.pyx":44
  * 
  * # Type for Cython NumPy acceleration
  * DTYPE = np.float64             # <<<<<<<<<<<<<<
  * ctypedef np.float64_t DTYPE_t
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_float64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_float64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DTYPE, __pyx_t_2) < 0) __PYX_ERR(0, 45, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_DTYPE, __pyx_t_2) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "SeqSeg/SeqSeg.pyx":74
+  /* "SeqSeg/SeqSeg.pyx":73
  * 
  * # Random number generator - Mersenne Twister
  * cdef gsl_rng *r = gsl_rng_alloc(gsl_rng_mt19937)             # <<<<<<<<<<<<<<
@@ -13317,7 +16187,7 @@ static int __pyx_pymod_exec_SeqSeg(PyObject *__pyx_pyinit_module)
   /* "SeqSeg/SeqSeg.pyx":1
  * #!python             # <<<<<<<<<<<<<<
  * #cython: boundscheck=False, wraparound=False
- * #defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+ * # -*- coding: utf-8 -*-
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
