@@ -17,6 +17,20 @@ y = y / max(y)
 minlen = 11025
 Q = length(y) / minlen
 
+init = proc.time()
+tseg = cpt.var(data = y, know.mean = TRUE, mu = 0, method = 'PELT', minseglen = minlen, penalty = 'AIC')
+end = proc.time()
+dur = end - init
+teps = as.numeric(dur)[3]
+print(paste0(f,";",teps,";",ncpts(tseg)))
+
+init = proc.time()
+tseg_bin = cpt.var(data = y, know.mean = TRUE, mu = 0, method = 'BinSeg', minseglen = minlen, penalty = 'AIC')
+end = proc.time()
+dur = end - init
+teps = as.numeric(dur)[3]
+print(paste0(f,";",teps,";",ncpts(tseg_bin)))
+
 methods = c('AMOC', 'PELT', 'SegNeigh', 'BinSeg')
 
 for(i in 1:length(filelist)) {

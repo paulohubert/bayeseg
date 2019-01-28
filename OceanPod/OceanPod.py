@@ -52,8 +52,12 @@ class OceanPod:
     def index2date(self, filename, seg_index = 0, fs = 11025):
         # Converts an index plus the file name in a datetime
         # if no index is given, converts filename to datetime
-        date_raw = re.search('\d\d\d\d.\d\d.\d\d_\d\d.\d\d.\d\d', filename)
-        date_final = datetime.strptime(date_raw.group(0), '%Y.%m.%d_%H.%M.%S')
+        date_raw = re.search('\d\d\d\d\.\d\d\.\d\d_\d\d\.\d\d\.\d\d', filename)
+        if date_raw is None:
+            date_raw = re.search('\d\d\d\d_\d\d_\d\d_\d\d_\d\d_\d\d', filename)
+            date_final = datetime.strptime(date_raw.group(0), '%Y_%m_%d_%H_%M_%S')                     
+        else:
+            date_final = datetime.strptime(date_raw.group(0), '%Y.%m.%d_%H.%M.%S')
         date_final = date_final + timedelta(seconds = seg_index / fs)
 
         return date_final
