@@ -1258,15 +1258,17 @@ cdef class SeqSeg:
 
 
 
-    def segments(self, minlen, res, regularize = False, normalize = False, verbose = False):
+    def segments(self, minlen, res, method = 'jeffreys', regularize = False, normalize = False, verbose = False, adaptive_res = False):
         ''' Applies the sequential segmentation algorithm to the current signal using variances parameterization with independent Jeffreys' priors for each variance.
         
             Arguments:
             
             minlen -- the minimum segment length accepted
             res -- resolution; how many positions to jump when optimizing the posterior for the changepoint; tstep = 1 is the maximum resolution
+            method - jeffreys, to use uninformative priors, or laplace to use informative priors
             regularize -- whether to use the regularized e-value (significance value)
             normalize -- whether to normalize the signal to have first segment with variance 1
+            adaptive_res -- whether to use the adaptive resolution; if true, will calculate p = res / N and keep this ratio constant throughout the execution
             
             Returns:
             
@@ -1277,23 +1279,32 @@ cdef class SeqSeg:
         if not self.data_fed:
 
             print("Data not initialized! Call feed_data.")
-            return(-1)
+            return(-1, -1)
 
+        if method not in ['jeffreys', 'laplace']:
+            print("Method unknown, must be 'jeffreys' or 'laplace'.")
+            return(-1, -1)
+        
         begin = time.time()
 
         # Cannot have a minimum segment of less than 5 points for the algorithm to make sense
         minlen = max(5, minlen)
 
         cdef long t, tmax, tstart, tend, n, istart, iend, tstep, mlen
-        cdef double maxp, posterior, sstart, send, st, st1
+        cdef double maxp, posterior, sstart, send, st, st1, pres
         cdef np.ndarray[DTYPE_t, ndim = 1] tvec = np.repeat(-np.inf, self.N)
         cdef np.ndarray[DTYPE_t, ndim = 1] esumw2 = self.sumw2
 
         tstep = res
-
+        
         self.tstart = 0
         self.tend = len(self.wave) - 1
         self.N = len(self.wave)
+        
+        if adaptive_res:
+            pres = float(tstep) / self.N
+        else:
+            pres = 1. / self.N
 
         tseg = []
         # Creates index to keep track of tested segments
@@ -1310,6 +1321,12 @@ cdef class SeqSeg:
                 self.tstart = seg[0]
                 self.tend = seg[1]
                 self.N = self.tend - self.tstart + 1
+                
+                if adaptive_res:
+                    tstep = int(pres * self.N)
+                    if tstep == 0:
+                        tstep = 1
+
 
                 # Obtains MAP estimate of the cut point
                 # Parallelized
@@ -1343,7 +1360,11 @@ cdef class SeqSeg:
                     if tmax - tstart > minlen and tend - tmax > minlen:
 
                         # Test the segments
-                        evidence = self.tester(tmax, normalize, regularize = False)
+                        if method == 'jeffreys':
+                            evidence = self.tester(tmax, normalize, regularize = False)
+                        elif method == 'laplace':
+                            evidence = self.tester_laplace_log(tmax, normalize, regularize = False)
+                        
 
                         # Regularizing
                         if regularize == True:
@@ -1569,14 +1590,6 @@ cdef class SeqSeg:
 
         #tstep = res
         
-        if verbose:
-            if iprior == 0:
-                print('Using Laplace prior.')
-            elif iprior == 1:
-                print('Using Gaussian prior.')
-            else:
-                print('Using uniform prior.')
-
         tseg = []
         # Creates index to keep track of tested segments
         # True, if the segment must be tested, False otherwise
@@ -1715,13 +1728,13 @@ cdef class SeqSeg:
             
             mbic - value of MBIC criterion
         '''
-        m = len(tseg)
+        m = len(tseg) + 1
         T = len(self.wave)
         tcuts = tseg.copy()
         tcuts.sort()
         ybar = np.mean(self.wave)
         
-        tcuts = tcuts + [T]
+        tcuts = [0] + tcuts + [T]
         
         ssall = np.sum((self.wave - ybar)**2)
         
@@ -1734,7 +1747,7 @@ cdef class SeqSeg:
         sswg = ssall - ssbg
         
         
-        mbic = ((T-m+1)/2.)*log(1 + ssbg/sswg) + gammaln((T-m+1)/2) - gammaln((T+1)/2) + (m/2)*Ln(ssall) - 0.5*slog + (0.5-m)*Ln(T)
+        mbic = ((T-m+1.)/2.)*Ln(1 + ssbg/sswg) + gammaln((T-m+1.)/2.) - gammaln((T+1.)/2.) + (m/2.)*Ln(ssall) - 0.5*slog + (0.5-m)*Ln(T)
         
         return mbic
             
