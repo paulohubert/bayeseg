@@ -23,6 +23,7 @@ Audio wave files interface class
 """
 
 import scipy.io.wavfile
+from scipy.signal import welch
 import numpy as np
 import os
 import re
@@ -34,13 +35,17 @@ class OceanPod:
         obtain segments from datetime, and datetime from segment indexes
     '''
 
-    def __init__(self, wav_folder):
+    def __init__(self, wav_folder, file_format = '\d\d\d\d.\d\d.\d\d_\d\d.\d\d.\d\d', date_format = '%Y.%m.%d_%H.%M.%S'):
         # Constructor
         # Folder with waveforms
+        self.file_format = file_format
+        self.date_format = date_format        
         self.wav_folder = wav_folder
         self.filelist = [f for f in os.listdir(wav_folder) if f.endswith('.wav')]
         self.filedt = [self.index2date(f) for f in self.filelist]
         self.filelist = [f for _,f in sorted(zip(self.filedt, self.filelist))]
+        self.filedt = [f for f,_ in sorted(zip(self.filedt, self.filelist))]
+
 
     def read_file(self, filename):
         # Reads file, return fs and wave
@@ -52,8 +57,8 @@ class OceanPod:
     def index2date(self, filename, seg_index = 0, fs = 11025):
         # Converts an index plus the file name in a datetime
         # if no index is given, converts filename to datetime
-        date_raw = re.search('\d\d\d\d.\d\d.\d\d_\d\d.\d\d.\d\d', filename)
-        date_final = datetime.strptime(date_raw.group(0), '%Y.%m.%d_%H.%M.%S')
+        date_raw = re.search(self.file_format, filename)
+        date_final = datetime.strptime(date_raw.group(0), self.date_format)
         date_final = date_final + timedelta(seconds = seg_index / fs)
 
         return date_final
@@ -61,7 +66,7 @@ class OceanPod:
     def date2file(self, dt):
         # Converts date into filename
 
-        filename = datetime.strftime(dt, '%Y.%m.%d_%H.%M.%S.wav')
+        filename = datetime.strftime(dt, self.date_format + '.wav')
 
         return filename
 
@@ -80,6 +85,7 @@ class OceanPod:
 
         # Reads file
         fs, wav = self.read_file(self.date2file(dtstart))
+        self.fs = fs
 
         # Index of segment start
         istart = (starttime-dtstart).total_seconds()
@@ -106,3 +112,135 @@ class OceanPod:
         #endwhile
 
         return segment
+    
+    def get_spectrogram(self, starttime, duration, tdur, toverlap = 0, nwindow_welch = 3, poverlap_welch = 0, tipo_window = 'hann'):
+        ''' Cria o espectrograma do sinal começando em starttime e com duração duration, em segundos.
+            O espectrograma será criado usando o método de Welch.
+            O sinal completo será primeiro dividido em janelas com duração de tdur segundos com overlap de toverlap segundos.
+            Em cada janela será aplicado o método de Welch usando nwindow_welch janelas, com proporção de overlap
+            dada por poverlap_welch.
+        '''
+        
+        # TODO: toverlap não está sendo usado
+        
+        # Quanto da duração já foi rodada (em segundos)
+        total_duration = 0
+        
+        # Marcador do tempo do sinal
+        tempo_atual = starttime
+        
+        # Matriz vazia para guardar o espectrograma final
+        espectrograma = None
+        while total_duration < duration:
+            # Primeiro obtenho a janela
+            window = self.get_segment(tempo_atual, tdur)
+            
+            # TODO: tratar arquivos com fs diferentes!
+            
+            # Tamanho da janela
+            N = len(window)
+            
+            # Número de pontos por segmento para cálculo do welch
+            nperseg = np.floor(N / (nwindow_welch + (nwindow_welch - 1)*poverlap_welch))
+
+            # Número de pontos de overlap do cálculo do welch
+            noverlap = np.floor(nperseg * poverlap_welch)
+            
+            f, Pxx = welch(window, self.fs, window = tipo_window, nperseg = nperseg, noverlap = noverlap, nfft = None)
+            
+            if espectrograma is None:
+                espectrograma = Pxx
+            else:
+                espectrograma = np.vstack([espectrograma, Pxx])
+            
+            # TODO: ele vai repetir o último segundo da janela?
+            tempo_atual = tempo_atual + timedelta(seconds = tdur)
+            
+            total_duration = total_duration + tdur
+            
+        return f, espectrograma.T
+        
+        
+    def get_spectrogram_filelist(self, data_minima, data_maxima, nwindow, poverlap = 1/3, tipo_window = 'hann', by = None, nfft = None):
+        ''' Cria o espectrograma da lista de arquivos no diretório com a data entre data_minima e data_maxima. 
+            Vai criar um espectrograma por período, dado por "by", onde 'by' pode ser 'year', 'month', 'day', 'hour' ou 'minute'.
+            Se 'by' = 'day', por exemplo, vai concatenar os espectrogramas de todos os ARQUIVOS que tem o mesmo dia NO NOME.
+            
+            Cada arquivo será dividido em nwindow janelas para o método de welch.
+            
+            Se 'by' = None, vai gerar um único espectrograma
+        '''
+        
+        # Pego a lista de datas dos arquivos entre data mínima e data máxima
+        lista_datas = [d for d in self.filedt if d < data_maxima and d >= data_minima]
+        
+        espectrogramas = []
+        espectrograma = None
+        data_anterior = None
+        for data in lista_datas:
+
+            # Primeiro obtenho o nome do arquivo
+            arquivo = self.date2file(data)
+
+            # Leio o arquivo
+            fs, y = self.read_file(arquivo)
+            
+            nperseg = np.floor(len(y) / nwindow)
+            noverlap = np.floor(poverlap * nperseg)
+            
+            # Obtenho o espectrograma            
+            f, Pxx = welch(y, fs, window = tipo_window, nperseg = nperseg, noverlap = noverlap, nfft = nfft)
+            
+            if espectrograma is None:
+                if by is not None:
+                    espectrograma = Pxx
+                else:
+                    espectrogramas.append(Pxx.T)
+                data_anterior = data
+                  
+            else:
+                # Verifica se os arquivo atual está no mesmo período ('by') do arquivo anterior
+                if by is not None:
+                    if by == 'year':
+                        if data.year == data_anterior.year:
+                            espectrograma = np.vstack([espectrograma, Pxx])
+                        else:
+                            espectrogramas.append(espectrograma.T)
+                            espectrograma = Pxx
+                    elif by == 'month':
+                        if data.month == data_anterior.month:
+                            espectrograma = np.vstack([espectrograma, Pxx])
+                        else:
+                            espectrogramas.append(espectrograma.T)
+                            espectrograma = Pxx                        
+                    elif by == 'day':
+                        if data.day == data_anterior.day:
+                            espectrograma = np.vstack([espectrograma, Pxx])
+                        else:
+                            espectrogramas.append(espectrograma.T)
+                            espectrograma = Pxx         
+                    elif by == 'hour':
+                        if data.hour == data_anterior.hour:
+                            espectrograma = np.vstack([espectrograma, Pxx])
+                        else:
+                            espectrogramas.append(espectrograma.T)
+                            espectrograma = Pxx           
+                    elif by == 'minute':
+                        if data.minute == data_anterior.minute:
+                            espectrograma = np.vstack([espectrograma, Pxx])
+                        else:
+                            espectrogramas.append(espectrograma.T)
+                            espectrograma = Pxx               
+                    else:
+                        print("Erro! Valor de by não permitido ({})".format(by))
+                        raise ValueError
+                else:
+                    espectrogramas.append(Pxx.T)
+                    
+                data_anterior = data
+
+        if espectrograma is not None:
+            espectrogramas.append(espectrograma.T)
+           
+            
+        return espectrogramas
