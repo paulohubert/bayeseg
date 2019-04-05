@@ -1006,7 +1006,8 @@ cdef class SeqSeg:
         ev = 1 - sum(vev) / self.nchains
         
         if regularize == True:
-            ev = 1-stats.chi2.cdf(stats.chi2.ppf(1 - ev, df = 2), 1)        
+            # One parameter more, since now we have the prior
+            ev = 1-stats.chi2.cdf(stats.chi2.ppf(1 - ev, df = 2), 1)
 
         return ev
     
@@ -1057,7 +1058,7 @@ cdef class SeqSeg:
         ev = 1 - sum(vev) / self.nchains
         
         if regularize == True:
-            ev = 1-stats.chi2.cdf(stats.chi2.ppf(1 - ev, df = 2), 1)        
+            ev = 1-stats.chi2.cdf(stats.chi2.ppf(1 - ev, df = 2), 1)
 
         return ev    
 
