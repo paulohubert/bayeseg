@@ -12,3 +12,4 @@ wheelhouse/*
 SeqSeg/*.o
 SeqSeg/*.c
 SeqSeg/*.so
+dev/
