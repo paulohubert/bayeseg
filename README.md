@@ -7,6 +7,8 @@ Hubert, P., Padovese, L., Stern, J.M. A Sequential Algorithm for Signal Segmenta
 
 Hubert, P., Padovese, L., Stern, J.M. Fast Implementation of a Bayesian unsupervised segmentation algorithm, arXiv:1803.01801
 
+As of May 2019, a new version of the algorithm was uploaded to the repository, including a segmentation with uninformative priors. This is controlled by the parameter 'method' of 'segments' method, with default value given by 'jeffreys' (uninformative priors).
+
 The module is composed of two classes:
 
 OceanPod - an interface class to allow easy reading and processing of files from the OceanPod hydrophone
@@ -22,8 +24,6 @@ The repository content is the following:
 ### SeqSeg folder
 
 **SeqSeg.pyx**: python code for the SeqSeg (segmentation) module
-
-**SeqSeg.c**: the output of running cython on *SeqSeg.pyx*; this is the file that will be compiled by the setup script.
 
 ### OceanPod folder
 
@@ -42,24 +42,19 @@ Note: in order to use LB (Light and Bartlein) colormaps on MATLAB you'll need to
 
 **Calibration_real_samples.ipynb**: IPython notebook with an example of calibrating the SeqSeg algorithm on the real OceanPod samples. Illustrates both the usage of OceanPod and SeqSeg modules.
 
-**FastImpl_calibration.ipynb**: IPython notebook illustrating the usage of the SeqSeg module with simulated data.
-
-**MCMC_convergence.ipynb**: IPython notebook that reproduces the MCMC part of the SeqSeg module. To test the chain's convergence.
-
-**Replication script.ipynb**: IPython notebook that allows exact replication of all the paper's results.
+**Calibration_simulated_data.ipynb**: IPython notebook illustrating the usage of the SeqSeg module with simulated data.
 
 
 ### Data folder
 
 The .wav files obtained from the OceanPod (a hydrophone built at University of São Paulo - Brasil) with recordings from a depth of 20m. Each file corresponds to 15 minutes of audio, sampled at 11,025 Hz.
 
-The .csv files obtained as the result of our segmentation algorithm for two of the samples. These files are input to the MATLAB script *spectrograms.m*. See paper for details.
-
+The .csv files obtained as the result of our segmentation algorithm for two of the samples. These files are input to the MATLAB script *spectrograms.m*. See arXiv paper for details.
 
 
 ## System requirements:
 
-The SeqSeg.c file shipped with the package was created by cython, on Python 3.5 running on an Ubuntu 16.04 LTS operational system. The system requirements are as follows:
+The system requirements are as follows:
 
 GNU Scientific Library (GSL) >= 2.4
 
@@ -73,9 +68,9 @@ numpy >= 1.14.0
 
 To compile the .pyx you'll also need
 
-cython >= 0.27.3
+cython >= 0.29
 
-cythonGSL >= 0.2.1
+cythonGSL >= 0.2.2
 
 
 ## To use the SeqSeg module
