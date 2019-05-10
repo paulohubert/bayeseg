@@ -94,7 +94,7 @@ class OceanPod:
         istart = int(istart * fs)
 
         # Segment duration in number of points
-        idur = duration * fs
+        idur = int(np.floor(duration * fs))
 
         segment = wav[istart:min(istart + idur, len(wav)-1)]
         dtnext = dtstart
