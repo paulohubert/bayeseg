@@ -45,12 +45,14 @@ class OceanPod:
         self.filedt = [self.index2date(f) for f in self.filelist]
         self.filelist = [f for _,f in sorted(zip(self.filedt, self.filelist))]
         self.filedt = [f for f,_ in sorted(zip(self.filedt, self.filelist))]
+        self.fs = None
 
 
     def read_file(self, filename):
         # Reads file, return fs and wave
         fs, waveform = scipy.io.wavfile.read(self.wav_folder + filename)
         waveform = waveform / 32767 # To normalize amplitudes
+        self.fs = fs
 
         return fs, waveform
 
