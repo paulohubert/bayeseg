@@ -79,9 +79,9 @@ class OceanPod:
         # Read the segment starting at datetime start_time,
         #    with duration in seconds
         endtime = starttime + timedelta(seconds = duration)
-        if max(self.filedt) + timedelta(minutes = 15) < endtime:
+        if max(self.filedt) + timedelta(minutes = 3) < endtime:
             # Error: segment time span not contained in audio files list
-            return None
+            raise ValueError("Error: segment time span not contained in audio files list")
         #endif
 
         # Finds date of file with beginning of the segment
@@ -93,19 +93,19 @@ class OceanPod:
 
         # Index of segment start
         istart = (starttime-dtstart).total_seconds()
-        istart = int(istart * fs)
+        istart = int(np.floor(istart * fs))
 
         # Segment duration in number of points
         idur = int(np.floor(duration * fs))
+        N = idur
 
         segment = wav[istart:min(istart + idur, len(wav)-1)]
         dtnext = dtstart
 
         while idur > len(wav) - istart - 1:
-
-            idur = idur - (len(wav) - istart) + 1
-            istart = 0
             # End of segment is in posterior file
+            istart = 0            
+            idur = idur - len(wav) + 1
             dtnext = min([d for d in self.filedt if d > dtnext])
             fsnext, wav = self.read_file(self.date2file(dtnext))
 
@@ -115,7 +115,7 @@ class OceanPod:
             segment = np.concatenate([segment, wav[:indwav]])
         #endwhile
 
-        return segment
+        return segment[:N]
     
     def get_spectrogram(self, starttime, duration, tdur, toverlap = 0, nwindow_welch = 3, poverlap_welch = 0, tipo_window = 'hann'):
         ''' Cria o espectrograma do sinal começando em starttime e com duração duration, em segundos.
