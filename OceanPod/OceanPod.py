@@ -23,6 +23,7 @@ Audio wave files interface class
 """
 
 import scipy.io.wavfile
+import soundfile as sf # scipy cannot read 24-bit files
 from scipy.signal import welch
 import numpy as np
 import os
@@ -55,15 +56,17 @@ class OceanPod:
         
         # Calculates max time
         filename = self.filelist[np.argmax(self.filedt)]
-        fs, waveform = scipy.io.wavfile.read(self.wav_folder + filename)
+        #fs, waveform = scipy.io.wavfile.read(self.wav_folder + filename)
+        waveform, fs = sf.read(self.wav_folder + filename)
         self.fs = fs
         self.maxtime = max(self.filedt) + timedelta(seconds = len(waveform) / fs)
 
 
     def read_file(self, filename):
         # Reads file, return fs and wave
-        fs, waveform = scipy.io.wavfile.read(self.wav_folder + filename)
-        waveform = waveform / 32767 # To normalize amplitudes
+        #fs, waveform = scipy.io.wavfile.read(self.wav_folder + filename)
+        waveform, fs = sf.read(self.wav_folder + filename)
+        #waveform = waveform / 32767 # To normalize amplitudes: UNNECESSARY IF USING sf.read
         self.fs = fs
 
         return fs, waveform
