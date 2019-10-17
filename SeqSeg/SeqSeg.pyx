@@ -27,6 +27,7 @@ Automatic signal segmentation
 import os
 import time
 
+import math
 import numpy as np
 cimport numpy as np
 import operator
@@ -886,6 +887,9 @@ cdef class SeqSeg:
 
         end = time.time()
         elapsed = end - begin
+        
+        if math.isinf(np.max(tvec)):
+            print("Infinite values for changepoint posterior: check signal vector for sections with constant value at the beginning or the end!")
 
         return tvec, elapsed
 
@@ -970,7 +974,6 @@ cdef class SeqSeg:
                 n = int((iend-istart)/tstep)
                 
                 if n > 3:
-
                     sstart = self.sumw2[self.tstart]
                     send = self.sumw2[self.tend]
 
@@ -989,7 +992,6 @@ cdef class SeqSeg:
                     tmax = istart + tmax*tstep
 
                     if tmax - tstart > minlen and tend - tmax > minlen:
-
                         # Test the segments
                         if method == 'jeffreys':
                             evidence = self.tester(tmax, normalize, regularize = False)

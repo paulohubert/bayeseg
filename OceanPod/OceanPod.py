@@ -23,6 +23,7 @@ Audio wave files interface class
 """
 
 import scipy.io.wavfile
+import soundfile as sf # scipy cannot read 24-bit files
 from scipy.signal import welch
 import numpy as np
 import os
@@ -38,19 +39,35 @@ class OceanPod:
     def __init__(self, wav_folder, file_format = '\d\d\d\d.\d\d.\d\d_\d\d.\d\d.\d\d', date_format = '%Y.%m.%d_%H.%M.%S'):
         # Constructor
         # Folder with waveforms
+        if '(' not in file_format:
+            file_format = '(' + file_format + ')'
+            self.pre = ''
+        else:
+            self.pre = file_format[:file_format.find('(')]
         self.file_format = file_format
         self.date_format = date_format        
         self.wav_folder = wav_folder
-        self.filelist = [f for f in os.listdir(wav_folder) if f.endswith('.wav')]
+        #self.filelist = [f for f in os.listdir(wav_folder) if f.endswith('.wav')]
+        self.filelist = [f for f in os.listdir(wav_folder) if f.endswith('.wav') and re.search(file_format, f) is not None]
         self.filedt = [self.index2date(f) for f in self.filelist]
         self.filelist = [f for _,f in sorted(zip(self.filedt, self.filelist))]
         self.filedt = [f for f,_ in sorted(zip(self.filedt, self.filelist))]
+        self.fs = None
+        
+        # Calculates max time
+        filename = self.filelist[np.argmax(self.filedt)]
+        #fs, waveform = scipy.io.wavfile.read(self.wav_folder + filename)
+        waveform, fs = sf.read(self.wav_folder + filename)
+        self.fs = fs
+        self.maxtime = max(self.filedt) + timedelta(seconds = len(waveform) / fs)
 
 
     def read_file(self, filename):
         # Reads file, return fs and wave
-        fs, waveform = scipy.io.wavfile.read(self.wav_folder + filename)
-        waveform = waveform / 32767 # To normalize amplitudes
+        #fs, waveform = scipy.io.wavfile.read(self.wav_folder + filename)
+        waveform, fs = sf.read(self.wav_folder + filename)
+        #waveform = waveform / 32767 # To normalize amplitudes: UNNECESSARY IF USING sf.read
+        self.fs = fs
 
         return fs, waveform
 
@@ -59,8 +76,7 @@ class OceanPod:
         # if no index is given, converts filename to datetime
 
         date_raw = re.search(self.file_format, filename)
-        date_final = datetime.strptime(date_raw.group(0), self.date_format)
-
+        date_final = datetime.strptime(date_raw.groups(0)[0], self.date_format)
         date_final = date_final + timedelta(seconds = seg_index / fs)
 
         return date_final
@@ -68,7 +84,7 @@ class OceanPod:
     def date2file(self, dt):
         # Converts date into filename
 
-        filename = datetime.strftime(dt, self.date_format + '.wav')
+        filename = self.pre + datetime.strftime(dt, self.date_format + '.wav')
 
         return filename
 
@@ -77,9 +93,10 @@ class OceanPod:
         # Read the segment starting at datetime start_time,
         #    with duration in seconds
         endtime = starttime + timedelta(seconds = duration)
-        if max(self.filedt) + timedelta(minutes = 15) < endtime:
+        
+        if self.maxtime < endtime:
             # Error: segment time span not contained in audio files list
-            return None
+            raise ValueError("Error: segment time span not contained in audio files list")
         #endif
 
         # Finds date of file with beginning of the segment
@@ -91,19 +108,19 @@ class OceanPod:
 
         # Index of segment start
         istart = (starttime-dtstart).total_seconds()
-        istart = int(istart * fs)
+        istart = int(np.floor(istart * fs))
 
         # Segment duration in number of points
         idur = int(np.floor(duration * fs))
+        N = idur
 
         segment = wav[istart:min(istart + idur, len(wav)-1)]
         dtnext = dtstart
 
         while idur > len(wav) - istart - 1:
-
-            idur = idur - (len(wav) - istart) + 1
-            istart = 0
             # End of segment is in posterior file
+            istart = 0            
+            idur = idur - len(wav) + 1
             dtnext = min([d for d in self.filedt if d > dtnext])
             fsnext, wav = self.read_file(self.date2file(dtnext))
 
@@ -113,7 +130,7 @@ class OceanPod:
             segment = np.concatenate([segment, wav[:indwav]])
         #endwhile
 
-        return segment
+        return segment[:N]
     
     def get_spectrogram(self, starttime, duration, tdur, toverlap = 0, nwindow_welch = 3, poverlap_welch = 0, tipo_window = 'hann'):
         ''' Cria o espectrograma do sinal começando em starttime e com duração duration, em segundos.
