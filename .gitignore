@@ -9,6 +9,5 @@ build/
 *egg*
 wheelhouse/*
 SeqSeg/*.o
-SeqSeg/*.c
 SeqSeg/*.so
 dev/

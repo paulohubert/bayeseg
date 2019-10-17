@@ -59,7 +59,7 @@ class OceanPod:
         #fs, waveform = scipy.io.wavfile.read(self.wav_folder + filename)
         waveform, fs = sf.read(self.wav_folder + filename)
         self.fs = fs
-        self.maxtime = max(self.filedt) + timedelta(seconds = len(waveform) / fs)
+        self.maxtime = max(self.filedt) + timedelta(seconds = int(len(waveform) / fs))
 
 
     def read_file(self, filename):
@@ -96,11 +96,14 @@ class OceanPod:
         
         if self.maxtime < endtime:
             # Error: segment time span not contained in audio files list
-            raise ValueError("Error: segment time span not contained in audio files list")
+            raise ValueError("Error: end of segment at {} after signal end at {}".format(datetime.strftime(endtime, '%H:%M:%S'), datetime.strftime(self.maxtime, '%H:%M:%S')))
         #endif
 
         # Finds date of file with beginning of the segment
-        dtstart = max([d for d in self.filedt if d <= starttime])
+        list_dates = [d for d in self.filedt if d <= starttime]
+        if len(list_dates) == 0:
+            raise ValueError('Error: time {} is before the signal start at {}'.format(datetime.strftime(starttime, '%H:%M:%S'), datetime.strftime(min(self.filedt), '%H:%M:%S')))
+        dtstart = max(list_dates)
 
         # Reads file
         fs, wav = self.read_file(self.date2file(dtstart))
@@ -117,7 +120,7 @@ class OceanPod:
         segment = wav[istart:min(istart + idur, len(wav)-1)]
         dtnext = dtstart
 
-        while idur > len(wav) - istart - 1:
+        while idur > len(wav) - istart - 1 and dtnext < max(self.filedt):
             # End of segment is in posterior file
             istart = 0            
             idur = idur - len(wav) + 1
